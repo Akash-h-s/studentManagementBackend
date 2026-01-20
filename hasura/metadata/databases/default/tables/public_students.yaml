@@ -1,0 +1,32 @@
+table:
+  name: students
+  schema: public
+object_relationships:
+  - name: class_section
+    using:
+      foreign_key_constraint_on: class_section_id
+  - name: parent
+    using:
+      foreign_key_constraint_on: parent_id
+array_relationships:
+  - name: emails
+    using:
+      foreign_key_constraint_on:
+        column: student_id
+        table:
+          name: emails
+          schema: public
+  - name: marks
+    using:
+      foreign_key_constraint_on:
+        column: student_id
+        table:
+          name: marks
+          schema: public
+  - name: progress_cards
+    using:
+      foreign_key_constraint_on:
+        column: student_id
+        table:
+          name: progress_cards
+          schema: public

@@ -1,0 +1,11 @@
+table:
+  name: class_sections
+  schema: public
+array_relationships:
+  - name: students
+    using:
+      foreign_key_constraint_on:
+        column: class_section_id
+        table:
+          name: students
+          schema: public

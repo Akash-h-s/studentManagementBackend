@@ -1,0 +1,7 @@
+table:
+  name: uploads
+  schema: public
+object_relationships:
+  - name: admin
+    using:
+      foreign_key_constraint_on: uploaded_by

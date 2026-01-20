@@ -1,0 +1,12 @@
+
+# insert admins
+mutation InsertAdmin($school: String!, $email: String!, $pass: String!, $phone: String){
+  insert_admins_one(object: {
+    school_name: $school
+    email: $email
+    password_hash: $pass
+    phone: $phone
+  }){
+    id
+  }
+}

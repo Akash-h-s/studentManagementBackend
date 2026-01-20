@@ -1,0 +1,18 @@
+table:
+  name: teachers
+  schema: public
+array_relationships:
+  - name: marks
+    using:
+      foreign_key_constraint_on:
+        column: teacher_id
+        table:
+          name: marks
+          schema: public
+  - name: subjects
+    using:
+      foreign_key_constraint_on:
+        column: teacher_id
+        table:
+          name: subjects
+          schema: public

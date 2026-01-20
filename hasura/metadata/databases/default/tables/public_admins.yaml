@@ -1,0 +1,11 @@
+table:
+  name: admins
+  schema: public
+array_relationships:
+  - name: uploads
+    using:
+      foreign_key_constraint_on:
+        column: uploaded_by
+        table:
+          name: uploads
+          schema: public

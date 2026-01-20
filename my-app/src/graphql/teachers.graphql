@@ -1,0 +1,9 @@
+
+mutation InsertTeachers($list:[teachers_insert_input!]!){
+  insert_teachers(objects: $list){
+    affected_rows
+    returning{
+      id
+    }
+  }
+}
