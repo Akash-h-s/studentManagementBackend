@@ -5,9 +5,6 @@ object_relationships:
   - name: class_section
     using:
       foreign_key_constraint_on: class_section_id
-  - name: parent
-    using:
-      foreign_key_constraint_on: parent_id
 array_relationships:
   - name: emails
     using:

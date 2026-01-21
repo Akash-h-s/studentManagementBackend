@@ -3,7 +3,6 @@
 - "!include public_emails.yaml"
 - "!include public_exams.yaml"
 - "!include public_marks.yaml"
-- "!include public_parents.yaml"
 - "!include public_progress_cards.yaml"
 - "!include public_students.yaml"
 - "!include public_subjects.yaml"

@@ -1,0 +1,15 @@
+mutation InsertStudents($list: [students_insert_input!]!) {
+  insert_students(
+    objects: $list,
+    on_conflict: {
+      constraint: students_admission_no_key,
+      update_columns: [name, gender, dob, class_section_id]
+    }
+  ) {
+    affected_rows
+    returning {
+      id
+      admission_no
+    }
+  }
+}

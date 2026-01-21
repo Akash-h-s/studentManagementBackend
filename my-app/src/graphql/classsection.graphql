@@ -1,0 +1,11 @@
+mutation InsertClassSection($object: class_sections_insert_input!) {
+  insert_class_sections_one(
+    object: $object, 
+    on_conflict: {
+      constraint: class_sections_class_name_section_name_key, 
+      update_columns: [class_name] # Doing nothing, just getting the ID back
+    }
+  ) {
+    id
+  }
+}

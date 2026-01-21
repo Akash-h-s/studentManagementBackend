@@ -1,18 +1,3 @@
 table:
   name: parents
   schema: public
-array_relationships:
-  - name: emails
-    using:
-      foreign_key_constraint_on:
-        column: parent_id
-        table:
-          name: emails
-          schema: public
-  - name: students
-    using:
-      foreign_key_constraint_on:
-        column: parent_id
-        table:
-          name: students
-          schema: public

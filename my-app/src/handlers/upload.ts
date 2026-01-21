@@ -1,7 +1,8 @@
+
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import XLSX from "xlsx";
-import { Client } from "pg";
 import fs from "fs";
+import { gqlSdk } from "../config/graphClient";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -10,111 +11,83 @@ const cors = {
 };
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: cors,
-      body: "",
-    };
-  }
+  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers: cors, body: "" };
 
   try {
     if (!event.body) throw new Error("Empty body");
+    const { class: className, section, fileBase64, filename, adminId, type } = JSON.parse(event.body);
 
-    const body = JSON.parse(event.body);
-    const { class: className, section, fileBase64, filename } = body;
-
-    if (!className || !section || !fileBase64 || !filename) {
-      throw new Error("Missing fields: class, section, fileBase64, or filename");
-    }
-
-    const table = `class_${className}_${section}`.toLowerCase();
     const buffer = Buffer.from(fileBase64, "base64");
-    
-    // Save to /tmp (the only writable directory in Lambda)
-    const filePath = "/tmp/uploaded_file";
+    const filePath = "/tmp/upload.xlsx";
     fs.writeFileSync(filePath, buffer);
+    const workbook = XLSX.readFile(filePath);
+    const rows: any[] = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
 
-    let rows: any[] = [];
+    if (rows.length === 0) throw new Error("Excel file is empty");
 
-    if (filename.endsWith(".xlsx") || filename.endsWith(".xls")) {
-      const workbook = XLSX.readFile(filePath);
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      rows = XLSX.utils.sheet_to_json(sheet);
-    } else if (filename.endsWith(".pdf")) {
-      rows = [{ name: filename, note: "pdf uploaded" }];
-    } else {
-      throw new Error("Unsupported file format. Please use Excel or PDF.");
+    
+    if (type === "student") {
+      const sectionRes = await gqlSdk.InsertClassSection({
+        object: {
+          class_name: className,
+          section_name: section
+        }
+      });
+
+      const classSectionId = sectionRes.insert_class_sections_one?.id;
+      if (!classSectionId) {
+        throw new Error(`Failed to resolve or create Class/Section: ${className}-${section}`);
+      }
+      const studentData = rows.map((row) => {
+      const admNo = (row.admission_no || row.AdmissionNo || row["Admission No"] || row.id || row.ID)?.toString();
+        
+        if (!admNo) {
+          throw new Error(`Critical Error: Found a student row without an Admission Number.`);
+        }
+
+        return {
+          admission_no: admNo,
+          name: row.name || row.Name || row["Student Name"] || "Unknown Student",
+          gender: row.gender || row.Gender || "N/A",
+          dob: row.dob || row.DOB || null,
+          class_section_id: classSectionId,
+          parent_name:row.parent_name,
+          parent_email:row.parent_email
+          
+        };
+      });
+
+      await gqlSdk.InsertStudents({ list: studentData });
+    } else if (type === "teacher") {
+      const teacherData = rows.map((row) => ({
+        name: row.name || row.Name,
+        email: row.email || row.Email,
+        phone: (row.phone || row.Phone)?.toString(),
+        qualification: row.qualification || row.Qualification
+      }));
+
+      await gqlSdk.InsertTeachers({ list: teacherData });
     }
 
-    if (rows.length === 0) throw new Error("No data found in the file");
-
-    const columns = Object.keys(rows[0]);
-
-    // SQL Generation
-    const createSQL = `
-      CREATE TABLE IF NOT EXISTS ${table} (
-        id SERIAL PRIMARY KEY,
-        ${columns.map((c) => `"${c}" TEXT`).join(",")}
-      );
-    `;
-
-    const values = rows.map((row) =>
-        `(${columns.map((c) => 
-          `'${(row[c] || "").toString().replace(/'/g, "''")}'`
-        ).join(",")})`
-      ).join(",");
-
-    const insertSQL = `
-      INSERT INTO ${table} (${columns.map((c) => `"${c}"`).join(",")})
-      VALUES ${values};
-    `;
-
-    console.log({
-      host: process.env.PG_HOST,
-      port: parseInt(process.env.PG_PORT || "5434"),
-      user: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_DATABASE,
-    })
-
-    // Database Connection using Environment Variables
-    const client = new Client({
-      host: process.env.PG_HOST,
-      port: parseInt(process.env.PG_PORT || "5434"),
-      user: process.env.PG_USER,
-      password: process.env.PG_PASSWORD,
-      database: process.env.PG_DATABASE,
+    
+    await gqlSdk.InsertUploadInfo({
+      filename: filename,
+      type: type,
+      uploaded: adminId 
     });
-
-    console.log("client object")
-
-    await client.connect();
-
-    console.log("client connected")
-    await client.query(createSQL);
-    await client.query(insertSQL);
-    await client.end();
 
     return {
       statusCode: 200,
       headers: cors,
-      body: JSON.stringify({
-        message: "Success",
-        table,
-        rows: rows.length,
-      }),
+      body: JSON.stringify({ message: "Upload success", count: rows.length }),
     };
 
   } catch (err: any) {
-    console.error("LAMBDA_ERROR:", err);
-
+    console.error("Handler Error:", err.message);
     return {
       statusCode: 500,
-      headers: cors, // CRITICAL: This allows the browser to read the error
-      body: JSON.stringify({
-        message: err.message || "Internal Server Error",
-      }),
+      headers: cors,
+      body: JSON.stringify({ message: err.message }),
     };
   }
 };
