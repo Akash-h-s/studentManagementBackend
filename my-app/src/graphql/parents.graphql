@@ -1,0 +1,44 @@
+# Get Admin by Email
+query GetAdminByEmail($email: String!) {
+  admins(where: { email: { _eq: $email } }, limit: 1) {
+    id
+    school_name
+    email
+    password_hash
+    phone
+  }
+}
+
+# Get Teacher by Email
+query GetTeacherByEmail($email: String!) {
+  teachers(where: { email: { _eq: $email } }, limit: 1) {
+    id
+    name
+    email
+    password_hash
+    phone
+  }
+}
+
+# Get Parent by Email
+query GetParentByEmail($email: String!) {
+  parents(where: { email: { _eq: $email } }, limit: 1) {
+    id
+    name
+    email
+    password_hash
+    phone
+  }
+}
+
+# Get Student by Admission Number and Name
+query GetStudentByAdmissionNumber($admissionNumber: String!, $name: String!) {
+  students(where: { 
+    admission_no: { _eq: $admissionNumber },
+    name: { _eq: $name }
+  }, limit: 1) {
+    id
+    name
+    admission_no
+  }
+}

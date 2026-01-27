@@ -358,6 +358,788 @@ export type Admins_Variance_Fields = {
   id?: Maybe<Scalars['Float']['output']>;
 };
 
+/** columns and relationships of "chat_participants" */
+export type Chat_Participants = {
+  __typename?: 'chat_participants';
+  /** An object relationship */
+  chat: Chats;
+  chat_id: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  joined_at?: Maybe<Scalars['timestamp']['output']>;
+  user_id: Scalars['Int']['output'];
+  user_type: Scalars['String']['output'];
+};
+
+/** aggregated selection of "chat_participants" */
+export type Chat_Participants_Aggregate = {
+  __typename?: 'chat_participants_aggregate';
+  aggregate?: Maybe<Chat_Participants_Aggregate_Fields>;
+  nodes: Array<Chat_Participants>;
+};
+
+export type Chat_Participants_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Chat_Participants_Aggregate_Bool_Exp_Count>;
+};
+
+export type Chat_Participants_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Chat_Participants_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "chat_participants" */
+export type Chat_Participants_Aggregate_Fields = {
+  __typename?: 'chat_participants_aggregate_fields';
+  avg?: Maybe<Chat_Participants_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Chat_Participants_Max_Fields>;
+  min?: Maybe<Chat_Participants_Min_Fields>;
+  stddev?: Maybe<Chat_Participants_Stddev_Fields>;
+  stddev_pop?: Maybe<Chat_Participants_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Chat_Participants_Stddev_Samp_Fields>;
+  sum?: Maybe<Chat_Participants_Sum_Fields>;
+  var_pop?: Maybe<Chat_Participants_Var_Pop_Fields>;
+  var_samp?: Maybe<Chat_Participants_Var_Samp_Fields>;
+  variance?: Maybe<Chat_Participants_Variance_Fields>;
+};
+
+
+/** aggregate fields of "chat_participants" */
+export type Chat_Participants_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "chat_participants" */
+export type Chat_Participants_Aggregate_Order_By = {
+  avg?: InputMaybe<Chat_Participants_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Chat_Participants_Max_Order_By>;
+  min?: InputMaybe<Chat_Participants_Min_Order_By>;
+  stddev?: InputMaybe<Chat_Participants_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Chat_Participants_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Chat_Participants_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Chat_Participants_Sum_Order_By>;
+  var_pop?: InputMaybe<Chat_Participants_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Chat_Participants_Var_Samp_Order_By>;
+  variance?: InputMaybe<Chat_Participants_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "chat_participants" */
+export type Chat_Participants_Arr_Rel_Insert_Input = {
+  data: Array<Chat_Participants_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Chat_Participants_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Chat_Participants_Avg_Fields = {
+  __typename?: 'chat_participants_avg_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "chat_participants" */
+export type Chat_Participants_Avg_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "chat_participants". All fields are combined with a logical 'AND'. */
+export type Chat_Participants_Bool_Exp = {
+  _and?: InputMaybe<Array<Chat_Participants_Bool_Exp>>;
+  _not?: InputMaybe<Chat_Participants_Bool_Exp>;
+  _or?: InputMaybe<Array<Chat_Participants_Bool_Exp>>;
+  chat?: InputMaybe<Chats_Bool_Exp>;
+  chat_id?: InputMaybe<Int_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  joined_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  user_id?: InputMaybe<Int_Comparison_Exp>;
+  user_type?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "chat_participants" */
+export type Chat_Participants_Constraint =
+  /** unique or primary key constraint on columns "user_id", "chat_id" */
+  | 'chat_participants_chat_id_user_id_key'
+  /** unique or primary key constraint on columns "id" */
+  | 'chat_participants_pkey';
+
+/** input type for incrementing numeric columns in table "chat_participants" */
+export type Chat_Participants_Inc_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "chat_participants" */
+export type Chat_Participants_Insert_Input = {
+  chat?: InputMaybe<Chats_Obj_Rel_Insert_Input>;
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+  user_type?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type Chat_Participants_Max_Fields = {
+  __typename?: 'chat_participants_max_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  joined_at?: Maybe<Scalars['timestamp']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+  user_type?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by max() on columns of table "chat_participants" */
+export type Chat_Participants_Max_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+  user_type?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Chat_Participants_Min_Fields = {
+  __typename?: 'chat_participants_min_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  joined_at?: Maybe<Scalars['timestamp']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+  user_type?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "chat_participants" */
+export type Chat_Participants_Min_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+  user_type?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "chat_participants" */
+export type Chat_Participants_Mutation_Response = {
+  __typename?: 'chat_participants_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Chat_Participants>;
+};
+
+/** on_conflict condition type for table "chat_participants" */
+export type Chat_Participants_On_Conflict = {
+  constraint: Chat_Participants_Constraint;
+  update_columns?: Array<Chat_Participants_Update_Column>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "chat_participants". */
+export type Chat_Participants_Order_By = {
+  chat?: InputMaybe<Chats_Order_By>;
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  joined_at?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+  user_type?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: chat_participants */
+export type Chat_Participants_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "chat_participants" */
+export type Chat_Participants_Select_Column =
+  /** column name */
+  | 'chat_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'joined_at'
+  /** column name */
+  | 'user_id'
+  /** column name */
+  | 'user_type';
+
+/** input type for updating data in table "chat_participants" */
+export type Chat_Participants_Set_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+  user_type?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Chat_Participants_Stddev_Fields = {
+  __typename?: 'chat_participants_stddev_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "chat_participants" */
+export type Chat_Participants_Stddev_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Chat_Participants_Stddev_Pop_Fields = {
+  __typename?: 'chat_participants_stddev_pop_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "chat_participants" */
+export type Chat_Participants_Stddev_Pop_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Chat_Participants_Stddev_Samp_Fields = {
+  __typename?: 'chat_participants_stddev_samp_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "chat_participants" */
+export type Chat_Participants_Stddev_Samp_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "chat_participants" */
+export type Chat_Participants_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Chat_Participants_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Chat_Participants_Stream_Cursor_Value_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  joined_at?: InputMaybe<Scalars['timestamp']['input']>;
+  user_id?: InputMaybe<Scalars['Int']['input']>;
+  user_type?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Chat_Participants_Sum_Fields = {
+  __typename?: 'chat_participants_sum_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  user_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "chat_participants" */
+export type Chat_Participants_Sum_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "chat_participants" */
+export type Chat_Participants_Update_Column =
+  /** column name */
+  | 'chat_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'joined_at'
+  /** column name */
+  | 'user_id'
+  /** column name */
+  | 'user_type';
+
+export type Chat_Participants_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Chat_Participants_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Chat_Participants_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Chat_Participants_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Chat_Participants_Var_Pop_Fields = {
+  __typename?: 'chat_participants_var_pop_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "chat_participants" */
+export type Chat_Participants_Var_Pop_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Chat_Participants_Var_Samp_Fields = {
+  __typename?: 'chat_participants_var_samp_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "chat_participants" */
+export type Chat_Participants_Var_Samp_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Chat_Participants_Variance_Fields = {
+  __typename?: 'chat_participants_variance_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  user_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "chat_participants" */
+export type Chat_Participants_Variance_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  user_id?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "chats" */
+export type Chats = {
+  __typename?: 'chats';
+  /** An array relationship */
+  chat_participants: Array<Chat_Participants>;
+  /** An aggregate relationship */
+  chat_participants_aggregate: Chat_Participants_Aggregate;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['Int']['output'];
+  /** An array relationship */
+  messages: Array<Messages>;
+  /** An aggregate relationship */
+  messages_aggregate: Messages_Aggregate;
+  name?: Maybe<Scalars['String']['output']>;
+  /** An object relationship */
+  teacher?: Maybe<Teachers>;
+  type: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+
+/** columns and relationships of "chats" */
+export type ChatsChat_ParticipantsArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+/** columns and relationships of "chats" */
+export type ChatsChat_Participants_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+/** columns and relationships of "chats" */
+export type ChatsMessagesArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+/** columns and relationships of "chats" */
+export type ChatsMessages_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+/** aggregated selection of "chats" */
+export type Chats_Aggregate = {
+  __typename?: 'chats_aggregate';
+  aggregate?: Maybe<Chats_Aggregate_Fields>;
+  nodes: Array<Chats>;
+};
+
+export type Chats_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Chats_Aggregate_Bool_Exp_Count>;
+};
+
+export type Chats_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Chats_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Chats_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "chats" */
+export type Chats_Aggregate_Fields = {
+  __typename?: 'chats_aggregate_fields';
+  avg?: Maybe<Chats_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Chats_Max_Fields>;
+  min?: Maybe<Chats_Min_Fields>;
+  stddev?: Maybe<Chats_Stddev_Fields>;
+  stddev_pop?: Maybe<Chats_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Chats_Stddev_Samp_Fields>;
+  sum?: Maybe<Chats_Sum_Fields>;
+  var_pop?: Maybe<Chats_Var_Pop_Fields>;
+  var_samp?: Maybe<Chats_Var_Samp_Fields>;
+  variance?: Maybe<Chats_Variance_Fields>;
+};
+
+
+/** aggregate fields of "chats" */
+export type Chats_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Chats_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "chats" */
+export type Chats_Aggregate_Order_By = {
+  avg?: InputMaybe<Chats_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Chats_Max_Order_By>;
+  min?: InputMaybe<Chats_Min_Order_By>;
+  stddev?: InputMaybe<Chats_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Chats_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Chats_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Chats_Sum_Order_By>;
+  var_pop?: InputMaybe<Chats_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Chats_Var_Samp_Order_By>;
+  variance?: InputMaybe<Chats_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "chats" */
+export type Chats_Arr_Rel_Insert_Input = {
+  data: Array<Chats_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Chats_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Chats_Avg_Fields = {
+  __typename?: 'chats_avg_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "chats" */
+export type Chats_Avg_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "chats". All fields are combined with a logical 'AND'. */
+export type Chats_Bool_Exp = {
+  _and?: InputMaybe<Array<Chats_Bool_Exp>>;
+  _not?: InputMaybe<Chats_Bool_Exp>;
+  _or?: InputMaybe<Array<Chats_Bool_Exp>>;
+  chat_participants?: InputMaybe<Chat_Participants_Bool_Exp>;
+  chat_participants_aggregate?: InputMaybe<Chat_Participants_Aggregate_Bool_Exp>;
+  created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by?: InputMaybe<Int_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  messages?: InputMaybe<Messages_Bool_Exp>;
+  messages_aggregate?: InputMaybe<Messages_Aggregate_Bool_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  teacher?: InputMaybe<Teachers_Bool_Exp>;
+  type?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "chats" */
+export type Chats_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'chats_pkey';
+
+/** input type for incrementing numeric columns in table "chats" */
+export type Chats_Inc_Input = {
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "chats" */
+export type Chats_Insert_Input = {
+  chat_participants?: InputMaybe<Chat_Participants_Arr_Rel_Insert_Input>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  messages?: InputMaybe<Messages_Arr_Rel_Insert_Input>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  teacher?: InputMaybe<Teachers_Obj_Rel_Insert_Input>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate max on columns */
+export type Chats_Max_Fields = {
+  __typename?: 'chats_max_fields';
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by max() on columns of table "chats" */
+export type Chats_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Chats_Min_Fields = {
+  __typename?: 'chats_min_fields';
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by min() on columns of table "chats" */
+export type Chats_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "chats" */
+export type Chats_Mutation_Response = {
+  __typename?: 'chats_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Chats>;
+};
+
+/** input type for inserting object relation for remote table "chats" */
+export type Chats_Obj_Rel_Insert_Input = {
+  data: Chats_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Chats_On_Conflict>;
+};
+
+/** on_conflict condition type for table "chats" */
+export type Chats_On_Conflict = {
+  constraint: Chats_Constraint;
+  update_columns?: Array<Chats_Update_Column>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "chats". */
+export type Chats_Order_By = {
+  chat_participants_aggregate?: InputMaybe<Chat_Participants_Aggregate_Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  messages_aggregate?: InputMaybe<Messages_Aggregate_Order_By>;
+  name?: InputMaybe<Order_By>;
+  teacher?: InputMaybe<Teachers_Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: chats */
+export type Chats_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "chats" */
+export type Chats_Select_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'created_by'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name'
+  /** column name */
+  | 'type'
+  /** column name */
+  | 'updated_at';
+
+/** input type for updating data in table "chats" */
+export type Chats_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Chats_Stddev_Fields = {
+  __typename?: 'chats_stddev_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "chats" */
+export type Chats_Stddev_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Chats_Stddev_Pop_Fields = {
+  __typename?: 'chats_stddev_pop_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "chats" */
+export type Chats_Stddev_Pop_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Chats_Stddev_Samp_Fields = {
+  __typename?: 'chats_stddev_samp_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "chats" */
+export type Chats_Stddev_Samp_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "chats" */
+export type Chats_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Chats_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Chats_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Chats_Sum_Fields = {
+  __typename?: 'chats_sum_fields';
+  created_by?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "chats" */
+export type Chats_Sum_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "chats" */
+export type Chats_Update_Column =
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'created_by'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name'
+  /** column name */
+  | 'type'
+  /** column name */
+  | 'updated_at';
+
+export type Chats_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Chats_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Chats_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Chats_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Chats_Var_Pop_Fields = {
+  __typename?: 'chats_var_pop_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "chats" */
+export type Chats_Var_Pop_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Chats_Var_Samp_Fields = {
+  __typename?: 'chats_var_samp_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "chats" */
+export type Chats_Var_Samp_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Chats_Variance_Fields = {
+  __typename?: 'chats_variance_fields';
+  created_by?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "chats" */
+export type Chats_Variance_Order_By = {
+  created_by?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "class_sections" */
 export type Class_Sections = {
   __typename?: 'class_sections';
@@ -648,6 +1430,8 @@ export type Emails = {
   exam?: Maybe<Exams>;
   exam_id?: Maybe<Scalars['Int']['output']>;
   id: Scalars['Int']['output'];
+  /** An object relationship */
+  parent?: Maybe<Parents>;
   parent_id?: Maybe<Scalars['Int']['output']>;
   sent_at?: Maybe<Scalars['timestamp']['output']>;
   status?: Maybe<Scalars['String']['output']>;
@@ -744,6 +1528,7 @@ export type Emails_Bool_Exp = {
   exam?: InputMaybe<Exams_Bool_Exp>;
   exam_id?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  parent?: InputMaybe<Parents_Bool_Exp>;
   parent_id?: InputMaybe<Int_Comparison_Exp>;
   sent_at?: InputMaybe<Timestamp_Comparison_Exp>;
   status?: InputMaybe<String_Comparison_Exp>;
@@ -769,6 +1554,7 @@ export type Emails_Insert_Input = {
   exam?: InputMaybe<Exams_Obj_Rel_Insert_Input>;
   exam_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  parent?: InputMaybe<Parents_Obj_Rel_Insert_Input>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   sent_at?: InputMaybe<Scalars['timestamp']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
@@ -839,6 +1625,7 @@ export type Emails_Order_By = {
   exam?: InputMaybe<Exams_Order_By>;
   exam_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent?: InputMaybe<Parents_Order_By>;
   parent_id?: InputMaybe<Order_By>;
   sent_at?: InputMaybe<Order_By>;
   status?: InputMaybe<Order_By>;
@@ -1907,6 +2694,430 @@ export type Marks_Variance_Order_By = {
   teacher_id?: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "messages" */
+export type Messages = {
+  __typename?: 'messages';
+  /** An object relationship */
+  chat: Chats;
+  chat_id: Scalars['Int']['output'];
+  content: Scalars['String']['output'];
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  id: Scalars['Int']['output'];
+  is_read?: Maybe<Scalars['Boolean']['output']>;
+  sender_id: Scalars['Int']['output'];
+  sender_type: Scalars['String']['output'];
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** aggregated selection of "messages" */
+export type Messages_Aggregate = {
+  __typename?: 'messages_aggregate';
+  aggregate?: Maybe<Messages_Aggregate_Fields>;
+  nodes: Array<Messages>;
+};
+
+export type Messages_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Messages_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Messages_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Messages_Aggregate_Bool_Exp_Count>;
+};
+
+export type Messages_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Messages_Select_Column_Messages_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Messages_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Messages_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Messages_Select_Column_Messages_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Messages_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Messages_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Messages_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Messages_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "messages" */
+export type Messages_Aggregate_Fields = {
+  __typename?: 'messages_aggregate_fields';
+  avg?: Maybe<Messages_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Messages_Max_Fields>;
+  min?: Maybe<Messages_Min_Fields>;
+  stddev?: Maybe<Messages_Stddev_Fields>;
+  stddev_pop?: Maybe<Messages_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Messages_Stddev_Samp_Fields>;
+  sum?: Maybe<Messages_Sum_Fields>;
+  var_pop?: Maybe<Messages_Var_Pop_Fields>;
+  var_samp?: Maybe<Messages_Var_Samp_Fields>;
+  variance?: Maybe<Messages_Variance_Fields>;
+};
+
+
+/** aggregate fields of "messages" */
+export type Messages_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Messages_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "messages" */
+export type Messages_Aggregate_Order_By = {
+  avg?: InputMaybe<Messages_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Messages_Max_Order_By>;
+  min?: InputMaybe<Messages_Min_Order_By>;
+  stddev?: InputMaybe<Messages_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Messages_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Messages_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Messages_Sum_Order_By>;
+  var_pop?: InputMaybe<Messages_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Messages_Var_Samp_Order_By>;
+  variance?: InputMaybe<Messages_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "messages" */
+export type Messages_Arr_Rel_Insert_Input = {
+  data: Array<Messages_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Messages_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Messages_Avg_Fields = {
+  __typename?: 'messages_avg_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "messages" */
+export type Messages_Avg_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "messages". All fields are combined with a logical 'AND'. */
+export type Messages_Bool_Exp = {
+  _and?: InputMaybe<Array<Messages_Bool_Exp>>;
+  _not?: InputMaybe<Messages_Bool_Exp>;
+  _or?: InputMaybe<Array<Messages_Bool_Exp>>;
+  chat?: InputMaybe<Chats_Bool_Exp>;
+  chat_id?: InputMaybe<Int_Comparison_Exp>;
+  content?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  is_read?: InputMaybe<Boolean_Comparison_Exp>;
+  sender_id?: InputMaybe<Int_Comparison_Exp>;
+  sender_type?: InputMaybe<String_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "messages" */
+export type Messages_Constraint =
+  /** unique or primary key constraint on columns "id" */
+  | 'messages_pkey';
+
+/** input type for incrementing numeric columns in table "messages" */
+export type Messages_Inc_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  sender_id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "messages" */
+export type Messages_Insert_Input = {
+  chat?: InputMaybe<Chats_Obj_Rel_Insert_Input>;
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate max on columns */
+export type Messages_Max_Fields = {
+  __typename?: 'messages_max_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  sender_id?: Maybe<Scalars['Int']['output']>;
+  sender_type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by max() on columns of table "messages" */
+export type Messages_Max_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+  sender_type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Messages_Min_Fields = {
+  __typename?: 'messages_min_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  content?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  sender_id?: Maybe<Scalars['Int']['output']>;
+  sender_type?: Maybe<Scalars['String']['output']>;
+  updated_at?: Maybe<Scalars['timestamp']['output']>;
+};
+
+/** order by min() on columns of table "messages" */
+export type Messages_Min_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+  sender_type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "messages" */
+export type Messages_Mutation_Response = {
+  __typename?: 'messages_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Messages>;
+};
+
+/** on_conflict condition type for table "messages" */
+export type Messages_On_Conflict = {
+  constraint: Messages_Constraint;
+  update_columns?: Array<Messages_Update_Column>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "messages". */
+export type Messages_Order_By = {
+  chat?: InputMaybe<Chats_Order_By>;
+  chat_id?: InputMaybe<Order_By>;
+  content?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  is_read?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+  sender_type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: messages */
+export type Messages_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "messages" */
+export type Messages_Select_Column =
+  /** column name */
+  | 'chat_id'
+  /** column name */
+  | 'content'
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'is_read'
+  /** column name */
+  | 'sender_id'
+  /** column name */
+  | 'sender_type'
+  /** column name */
+  | 'updated_at';
+
+/** select "messages_aggregate_bool_exp_bool_and_arguments_columns" columns of table "messages" */
+export type Messages_Select_Column_Messages_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
+  /** column name */
+  | 'is_read';
+
+/** select "messages_aggregate_bool_exp_bool_or_arguments_columns" columns of table "messages" */
+export type Messages_Select_Column_Messages_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
+  /** column name */
+  | 'is_read';
+
+/** input type for updating data in table "messages" */
+export type Messages_Set_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Messages_Stddev_Fields = {
+  __typename?: 'messages_stddev_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "messages" */
+export type Messages_Stddev_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Messages_Stddev_Pop_Fields = {
+  __typename?: 'messages_stddev_pop_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "messages" */
+export type Messages_Stddev_Pop_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Messages_Stddev_Samp_Fields = {
+  __typename?: 'messages_stddev_samp_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "messages" */
+export type Messages_Stddev_Samp_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "messages" */
+export type Messages_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Messages_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Messages_Stream_Cursor_Value_Input = {
+  chat_id?: InputMaybe<Scalars['Int']['input']>;
+  content?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  is_read?: InputMaybe<Scalars['Boolean']['input']>;
+  sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_type?: InputMaybe<Scalars['String']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamp']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Messages_Sum_Fields = {
+  __typename?: 'messages_sum_fields';
+  chat_id?: Maybe<Scalars['Int']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  sender_id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "messages" */
+export type Messages_Sum_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "messages" */
+export type Messages_Update_Column =
+  /** column name */
+  | 'chat_id'
+  /** column name */
+  | 'content'
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'is_read'
+  /** column name */
+  | 'sender_id'
+  /** column name */
+  | 'sender_type'
+  /** column name */
+  | 'updated_at';
+
+export type Messages_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Messages_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Messages_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Messages_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Messages_Var_Pop_Fields = {
+  __typename?: 'messages_var_pop_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "messages" */
+export type Messages_Var_Pop_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Messages_Var_Samp_Fields = {
+  __typename?: 'messages_var_samp_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "messages" */
+export type Messages_Var_Samp_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Messages_Variance_Fields = {
+  __typename?: 'messages_variance_fields';
+  chat_id?: Maybe<Scalars['Float']['output']>;
+  id?: Maybe<Scalars['Float']['output']>;
+  sender_id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "messages" */
+export type Messages_Variance_Order_By = {
+  chat_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  sender_id?: InputMaybe<Order_By>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -1914,6 +3125,14 @@ export type Mutation_Root = {
   delete_admins?: Maybe<Admins_Mutation_Response>;
   /** delete single row from the table: "admins" */
   delete_admins_by_pk?: Maybe<Admins>;
+  /** delete data from the table: "chat_participants" */
+  delete_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
+  /** delete single row from the table: "chat_participants" */
+  delete_chat_participants_by_pk?: Maybe<Chat_Participants>;
+  /** delete data from the table: "chats" */
+  delete_chats?: Maybe<Chats_Mutation_Response>;
+  /** delete single row from the table: "chats" */
+  delete_chats_by_pk?: Maybe<Chats>;
   /** delete data from the table: "class_sections" */
   delete_class_sections?: Maybe<Class_Sections_Mutation_Response>;
   /** delete single row from the table: "class_sections" */
@@ -1930,6 +3149,14 @@ export type Mutation_Root = {
   delete_marks?: Maybe<Marks_Mutation_Response>;
   /** delete single row from the table: "marks" */
   delete_marks_by_pk?: Maybe<Marks>;
+  /** delete data from the table: "messages" */
+  delete_messages?: Maybe<Messages_Mutation_Response>;
+  /** delete single row from the table: "messages" */
+  delete_messages_by_pk?: Maybe<Messages>;
+  /** delete data from the table: "parents" */
+  delete_parents?: Maybe<Parents_Mutation_Response>;
+  /** delete single row from the table: "parents" */
+  delete_parents_by_pk?: Maybe<Parents>;
   /** delete data from the table: "progress_cards" */
   delete_progress_cards?: Maybe<Progress_Cards_Mutation_Response>;
   /** delete single row from the table: "progress_cards" */
@@ -1954,6 +3181,14 @@ export type Mutation_Root = {
   insert_admins?: Maybe<Admins_Mutation_Response>;
   /** insert a single row into the table: "admins" */
   insert_admins_one?: Maybe<Admins>;
+  /** insert data into the table: "chat_participants" */
+  insert_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
+  /** insert a single row into the table: "chat_participants" */
+  insert_chat_participants_one?: Maybe<Chat_Participants>;
+  /** insert data into the table: "chats" */
+  insert_chats?: Maybe<Chats_Mutation_Response>;
+  /** insert a single row into the table: "chats" */
+  insert_chats_one?: Maybe<Chats>;
   /** insert data into the table: "class_sections" */
   insert_class_sections?: Maybe<Class_Sections_Mutation_Response>;
   /** insert a single row into the table: "class_sections" */
@@ -1970,6 +3205,14 @@ export type Mutation_Root = {
   insert_marks?: Maybe<Marks_Mutation_Response>;
   /** insert a single row into the table: "marks" */
   insert_marks_one?: Maybe<Marks>;
+  /** insert data into the table: "messages" */
+  insert_messages?: Maybe<Messages_Mutation_Response>;
+  /** insert a single row into the table: "messages" */
+  insert_messages_one?: Maybe<Messages>;
+  /** insert data into the table: "parents" */
+  insert_parents?: Maybe<Parents_Mutation_Response>;
+  /** insert a single row into the table: "parents" */
+  insert_parents_one?: Maybe<Parents>;
   /** insert data into the table: "progress_cards" */
   insert_progress_cards?: Maybe<Progress_Cards_Mutation_Response>;
   /** insert a single row into the table: "progress_cards" */
@@ -1996,6 +3239,18 @@ export type Mutation_Root = {
   update_admins_by_pk?: Maybe<Admins>;
   /** update multiples rows of table: "admins" */
   update_admins_many?: Maybe<Array<Maybe<Admins_Mutation_Response>>>;
+  /** update data of the table: "chat_participants" */
+  update_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
+  /** update single row of the table: "chat_participants" */
+  update_chat_participants_by_pk?: Maybe<Chat_Participants>;
+  /** update multiples rows of table: "chat_participants" */
+  update_chat_participants_many?: Maybe<Array<Maybe<Chat_Participants_Mutation_Response>>>;
+  /** update data of the table: "chats" */
+  update_chats?: Maybe<Chats_Mutation_Response>;
+  /** update single row of the table: "chats" */
+  update_chats_by_pk?: Maybe<Chats>;
+  /** update multiples rows of table: "chats" */
+  update_chats_many?: Maybe<Array<Maybe<Chats_Mutation_Response>>>;
   /** update data of the table: "class_sections" */
   update_class_sections?: Maybe<Class_Sections_Mutation_Response>;
   /** update single row of the table: "class_sections" */
@@ -2020,6 +3275,18 @@ export type Mutation_Root = {
   update_marks_by_pk?: Maybe<Marks>;
   /** update multiples rows of table: "marks" */
   update_marks_many?: Maybe<Array<Maybe<Marks_Mutation_Response>>>;
+  /** update data of the table: "messages" */
+  update_messages?: Maybe<Messages_Mutation_Response>;
+  /** update single row of the table: "messages" */
+  update_messages_by_pk?: Maybe<Messages>;
+  /** update multiples rows of table: "messages" */
+  update_messages_many?: Maybe<Array<Maybe<Messages_Mutation_Response>>>;
+  /** update data of the table: "parents" */
+  update_parents?: Maybe<Parents_Mutation_Response>;
+  /** update single row of the table: "parents" */
+  update_parents_by_pk?: Maybe<Parents>;
+  /** update multiples rows of table: "parents" */
+  update_parents_many?: Maybe<Array<Maybe<Parents_Mutation_Response>>>;
   /** update data of the table: "progress_cards" */
   update_progress_cards?: Maybe<Progress_Cards_Mutation_Response>;
   /** update single row of the table: "progress_cards" */
@@ -2061,6 +3328,30 @@ export type Mutation_RootDelete_AdminsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Admins_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Chat_ParticipantsArgs = {
+  where: Chat_Participants_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Chat_Participants_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ChatsArgs = {
+  where: Chats_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Chats_By_PkArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -2109,6 +3400,30 @@ export type Mutation_RootDelete_MarksArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Marks_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_MessagesArgs = {
+  where: Messages_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Messages_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_ParentsArgs = {
+  where: Parents_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Parents_By_PkArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -2188,6 +3503,34 @@ export type Mutation_RootInsert_Admins_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Chat_ParticipantsArgs = {
+  objects: Array<Chat_Participants_Insert_Input>;
+  on_conflict?: InputMaybe<Chat_Participants_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Chat_Participants_OneArgs = {
+  object: Chat_Participants_Insert_Input;
+  on_conflict?: InputMaybe<Chat_Participants_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ChatsArgs = {
+  objects: Array<Chats_Insert_Input>;
+  on_conflict?: InputMaybe<Chats_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Chats_OneArgs = {
+  object: Chats_Insert_Input;
+  on_conflict?: InputMaybe<Chats_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Class_SectionsArgs = {
   objects: Array<Class_Sections_Insert_Input>;
   on_conflict?: InputMaybe<Class_Sections_On_Conflict>;
@@ -2240,6 +3583,34 @@ export type Mutation_RootInsert_MarksArgs = {
 export type Mutation_RootInsert_Marks_OneArgs = {
   object: Marks_Insert_Input;
   on_conflict?: InputMaybe<Marks_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_MessagesArgs = {
+  objects: Array<Messages_Insert_Input>;
+  on_conflict?: InputMaybe<Messages_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Messages_OneArgs = {
+  object: Messages_Insert_Input;
+  on_conflict?: InputMaybe<Messages_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_ParentsArgs = {
+  objects: Array<Parents_Insert_Input>;
+  on_conflict?: InputMaybe<Parents_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Parents_OneArgs = {
+  object: Parents_Insert_Input;
+  on_conflict?: InputMaybe<Parents_On_Conflict>;
 };
 
 
@@ -2336,6 +3707,50 @@ export type Mutation_RootUpdate_Admins_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Chat_ParticipantsArgs = {
+  _inc?: InputMaybe<Chat_Participants_Inc_Input>;
+  _set?: InputMaybe<Chat_Participants_Set_Input>;
+  where: Chat_Participants_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Chat_Participants_By_PkArgs = {
+  _inc?: InputMaybe<Chat_Participants_Inc_Input>;
+  _set?: InputMaybe<Chat_Participants_Set_Input>;
+  pk_columns: Chat_Participants_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Chat_Participants_ManyArgs = {
+  updates: Array<Chat_Participants_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ChatsArgs = {
+  _inc?: InputMaybe<Chats_Inc_Input>;
+  _set?: InputMaybe<Chats_Set_Input>;
+  where: Chats_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Chats_By_PkArgs = {
+  _inc?: InputMaybe<Chats_Inc_Input>;
+  _set?: InputMaybe<Chats_Set_Input>;
+  pk_columns: Chats_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Chats_ManyArgs = {
+  updates: Array<Chats_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Class_SectionsArgs = {
   _inc?: InputMaybe<Class_Sections_Inc_Input>;
   _set?: InputMaybe<Class_Sections_Set_Input>;
@@ -2420,6 +3835,50 @@ export type Mutation_RootUpdate_Marks_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Marks_ManyArgs = {
   updates: Array<Marks_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MessagesArgs = {
+  _inc?: InputMaybe<Messages_Inc_Input>;
+  _set?: InputMaybe<Messages_Set_Input>;
+  where: Messages_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Messages_By_PkArgs = {
+  _inc?: InputMaybe<Messages_Inc_Input>;
+  _set?: InputMaybe<Messages_Set_Input>;
+  pk_columns: Messages_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Messages_ManyArgs = {
+  updates: Array<Messages_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_ParentsArgs = {
+  _inc?: InputMaybe<Parents_Inc_Input>;
+  _set?: InputMaybe<Parents_Set_Input>;
+  where: Parents_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Parents_By_PkArgs = {
+  _inc?: InputMaybe<Parents_Inc_Input>;
+  _set?: InputMaybe<Parents_Set_Input>;
+  pk_columns: Parents_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Parents_ManyArgs = {
+  updates: Array<Parents_Updates>;
 };
 
 
@@ -2559,6 +4018,325 @@ export type Order_By =
   | 'desc_nulls_first'
   /** in descending order, nulls last */
   | 'desc_nulls_last';
+
+/** columns and relationships of "parents" */
+export type Parents = {
+  __typename?: 'parents';
+  address?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  email: Scalars['String']['output'];
+  /** An array relationship */
+  emails: Array<Emails>;
+  /** An aggregate relationship */
+  emails_aggregate: Emails_Aggregate;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  password_hash?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+  /** An array relationship */
+  students: Array<Students>;
+  /** An aggregate relationship */
+  students_aggregate: Students_Aggregate;
+};
+
+
+/** columns and relationships of "parents" */
+export type ParentsEmailsArgs = {
+  distinct_on?: InputMaybe<Array<Emails_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Emails_Order_By>>;
+  where?: InputMaybe<Emails_Bool_Exp>;
+};
+
+
+/** columns and relationships of "parents" */
+export type ParentsEmails_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Emails_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Emails_Order_By>>;
+  where?: InputMaybe<Emails_Bool_Exp>;
+};
+
+
+/** columns and relationships of "parents" */
+export type ParentsStudentsArgs = {
+  distinct_on?: InputMaybe<Array<Students_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Students_Order_By>>;
+  where?: InputMaybe<Students_Bool_Exp>;
+};
+
+
+/** columns and relationships of "parents" */
+export type ParentsStudents_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Students_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Students_Order_By>>;
+  where?: InputMaybe<Students_Bool_Exp>;
+};
+
+/** aggregated selection of "parents" */
+export type Parents_Aggregate = {
+  __typename?: 'parents_aggregate';
+  aggregate?: Maybe<Parents_Aggregate_Fields>;
+  nodes: Array<Parents>;
+};
+
+/** aggregate fields of "parents" */
+export type Parents_Aggregate_Fields = {
+  __typename?: 'parents_aggregate_fields';
+  avg?: Maybe<Parents_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<Parents_Max_Fields>;
+  min?: Maybe<Parents_Min_Fields>;
+  stddev?: Maybe<Parents_Stddev_Fields>;
+  stddev_pop?: Maybe<Parents_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Parents_Stddev_Samp_Fields>;
+  sum?: Maybe<Parents_Sum_Fields>;
+  var_pop?: Maybe<Parents_Var_Pop_Fields>;
+  var_samp?: Maybe<Parents_Var_Samp_Fields>;
+  variance?: Maybe<Parents_Variance_Fields>;
+};
+
+
+/** aggregate fields of "parents" */
+export type Parents_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Parents_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** aggregate avg on columns */
+export type Parents_Avg_Fields = {
+  __typename?: 'parents_avg_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Boolean expression to filter rows from the table "parents". All fields are combined with a logical 'AND'. */
+export type Parents_Bool_Exp = {
+  _and?: InputMaybe<Array<Parents_Bool_Exp>>;
+  _not?: InputMaybe<Parents_Bool_Exp>;
+  _or?: InputMaybe<Array<Parents_Bool_Exp>>;
+  address?: InputMaybe<String_Comparison_Exp>;
+  created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  email?: InputMaybe<String_Comparison_Exp>;
+  emails?: InputMaybe<Emails_Bool_Exp>;
+  emails_aggregate?: InputMaybe<Emails_Aggregate_Bool_Exp>;
+  id?: InputMaybe<Int_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  password_hash?: InputMaybe<String_Comparison_Exp>;
+  phone?: InputMaybe<String_Comparison_Exp>;
+  students?: InputMaybe<Students_Bool_Exp>;
+  students_aggregate?: InputMaybe<Students_Aggregate_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "parents" */
+export type Parents_Constraint =
+  /** unique or primary key constraint on columns "email" */
+  | 'parents_email_key'
+  /** unique or primary key constraint on columns "id" */
+  | 'parents_pkey';
+
+/** input type for incrementing numeric columns in table "parents" */
+export type Parents_Inc_Input = {
+  id?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "parents" */
+export type Parents_Insert_Input = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+  students?: InputMaybe<Students_Arr_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Parents_Max_Fields = {
+  __typename?: 'parents_max_fields';
+  address?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password_hash?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type Parents_Min_Fields = {
+  __typename?: 'parents_min_fields';
+  address?: Maybe<Scalars['String']['output']>;
+  created_at?: Maybe<Scalars['timestamp']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['Int']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  password_hash?: Maybe<Scalars['String']['output']>;
+  phone?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "parents" */
+export type Parents_Mutation_Response = {
+  __typename?: 'parents_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Parents>;
+};
+
+/** input type for inserting object relation for remote table "parents" */
+export type Parents_Obj_Rel_Insert_Input = {
+  data: Parents_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Parents_On_Conflict>;
+};
+
+/** on_conflict condition type for table "parents" */
+export type Parents_On_Conflict = {
+  constraint: Parents_Constraint;
+  update_columns?: Array<Parents_Update_Column>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "parents". */
+export type Parents_Order_By = {
+  address?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  emails_aggregate?: InputMaybe<Emails_Aggregate_Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+  students_aggregate?: InputMaybe<Students_Aggregate_Order_By>;
+};
+
+/** primary key columns input for table: parents */
+export type Parents_Pk_Columns_Input = {
+  id: Scalars['Int']['input'];
+};
+
+/** select columns of table "parents" */
+export type Parents_Select_Column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'email'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name'
+  /** column name */
+  | 'password_hash'
+  /** column name */
+  | 'phone';
+
+/** input type for updating data in table "parents" */
+export type Parents_Set_Input = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type Parents_Stddev_Fields = {
+  __typename?: 'parents_stddev_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Parents_Stddev_Pop_Fields = {
+  __typename?: 'parents_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Parents_Stddev_Samp_Fields = {
+  __typename?: 'parents_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Streaming cursor of the table "parents" */
+export type Parents_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Parents_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Parents_Stream_Cursor_Value_Input = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  id?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
+  phone?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate sum on columns */
+export type Parents_Sum_Fields = {
+  __typename?: 'parents_sum_fields';
+  id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** update columns of table "parents" */
+export type Parents_Update_Column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'created_at'
+  /** column name */
+  | 'email'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name'
+  /** column name */
+  | 'password_hash'
+  /** column name */
+  | 'phone';
+
+export type Parents_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<Parents_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Parents_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Parents_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Parents_Var_Pop_Fields = {
+  __typename?: 'parents_var_pop_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate var_samp on columns */
+export type Parents_Var_Samp_Fields = {
+  __typename?: 'parents_var_samp_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** aggregate variance on columns */
+export type Parents_Variance_Fields = {
+  __typename?: 'parents_variance_fields';
+  id?: Maybe<Scalars['Float']['output']>;
+};
 
 /** columns and relationships of "progress_cards" */
 export type Progress_Cards = {
@@ -3009,6 +4787,18 @@ export type Query_Root = {
   admins_aggregate: Admins_Aggregate;
   /** fetch data from the table: "admins" using primary key columns */
   admins_by_pk?: Maybe<Admins>;
+  /** An array relationship */
+  chat_participants: Array<Chat_Participants>;
+  /** An aggregate relationship */
+  chat_participants_aggregate: Chat_Participants_Aggregate;
+  /** fetch data from the table: "chat_participants" using primary key columns */
+  chat_participants_by_pk?: Maybe<Chat_Participants>;
+  /** An array relationship */
+  chats: Array<Chats>;
+  /** An aggregate relationship */
+  chats_aggregate: Chats_Aggregate;
+  /** fetch data from the table: "chats" using primary key columns */
+  chats_by_pk?: Maybe<Chats>;
   /** fetch data from the table: "class_sections" */
   class_sections: Array<Class_Sections>;
   /** fetch aggregated fields from the table: "class_sections" */
@@ -3033,6 +4823,18 @@ export type Query_Root = {
   marks_aggregate: Marks_Aggregate;
   /** fetch data from the table: "marks" using primary key columns */
   marks_by_pk?: Maybe<Marks>;
+  /** An array relationship */
+  messages: Array<Messages>;
+  /** An aggregate relationship */
+  messages_aggregate: Messages_Aggregate;
+  /** fetch data from the table: "messages" using primary key columns */
+  messages_by_pk?: Maybe<Messages>;
+  /** fetch data from the table: "parents" */
+  parents: Array<Parents>;
+  /** fetch aggregated fields from the table: "parents" */
+  parents_aggregate: Parents_Aggregate;
+  /** fetch data from the table: "parents" using primary key columns */
+  parents_by_pk?: Maybe<Parents>;
   /** An array relationship */
   progress_cards: Array<Progress_Cards>;
   /** An aggregate relationship */
@@ -3085,6 +4887,52 @@ export type Query_RootAdmins_AggregateArgs = {
 
 
 export type Query_RootAdmins_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Query_RootChat_ParticipantsArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+export type Query_RootChat_Participants_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+export type Query_RootChat_Participants_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Query_RootChatsArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+
+export type Query_RootChats_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+
+export type Query_RootChats_By_PkArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -3177,6 +5025,52 @@ export type Query_RootMarks_AggregateArgs = {
 
 
 export type Query_RootMarks_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Query_RootMessagesArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+export type Query_RootMessages_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+export type Query_RootMessages_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Query_RootParentsArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+export type Query_RootParents_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+export type Query_RootParents_By_PkArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -3316,8 +5210,9 @@ export type Students = {
   /** An aggregate relationship */
   marks_aggregate: Marks_Aggregate;
   name: Scalars['String']['output'];
-  parent_email?: Maybe<Scalars['String']['output']>;
-  parent_name?: Maybe<Scalars['String']['output']>;
+  /** An object relationship */
+  parent?: Maybe<Parents>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
   /** An array relationship */
   progress_cards: Array<Progress_Cards>;
   /** An aggregate relationship */
@@ -3468,12 +5363,14 @@ export type Students_Avg_Fields = {
   __typename?: 'students_avg_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "students" */
 export type Students_Avg_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "students". All fields are combined with a logical 'AND'. */
@@ -3494,8 +5391,8 @@ export type Students_Bool_Exp = {
   marks?: InputMaybe<Marks_Bool_Exp>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Bool_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
-  parent_email?: InputMaybe<String_Comparison_Exp>;
-  parent_name?: InputMaybe<String_Comparison_Exp>;
+  parent?: InputMaybe<Parents_Bool_Exp>;
+  parent_id?: InputMaybe<Int_Comparison_Exp>;
   progress_cards?: InputMaybe<Progress_Cards_Bool_Exp>;
   progress_cards_aggregate?: InputMaybe<Progress_Cards_Aggregate_Bool_Exp>;
 };
@@ -3504,8 +5401,6 @@ export type Students_Bool_Exp = {
 export type Students_Constraint =
   /** unique or primary key constraint on columns "admission_no" */
   | 'students_admission_no_key'
-  /** unique or primary key constraint on columns "parent_email" */
-  | 'students_parent_email_key'
   /** unique or primary key constraint on columns "id" */
   | 'students_pkey';
 
@@ -3513,6 +5408,7 @@ export type Students_Constraint =
 export type Students_Inc_Input = {
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  parent_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "students" */
@@ -3528,8 +5424,8 @@ export type Students_Insert_Input = {
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   marks?: InputMaybe<Marks_Arr_Rel_Insert_Input>;
   name?: InputMaybe<Scalars['String']['input']>;
-  parent_email?: InputMaybe<Scalars['String']['input']>;
-  parent_name?: InputMaybe<Scalars['String']['input']>;
+  parent?: InputMaybe<Parents_Obj_Rel_Insert_Input>;
+  parent_id?: InputMaybe<Scalars['Int']['input']>;
   progress_cards?: InputMaybe<Progress_Cards_Arr_Rel_Insert_Input>;
 };
 
@@ -3543,8 +5439,7 @@ export type Students_Max_Fields = {
   gender?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  parent_email?: Maybe<Scalars['String']['output']>;
-  parent_name?: Maybe<Scalars['String']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by max() on columns of table "students" */
@@ -3556,8 +5451,7 @@ export type Students_Max_Order_By = {
   gender?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
-  parent_email?: InputMaybe<Order_By>;
-  parent_name?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -3570,8 +5464,7 @@ export type Students_Min_Fields = {
   gender?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  parent_email?: Maybe<Scalars['String']['output']>;
-  parent_name?: Maybe<Scalars['String']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by min() on columns of table "students" */
@@ -3583,8 +5476,7 @@ export type Students_Min_Order_By = {
   gender?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
-  parent_email?: InputMaybe<Order_By>;
-  parent_name?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "students" */
@@ -3623,8 +5515,8 @@ export type Students_Order_By = {
   is_active?: InputMaybe<Order_By>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Order_By>;
   name?: InputMaybe<Order_By>;
-  parent_email?: InputMaybe<Order_By>;
-  parent_name?: InputMaybe<Order_By>;
+  parent?: InputMaybe<Parents_Order_By>;
+  parent_id?: InputMaybe<Order_By>;
   progress_cards_aggregate?: InputMaybe<Progress_Cards_Aggregate_Order_By>;
 };
 
@@ -3652,9 +5544,7 @@ export type Students_Select_Column =
   /** column name */
   | 'name'
   /** column name */
-  | 'parent_email'
-  /** column name */
-  | 'parent_name';
+  | 'parent_id';
 
 /** select "students_aggregate_bool_exp_bool_and_arguments_columns" columns of table "students" */
 export type Students_Select_Column_Students_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
@@ -3676,8 +5566,7 @@ export type Students_Set_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  parent_email?: InputMaybe<Scalars['String']['input']>;
-  parent_name?: InputMaybe<Scalars['String']['input']>;
+  parent_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate stddev on columns */
@@ -3685,12 +5574,14 @@ export type Students_Stddev_Fields = {
   __typename?: 'students_stddev_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "students" */
 export type Students_Stddev_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -3698,12 +5589,14 @@ export type Students_Stddev_Pop_Fields = {
   __typename?: 'students_stddev_pop_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "students" */
 export type Students_Stddev_Pop_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -3711,12 +5604,14 @@ export type Students_Stddev_Samp_Fields = {
   __typename?: 'students_stddev_samp_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "students" */
 export type Students_Stddev_Samp_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "students" */
@@ -3737,8 +5632,7 @@ export type Students_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  parent_email?: InputMaybe<Scalars['String']['input']>;
-  parent_name?: InputMaybe<Scalars['String']['input']>;
+  parent_id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** aggregate sum on columns */
@@ -3746,12 +5640,14 @@ export type Students_Sum_Fields = {
   __typename?: 'students_sum_fields';
   class_section_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+  parent_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "students" */
 export type Students_Sum_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "students" */
@@ -3773,9 +5669,7 @@ export type Students_Update_Column =
   /** column name */
   | 'name'
   /** column name */
-  | 'parent_email'
-  /** column name */
-  | 'parent_name';
+  | 'parent_id';
 
 export type Students_Updates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -3791,12 +5685,14 @@ export type Students_Var_Pop_Fields = {
   __typename?: 'students_var_pop_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "students" */
 export type Students_Var_Pop_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -3804,12 +5700,14 @@ export type Students_Var_Samp_Fields = {
   __typename?: 'students_var_samp_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "students" */
 export type Students_Var_Samp_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -3817,12 +5715,14 @@ export type Students_Variance_Fields = {
   __typename?: 'students_variance_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+  parent_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "students" */
 export type Students_Variance_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  parent_id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "subjects" */
@@ -4199,6 +6099,22 @@ export type Subscription_Root = {
   admins_by_pk?: Maybe<Admins>;
   /** fetch data from the table in a streaming manner: "admins" */
   admins_stream: Array<Admins>;
+  /** An array relationship */
+  chat_participants: Array<Chat_Participants>;
+  /** An aggregate relationship */
+  chat_participants_aggregate: Chat_Participants_Aggregate;
+  /** fetch data from the table: "chat_participants" using primary key columns */
+  chat_participants_by_pk?: Maybe<Chat_Participants>;
+  /** fetch data from the table in a streaming manner: "chat_participants" */
+  chat_participants_stream: Array<Chat_Participants>;
+  /** An array relationship */
+  chats: Array<Chats>;
+  /** An aggregate relationship */
+  chats_aggregate: Chats_Aggregate;
+  /** fetch data from the table: "chats" using primary key columns */
+  chats_by_pk?: Maybe<Chats>;
+  /** fetch data from the table in a streaming manner: "chats" */
+  chats_stream: Array<Chats>;
   /** fetch data from the table: "class_sections" */
   class_sections: Array<Class_Sections>;
   /** fetch aggregated fields from the table: "class_sections" */
@@ -4231,6 +6147,22 @@ export type Subscription_Root = {
   marks_by_pk?: Maybe<Marks>;
   /** fetch data from the table in a streaming manner: "marks" */
   marks_stream: Array<Marks>;
+  /** An array relationship */
+  messages: Array<Messages>;
+  /** An aggregate relationship */
+  messages_aggregate: Messages_Aggregate;
+  /** fetch data from the table: "messages" using primary key columns */
+  messages_by_pk?: Maybe<Messages>;
+  /** fetch data from the table in a streaming manner: "messages" */
+  messages_stream: Array<Messages>;
+  /** fetch data from the table: "parents" */
+  parents: Array<Parents>;
+  /** fetch aggregated fields from the table: "parents" */
+  parents_aggregate: Parents_Aggregate;
+  /** fetch data from the table: "parents" using primary key columns */
+  parents_by_pk?: Maybe<Parents>;
+  /** fetch data from the table in a streaming manner: "parents" */
+  parents_stream: Array<Parents>;
   /** An array relationship */
   progress_cards: Array<Progress_Cards>;
   /** An aggregate relationship */
@@ -4301,6 +6233,66 @@ export type Subscription_RootAdmins_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Admins_Stream_Cursor_Input>>;
   where?: InputMaybe<Admins_Bool_Exp>;
+};
+
+
+export type Subscription_RootChat_ParticipantsArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+export type Subscription_RootChat_Participants_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chat_Participants_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chat_Participants_Order_By>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+export type Subscription_RootChat_Participants_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Subscription_RootChat_Participants_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Chat_Participants_Stream_Cursor_Input>>;
+  where?: InputMaybe<Chat_Participants_Bool_Exp>;
+};
+
+
+export type Subscription_RootChatsArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+
+export type Subscription_RootChats_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+
+export type Subscription_RootChats_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Subscription_RootChats_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Chats_Stream_Cursor_Input>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
 };
 
 
@@ -4421,6 +6413,66 @@ export type Subscription_RootMarks_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Marks_Stream_Cursor_Input>>;
   where?: InputMaybe<Marks_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessagesArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessages_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Messages_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Messages_Order_By>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+export type Subscription_RootMessages_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Subscription_RootMessages_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Messages_Stream_Cursor_Input>>;
+  where?: InputMaybe<Messages_Bool_Exp>;
+};
+
+
+export type Subscription_RootParentsArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+export type Subscription_RootParents_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+export type Subscription_RootParents_By_PkArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type Subscription_RootParents_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Parents_Stream_Cursor_Input>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
 };
 
 
@@ -4576,6 +6628,10 @@ export type Subscription_RootUploads_StreamArgs = {
 /** columns and relationships of "teachers" */
 export type Teachers = {
   __typename?: 'teachers';
+  /** An array relationship */
+  chats: Array<Chats>;
+  /** An aggregate relationship */
+  chats_aggregate: Chats_Aggregate;
   created_at?: Maybe<Scalars['timestamp']['output']>;
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
@@ -4585,12 +6641,33 @@ export type Teachers = {
   /** An aggregate relationship */
   marks_aggregate: Marks_Aggregate;
   name: Scalars['String']['output'];
+  password_hash?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   qualification?: Maybe<Scalars['String']['output']>;
   /** An array relationship */
   subjects: Array<Subjects>;
   /** An aggregate relationship */
   subjects_aggregate: Subjects_Aggregate;
+};
+
+
+/** columns and relationships of "teachers" */
+export type TeachersChatsArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
+};
+
+
+/** columns and relationships of "teachers" */
+export type TeachersChats_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Chats_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Chats_Order_By>>;
+  where?: InputMaybe<Chats_Bool_Exp>;
 };
 
 
@@ -4674,6 +6751,8 @@ export type Teachers_Bool_Exp = {
   _and?: InputMaybe<Array<Teachers_Bool_Exp>>;
   _not?: InputMaybe<Teachers_Bool_Exp>;
   _or?: InputMaybe<Array<Teachers_Bool_Exp>>;
+  chats?: InputMaybe<Chats_Bool_Exp>;
+  chats_aggregate?: InputMaybe<Chats_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
@@ -4681,6 +6760,7 @@ export type Teachers_Bool_Exp = {
   marks?: InputMaybe<Marks_Bool_Exp>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Bool_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
+  password_hash?: InputMaybe<String_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
   qualification?: InputMaybe<String_Comparison_Exp>;
   subjects?: InputMaybe<Subjects_Bool_Exp>;
@@ -4701,12 +6781,14 @@ export type Teachers_Inc_Input = {
 
 /** input type for inserting data into table "teachers" */
 export type Teachers_Insert_Input = {
+  chats?: InputMaybe<Chats_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   marks?: InputMaybe<Marks_Arr_Rel_Insert_Input>;
   name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   qualification?: InputMaybe<Scalars['String']['input']>;
   subjects?: InputMaybe<Subjects_Arr_Rel_Insert_Input>;
@@ -4719,6 +6801,7 @@ export type Teachers_Max_Fields = {
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  password_hash?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   qualification?: Maybe<Scalars['String']['output']>;
 };
@@ -4730,6 +6813,7 @@ export type Teachers_Min_Fields = {
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  password_hash?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   qualification?: Maybe<Scalars['String']['output']>;
 };
@@ -4759,12 +6843,14 @@ export type Teachers_On_Conflict = {
 
 /** Ordering options when selecting data from "teachers". */
 export type Teachers_Order_By = {
+  chats_aggregate?: InputMaybe<Chats_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Order_By>;
   name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   qualification?: InputMaybe<Order_By>;
   subjects_aggregate?: InputMaybe<Subjects_Aggregate_Order_By>;
@@ -4788,6 +6874,8 @@ export type Teachers_Select_Column =
   /** column name */
   | 'name'
   /** column name */
+  | 'password_hash'
+  /** column name */
   | 'phone'
   /** column name */
   | 'qualification';
@@ -4799,6 +6887,7 @@ export type Teachers_Set_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   qualification?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4836,6 +6925,7 @@ export type Teachers_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
+  password_hash?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   qualification?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4858,6 +6948,8 @@ export type Teachers_Update_Column =
   | 'is_active'
   /** column name */
   | 'name'
+  /** column name */
+  | 'password_hash'
   /** column name */
   | 'phone'
   /** column name */
@@ -5294,6 +7386,27 @@ export type InsertClassSectionMutationVariables = Exact<{
 
 export type InsertClassSectionMutation = { __typename?: 'mutation_root', insert_class_sections_one?: { __typename?: 'class_sections', id: number } | null };
 
+export type GetStudentByIdQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type GetStudentByIdQuery = { __typename?: 'query_root', students_by_pk?: { __typename?: 'students', id: number, name: string, admission_no: string, parent_id?: number | null, marks: Array<{ __typename?: 'marks', id: number, marks_obtained?: any | null, max_marks?: any | null, subject?: { __typename?: 'subjects', name: string } | null }> } | null };
+
+export type GetStudentsByParentIdQueryVariables = Exact<{
+  parentId: Scalars['Int']['input'];
+}>;
+
+
+export type GetStudentsByParentIdQuery = { __typename?: 'query_root', students: Array<{ __typename?: 'students', id: number, name: string, admission_no: string, parent_id?: number | null, marks: Array<{ __typename?: 'marks', id: number, marks_obtained?: any | null, max_marks?: any | null, subject?: { __typename?: 'subjects', name: string } | null }> }> };
+
+export type GetTeacherIdByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetTeacherIdByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, email: string, name: string }> };
+
 export type SelectAdminByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
@@ -5314,14 +7427,134 @@ export type SelectTeacherByEmailQueryVariables = Exact<{
 }>;
 
 
-export type SelectTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string }> };
+export type SelectTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null }> };
 
 export type SelectParentByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
 
 
-export type SelectParentByEmailQuery = { __typename?: 'query_root', students: Array<{ __typename?: 'students', id: number, name: string, parent_email?: string | null }> };
+export type SelectParentByEmailQuery = { __typename?: 'query_root', parents: Array<{ __typename?: 'parents', id: number, name: string, email: string, password_hash?: string | null }> };
+
+export type InsertMarksMutationVariables = Exact<{
+  objects: Array<Marks_Insert_Input> | Marks_Insert_Input;
+}>;
+
+
+export type InsertMarksMutation = { __typename?: 'mutation_root', insert_marks?: { __typename?: 'marks_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'marks', id: number, student_id?: number | null, marks_obtained?: any | null, max_marks?: any | null, grade?: string | null, remarks?: string | null }> } | null };
+
+export type GetStudentsByClassSectionQueryVariables = Exact<{
+  class_name: Scalars['String']['input'];
+  section_name: Scalars['String']['input'];
+}>;
+
+
+export type GetStudentsByClassSectionQuery = { __typename?: 'query_root', students: Array<{ __typename?: 'students', id: number, admission_no: string, name: string, dob?: any | null, gender?: string | null }> };
+
+export type FindClassSectionQueryVariables = Exact<{
+  class_name: Scalars['String']['input'];
+  section_name: Scalars['String']['input'];
+}>;
+
+
+export type FindClassSectionQuery = { __typename?: 'query_root', class_sections: Array<{ __typename?: 'class_sections', id: number, class_name: string, section_name: string, display_name?: string | null }> };
+
+export type FindSubjectQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+  class_name: Scalars['String']['input'];
+}>;
+
+
+export type FindSubjectQuery = { __typename?: 'query_root', subjects: Array<{ __typename?: 'subjects', id: number, name: string, class_name: string, teacher_id?: number | null }> };
+
+export type FindExamQueryVariables = Exact<{
+  name: Scalars['String']['input'];
+  academic_year: Scalars['String']['input'];
+}>;
+
+
+export type FindExamQuery = { __typename?: 'query_root', exams: Array<{ __typename?: 'exams', id: number, name: string, academic_year: string, start_date?: any | null, end_date?: any | null }> };
+
+export type GetExistingMarksQueryVariables = Exact<{
+  student_ids: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+  subject_id: Scalars['Int']['input'];
+  exam_id: Scalars['Int']['input'];
+}>;
+
+
+export type GetExistingMarksQuery = { __typename?: 'query_root', marks: Array<{ __typename?: 'marks', id: number, student_id?: number | null, marks_obtained?: any | null, max_marks?: any | null, grade?: string | null, remarks?: string | null, is_finalized?: boolean | null }> };
+
+export type UpsertClassSectionMutationVariables = Exact<{
+  class_name: Scalars['String']['input'];
+  section_name: Scalars['String']['input'];
+}>;
+
+
+export type UpsertClassSectionMutation = { __typename?: 'mutation_root', insert_class_sections_one?: { __typename?: 'class_sections', id: number, class_name: string, section_name: string, display_name?: string | null } | null };
+
+export type CreateSubjectMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  class_name: Scalars['String']['input'];
+  teacher_id: Scalars['Int']['input'];
+}>;
+
+
+export type CreateSubjectMutation = { __typename?: 'mutation_root', insert_subjects_one?: { __typename?: 'subjects', id: number, name: string, class_name: string } | null };
+
+export type CreateExamMutationVariables = Exact<{
+  name: Scalars['String']['input'];
+  academic_year: Scalars['String']['input'];
+}>;
+
+
+export type CreateExamMutation = { __typename?: 'mutation_root', insert_exams_one?: { __typename?: 'exams', id: number, name: string, academic_year: string } | null };
+
+export type FinalizeMarksMutationVariables = Exact<{
+  subject_id: Scalars['Int']['input'];
+  exam_id: Scalars['Int']['input'];
+  student_ids: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
+}>;
+
+
+export type FinalizeMarksMutation = { __typename?: 'mutation_root', update_marks?: { __typename?: 'marks_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'marks', id: number, student_id?: number | null, is_finalized?: boolean | null }> } | null };
+
+export type DeleteExistingMarksMutationVariables = Exact<{
+  student_id: Scalars['Int']['input'];
+  subject_id: Scalars['Int']['input'];
+  exam_id: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteExistingMarksMutation = { __typename?: 'mutation_root', delete_marks?: { __typename?: 'marks_mutation_response', affected_rows: number } | null };
+
+export type GetAdminByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetAdminByEmailQuery = { __typename?: 'query_root', admins: Array<{ __typename?: 'admins', id: number, school_name: string, email: string, password_hash: string, phone?: string | null }> };
+
+export type GetTeacherByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null, phone?: string | null }> };
+
+export type GetParentByEmailQueryVariables = Exact<{
+  email: Scalars['String']['input'];
+}>;
+
+
+export type GetParentByEmailQuery = { __typename?: 'query_root', parents: Array<{ __typename?: 'parents', id: number, name: string, email: string, password_hash?: string | null, phone?: string | null }> };
+
+export type GetStudentByAdmissionNumberQueryVariables = Exact<{
+  admissionNumber: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+
+export type GetStudentByAdmissionNumberQuery = { __typename?: 'query_root', students: Array<{ __typename?: 'students', id: number, name: string, admission_no: string }> };
 
 export type InsertStudentsMutationVariables = Exact<{
   list: Array<Students_Insert_Input> | Students_Insert_Input;
@@ -5336,15 +7569,6 @@ export type InsertTeachersMutationVariables = Exact<{
 
 
 export type InsertTeachersMutation = { __typename?: 'mutation_root', insert_teachers?: { __typename?: 'teachers_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'teachers', id: number }> } | null };
-
-export type InsertUploadInfoMutationVariables = Exact<{
-  filename: Scalars['String']['input'];
-  type: Scalars['String']['input'];
-  uploaded: Scalars['Int']['input'];
-}>;
-
-
-export type InsertUploadInfoMutation = { __typename?: 'mutation_root', insert_uploads_one?: { __typename?: 'uploads', id: number } | null };
 
 
 export const InsertAdminDocument = gql`
@@ -5363,6 +7587,51 @@ export const InsertClassSectionDocument = gql`
     on_conflict: {constraint: class_sections_class_name_section_name_key, update_columns: [class_name]}
   ) {
     id
+  }
+}
+    `;
+export const GetStudentByIdDocument = gql`
+    query GetStudentById($id: Int!) {
+  students_by_pk(id: $id) {
+    id
+    name
+    admission_no
+    parent_id
+    marks {
+      id
+      subject {
+        name
+      }
+      marks_obtained
+      max_marks
+    }
+  }
+}
+    `;
+export const GetStudentsByParentIdDocument = gql`
+    query GetStudentsByParentId($parentId: Int!) {
+  students(where: {parent_id: {_eq: $parentId}}) {
+    id
+    name
+    admission_no
+    parent_id
+    marks {
+      id
+      subject {
+        name
+      }
+      marks_obtained
+      max_marks
+    }
+  }
+}
+    `;
+export const GetTeacherIdByEmailDocument = gql`
+    query GetTeacherIdByEmail($email: String!) {
+  teachers(where: {email: {_eq: $email}}) {
+    id
+    email
+    name
   }
 }
     `;
@@ -5389,15 +7658,196 @@ export const SelectTeacherByEmailDocument = gql`
     id
     name
     email
+    password_hash
   }
 }
     `;
 export const SelectParentByEmailDocument = gql`
     query SelectParentByEmail($email: String!) {
-  students(where: {parent_email: {_eq: $email}}) {
+  parents(where: {email: {_eq: $email}}) {
     id
     name
-    parent_email
+    email
+    password_hash
+  }
+}
+    `;
+export const InsertMarksDocument = gql`
+    mutation InsertMarks($objects: [marks_insert_input!]!) {
+  insert_marks(objects: $objects) {
+    affected_rows
+    returning {
+      id
+      student_id
+      marks_obtained
+      max_marks
+      grade
+      remarks
+    }
+  }
+}
+    `;
+export const GetStudentsByClassSectionDocument = gql`
+    query GetStudentsByClassSection($class_name: String!, $section_name: String!) {
+  students(
+    where: {class_section: {class_name: {_eq: $class_name}, section_name: {_eq: $section_name}}, is_active: {_eq: true}}
+    order_by: {name: asc}
+  ) {
+    id
+    admission_no
+    name
+    dob
+    gender
+  }
+}
+    `;
+export const FindClassSectionDocument = gql`
+    query FindClassSection($class_name: String!, $section_name: String!) {
+  class_sections(
+    where: {class_name: {_eq: $class_name}, section_name: {_eq: $section_name}}
+  ) {
+    id
+    class_name
+    section_name
+    display_name
+  }
+}
+    `;
+export const FindSubjectDocument = gql`
+    query FindSubject($name: String!, $class_name: String!) {
+  subjects(where: {name: {_eq: $name}, class_name: {_eq: $class_name}}) {
+    id
+    name
+    class_name
+    teacher_id
+  }
+}
+    `;
+export const FindExamDocument = gql`
+    query FindExam($name: String!, $academic_year: String!) {
+  exams(where: {name: {_eq: $name}, academic_year: {_eq: $academic_year}}) {
+    id
+    name
+    academic_year
+    start_date
+    end_date
+  }
+}
+    `;
+export const GetExistingMarksDocument = gql`
+    query GetExistingMarks($student_ids: [Int!]!, $subject_id: Int!, $exam_id: Int!) {
+  marks(
+    where: {student_id: {_in: $student_ids}, subject_id: {_eq: $subject_id}, exam_id: {_eq: $exam_id}}
+  ) {
+    id
+    student_id
+    marks_obtained
+    max_marks
+    grade
+    remarks
+    is_finalized
+  }
+}
+    `;
+export const UpsertClassSectionDocument = gql`
+    mutation UpsertClassSection($class_name: String!, $section_name: String!) {
+  insert_class_sections_one(
+    object: {class_name: $class_name, section_name: $section_name}
+    on_conflict: {constraint: class_sections_class_name_section_name_key, update_columns: []}
+  ) {
+    id
+    class_name
+    section_name
+    display_name
+  }
+}
+    `;
+export const CreateSubjectDocument = gql`
+    mutation CreateSubject($name: String!, $class_name: String!, $teacher_id: Int!) {
+  insert_subjects_one(
+    object: {name: $name, class_name: $class_name, teacher_id: $teacher_id}
+  ) {
+    id
+    name
+    class_name
+  }
+}
+    `;
+export const CreateExamDocument = gql`
+    mutation CreateExam($name: String!, $academic_year: String!) {
+  insert_exams_one(object: {name: $name, academic_year: $academic_year}) {
+    id
+    name
+    academic_year
+  }
+}
+    `;
+export const FinalizeMarksDocument = gql`
+    mutation FinalizeMarks($subject_id: Int!, $exam_id: Int!, $student_ids: [Int!]!) {
+  update_marks(
+    where: {subject_id: {_eq: $subject_id}, exam_id: {_eq: $exam_id}, student_id: {_in: $student_ids}}
+    _set: {is_finalized: true}
+  ) {
+    affected_rows
+    returning {
+      id
+      student_id
+      is_finalized
+    }
+  }
+}
+    `;
+export const DeleteExistingMarksDocument = gql`
+    mutation DeleteExistingMarks($student_id: Int!, $subject_id: Int!, $exam_id: Int!) {
+  delete_marks(
+    where: {student_id: {_eq: $student_id}, subject_id: {_eq: $subject_id}, exam_id: {_eq: $exam_id}}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const GetAdminByEmailDocument = gql`
+    query GetAdminByEmail($email: String!) {
+  admins(where: {email: {_eq: $email}}, limit: 1) {
+    id
+    school_name
+    email
+    password_hash
+    phone
+  }
+}
+    `;
+export const GetTeacherByEmailDocument = gql`
+    query GetTeacherByEmail($email: String!) {
+  teachers(where: {email: {_eq: $email}}, limit: 1) {
+    id
+    name
+    email
+    password_hash
+    phone
+  }
+}
+    `;
+export const GetParentByEmailDocument = gql`
+    query GetParentByEmail($email: String!) {
+  parents(where: {email: {_eq: $email}}, limit: 1) {
+    id
+    name
+    email
+    password_hash
+    phone
+  }
+}
+    `;
+export const GetStudentByAdmissionNumberDocument = gql`
+    query GetStudentByAdmissionNumber($admissionNumber: String!, $name: String!) {
+  students(
+    where: {admission_no: {_eq: $admissionNumber}, name: {_eq: $name}}
+    limit: 1
+  ) {
+    id
+    name
+    admission_no
   }
 }
     `;
@@ -5425,15 +7875,6 @@ export const InsertTeachersDocument = gql`
   }
 }
     `;
-export const InsertUploadInfoDocument = gql`
-    mutation InsertUploadInfo($filename: String!, $type: String!, $uploaded: Int!) {
-  insert_uploads_one(
-    object: {filename: $filename, type: $type, uploaded_by: $uploaded}
-  ) {
-    id
-  }
-}
-    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -5448,6 +7889,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     InsertClassSection(variables: InsertClassSectionMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<InsertClassSectionMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<InsertClassSectionMutation>({ document: InsertClassSectionDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'InsertClassSection', 'mutation', variables);
     },
+    GetStudentById(variables: GetStudentByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetStudentByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetStudentByIdQuery>({ document: GetStudentByIdDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetStudentById', 'query', variables);
+    },
+    GetStudentsByParentId(variables: GetStudentsByParentIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetStudentsByParentIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetStudentsByParentIdQuery>({ document: GetStudentsByParentIdDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetStudentsByParentId', 'query', variables);
+    },
+    GetTeacherIdByEmail(variables: GetTeacherIdByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetTeacherIdByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTeacherIdByEmailQuery>({ document: GetTeacherIdByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetTeacherIdByEmail', 'query', variables);
+    },
     SelectAdminByEmail(variables: SelectAdminByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SelectAdminByEmailQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SelectAdminByEmailQuery>({ document: SelectAdminByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SelectAdminByEmail', 'query', variables);
     },
@@ -5460,14 +7910,56 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     SelectParentByEmail(variables: SelectParentByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SelectParentByEmailQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SelectParentByEmailQuery>({ document: SelectParentByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SelectParentByEmail', 'query', variables);
     },
+    InsertMarks(variables: InsertMarksMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<InsertMarksMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<InsertMarksMutation>({ document: InsertMarksDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'InsertMarks', 'mutation', variables);
+    },
+    GetStudentsByClassSection(variables: GetStudentsByClassSectionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetStudentsByClassSectionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetStudentsByClassSectionQuery>({ document: GetStudentsByClassSectionDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetStudentsByClassSection', 'query', variables);
+    },
+    FindClassSection(variables: FindClassSectionQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FindClassSectionQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindClassSectionQuery>({ document: FindClassSectionDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'FindClassSection', 'query', variables);
+    },
+    FindSubject(variables: FindSubjectQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FindSubjectQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindSubjectQuery>({ document: FindSubjectDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'FindSubject', 'query', variables);
+    },
+    FindExam(variables: FindExamQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FindExamQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindExamQuery>({ document: FindExamDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'FindExam', 'query', variables);
+    },
+    GetExistingMarks(variables: GetExistingMarksQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetExistingMarksQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetExistingMarksQuery>({ document: GetExistingMarksDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetExistingMarks', 'query', variables);
+    },
+    UpsertClassSection(variables: UpsertClassSectionMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpsertClassSectionMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpsertClassSectionMutation>({ document: UpsertClassSectionDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpsertClassSection', 'mutation', variables);
+    },
+    CreateSubject(variables: CreateSubjectMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateSubjectMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateSubjectMutation>({ document: CreateSubjectDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateSubject', 'mutation', variables);
+    },
+    CreateExam(variables: CreateExamMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateExamMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateExamMutation>({ document: CreateExamDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateExam', 'mutation', variables);
+    },
+    FinalizeMarks(variables: FinalizeMarksMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FinalizeMarksMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FinalizeMarksMutation>({ document: FinalizeMarksDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'FinalizeMarks', 'mutation', variables);
+    },
+    DeleteExistingMarks(variables: DeleteExistingMarksMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteExistingMarksMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteExistingMarksMutation>({ document: DeleteExistingMarksDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteExistingMarks', 'mutation', variables);
+    },
+    GetAdminByEmail(variables: GetAdminByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAdminByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByEmailQuery>({ document: GetAdminByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetAdminByEmail', 'query', variables);
+    },
+    GetTeacherByEmail(variables: GetTeacherByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetTeacherByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetTeacherByEmailQuery>({ document: GetTeacherByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetTeacherByEmail', 'query', variables);
+    },
+    GetParentByEmail(variables: GetParentByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetParentByEmailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetParentByEmailQuery>({ document: GetParentByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetParentByEmail', 'query', variables);
+    },
+    GetStudentByAdmissionNumber(variables: GetStudentByAdmissionNumberQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetStudentByAdmissionNumberQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetStudentByAdmissionNumberQuery>({ document: GetStudentByAdmissionNumberDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetStudentByAdmissionNumber', 'query', variables);
+    },
     InsertStudents(variables: InsertStudentsMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<InsertStudentsMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<InsertStudentsMutation>({ document: InsertStudentsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'InsertStudents', 'mutation', variables);
     },
     InsertTeachers(variables: InsertTeachersMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<InsertTeachersMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<InsertTeachersMutation>({ document: InsertTeachersDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'InsertTeachers', 'mutation', variables);
-    },
-    InsertUploadInfo(variables: InsertUploadInfoMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<InsertUploadInfoMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<InsertUploadInfoMutation>({ document: InsertUploadInfoDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'InsertUploadInfo', 'mutation', variables);
     }
   };
 }

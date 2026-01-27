@@ -2,6 +2,13 @@ table:
   name: teachers
   schema: public
 array_relationships:
+  - name: chats
+    using:
+      foreign_key_constraint_on:
+        column: created_by
+        table:
+          name: chats
+          schema: public
   - name: marks
     using:
       foreign_key_constraint_on:

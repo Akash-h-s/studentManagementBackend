@@ -17,14 +17,16 @@ query SelectTeacherByEmail($email: String!) {
   teachers(where: {email: {_eq: $email}}) {
     id
     name
-    email
+    email,
+    password_hash
   }
 }
 
 query SelectParentByEmail($email: String!) {
-  students(where: {parent_email: {_eq: $email}}) {
+  parents(where: {email: {_eq: $email}}) {
     id
     name
-    parent_email
+    email,
+    password_hash
   }
 }

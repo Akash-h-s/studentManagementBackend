@@ -1,0 +1,235 @@
+
+
+scalar timestamptz
+scalar date
+scalar numeric
+
+type Query {
+  students(
+    where: students_bool_exp
+    order_by: [students_order_by!]
+    limit: Int
+  ): [students!]!
+  
+  class_sections(
+    where: class_sections_bool_exp
+    order_by: [class_sections_order_by!]
+  ): [class_sections!]!
+  
+  subjects(
+    where: subjects_bool_exp
+  ): [subjects!]!
+  
+  exams(
+    where: exams_bool_exp
+  ): [exams!]!
+  
+  marks(
+    where: marks_bool_exp
+  ): [marks!]!
+}
+
+type Mutation {
+  insert_class_sections_one(
+    object: class_sections_insert_input!
+    on_conflict: class_sections_on_conflict
+  ): class_sections
+  
+  insert_subjects_one(
+    object: subjects_insert_input!
+  ): subjects
+  
+  insert_exams_one(
+    object: exams_insert_input!
+  ): exams
+  
+  insert_marks(
+    objects: [marks_insert_input!]!
+    on_conflict: marks_on_conflict
+  ): marks_mutation_response
+  
+  update_marks(
+    where: marks_bool_exp!
+    _set: marks_set_input
+  ): marks_mutation_response
+}
+
+type students {
+  id: Int!
+  admission_no: String!
+  name: String!
+  class_section_id: Int
+  parent_id: Int
+  dob: date
+  gender: String
+  is_active: Boolean!
+  created_at: timestamptz!
+  class_section: class_sections
+}
+
+type class_sections {
+  id: Int!
+  class_name: String!
+  section_name: String!
+  display_name: String!
+  created_at: timestamptz!
+}
+
+type subjects {
+  id: Int!
+  name: String!
+  class_name: String!
+  teacher_id: Int
+}
+
+type exams {
+  id: Int!
+  name: String!
+  academic_year: String!
+  start_date: date
+  end_date: date
+}
+
+type marks {
+  id: Int!
+  student_id: Int!
+  subject_id: Int!
+  exam_id: Int!
+  teacher_id: Int
+  marks_obtained: numeric!
+  max_marks: numeric!
+  grade: String
+  remarks: String
+  is_finalized: Boolean!
+  entered_at: timestamptz!
+}
+
+type marks_mutation_response {
+  affected_rows: Int!
+  returning: [marks!]!
+}
+
+input students_bool_exp {
+  _and: [students_bool_exp!]
+  _or: [students_bool_exp!]
+  id: Int_comparison_exp
+  class_section_id: Int_comparison_exp
+  is_active: Boolean_comparison_exp
+  class_section: class_sections_bool_exp
+}
+
+input class_sections_bool_exp {
+  _and: [class_sections_bool_exp!]
+  class_name: String_comparison_exp
+  section_name: String_comparison_exp
+}
+
+input subjects_bool_exp {
+  name: String_comparison_exp
+  class_name: String_comparison_exp
+}
+
+input exams_bool_exp {
+  name: String_comparison_exp
+  academic_year: String_comparison_exp
+}
+
+input marks_bool_exp {
+  student_id: Int_comparison_exp
+  subject_id: Int_comparison_exp
+  exam_id: Int_comparison_exp
+}
+
+input Int_comparison_exp {
+  _eq: Int
+  _neq: Int
+}
+
+input String_comparison_exp {
+  _eq: String
+  _neq: String
+}
+
+input Boolean_comparison_exp {
+  _eq: Boolean
+}
+
+input students_order_by {
+  name: order_by
+}
+
+input class_sections_order_by {
+  class_name: order_by
+  section_name: order_by
+}
+
+enum order_by {
+  asc
+  desc
+}
+
+input class_sections_insert_input {
+  class_name: String!
+  section_name: String!
+}
+
+input class_sections_on_conflict {
+  constraint: class_sections_constraint!
+  update_columns: [class_sections_update_column!]!
+}
+
+enum class_sections_constraint {
+  class_sections_class_name_section_name_key
+  class_sections_pkey
+}
+
+enum class_sections_update_column {
+  class_name
+  section_name
+}
+
+input subjects_insert_input {
+  name: String!
+  class_name: String!
+  teacher_id: Int
+}
+
+input exams_insert_input {
+  name: String!
+  academic_year: String!
+  start_date: date
+  end_date: date
+}
+
+input marks_insert_input {
+  student_id: Int!
+  subject_id: Int!
+  exam_id: Int!
+  teacher_id: Int
+  marks_obtained: numeric!
+  max_marks: numeric!
+  grade: String
+  remarks: String
+  is_finalized: Boolean
+}
+
+input marks_on_conflict {
+  constraint: marks_constraint!
+  update_columns: [marks_update_column!]!
+}
+
+enum marks_constraint {
+  marks_student_id_subject_id_exam_id_key
+  marks_pkey
+}
+
+enum marks_update_column {
+  marks_obtained
+  max_marks
+  grade
+  remarks
+}
+
+input marks_set_input {
+  is_finalized: Boolean
+}

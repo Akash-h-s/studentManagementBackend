@@ -1,0 +1,172 @@
+# graphql/operations.graphql
+# Fixed GraphQL operations
+
+# ============================================
+# QUERIES
+# ============================================
+
+query GetStudentsByClassSection($class_name: String!, $section_name: String!) {
+  students(
+    where: {
+      class_section: {
+        class_name: { _eq: $class_name }
+        section_name: { _eq: $section_name }
+      }
+      is_active: { _eq: true }
+    }
+    order_by: { name: asc }
+  ) {
+    id
+    admission_no
+    name
+    dob
+    gender
+  }
+}
+
+query FindClassSection($class_name: String!, $section_name: String!) {
+  class_sections(
+    where: {
+      class_name: { _eq: $class_name }
+      section_name: { _eq: $section_name }
+    }
+  ) {
+    id
+    class_name
+    section_name
+    display_name
+  }
+}
+
+query FindSubject($name: String!, $class_name: String!) {
+  subjects(
+    where: {
+      name: { _eq: $name }
+      class_name: { _eq: $class_name }
+    }
+  ) {
+    id
+    name
+    class_name
+    teacher_id
+  }
+}
+
+query FindExam($name: String!, $academic_year: String!) {
+  exams(
+    where: {
+      name: { _eq: $name }
+      academic_year: { _eq: $academic_year }
+    }
+  ) {
+    id
+    name
+    academic_year
+    start_date
+    end_date
+  }
+}
+
+query GetExistingMarks(
+  $student_ids: [Int!]!
+  $subject_id: Int!
+  $exam_id: Int!
+) {
+  marks(
+    where: {
+      student_id: { _in: $student_ids }
+      subject_id: { _eq: $subject_id }
+      exam_id: { _eq: $exam_id }
+    }
+  ) {
+    id
+    student_id
+    marks_obtained
+    max_marks
+    grade
+    remarks
+    is_finalized
+  }
+}
+
+# ============================================
+# MUTATIONS
+# ============================================
+
+mutation UpsertClassSection($class_name: String!, $section_name: String!) {
+  insert_class_sections_one(
+    object: {
+      class_name: $class_name
+      section_name: $section_name
+    }
+    on_conflict: {
+      constraint: class_sections_class_name_section_name_key
+      update_columns: []
+    }
+  ) {
+    id
+    class_name
+    section_name
+    display_name
+  }
+}
+
+mutation CreateSubject($name: String!, $class_name: String!, $teacher_id: Int!) {
+  insert_subjects_one(
+    object: {
+      name: $name
+      class_name: $class_name
+      teacher_id: $teacher_id
+    }
+  ) {
+    id
+    name
+    class_name
+  }
+}
+
+mutation CreateExam($name: String!, $academic_year: String!) {
+  insert_exams_one(
+    object: {
+      name: $name
+      academic_year: $academic_year
+    }
+  ) {
+    id
+    name
+    academic_year
+  }
+}
+
+# Mutation for inserting marks (use this for now)
+
+mutation FinalizeMarks($subject_id: Int!, $exam_id: Int!, $student_ids: [Int!]!) {
+  update_marks(
+    where: {
+      subject_id: { _eq: $subject_id }
+      exam_id: { _eq: $exam_id }
+      student_id: { _in: $student_ids }
+    }
+    _set: { is_finalized: true }
+  ) {
+    affected_rows
+    returning {
+      id
+      student_id
+      is_finalized
+    }
+  }
+}
+
+# Helper mutation to delete marks by student, subject, exam
+mutation DeleteExistingMarks($student_id: Int!, $subject_id: Int!, $exam_id: Int!) {
+  delete_marks(
+    where: {
+      student_id: { _eq: $student_id }
+      subject_id: { _eq: $subject_id }
+      exam_id: { _eq: $exam_id }
+    }
+  ) {
+    affected_rows
+  }
+}

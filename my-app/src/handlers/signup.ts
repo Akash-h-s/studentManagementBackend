@@ -1,48 +1,79 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import bcrypt from "bcryptjs";
-
 import { gqlSdk } from "../config/graphClient";
 
-const cors = {
+const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Allow-Methods": "POST,OPTIONS"
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-export const handler = async (event: APIGatewayProxyEvent) => {
-
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  
+  // Handle preflight OPTIONS request
   if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 200, headers: cors, body: "" };
+    return { 
+      statusCode: 200, 
+      headers: corsHeaders, 
+      body: "" 
+    };
   }
 
   try {
+    console.log("Received signup request:", event.body);
+    
     const body = JSON.parse(event.body || "{}");
     const args = body.input || body;
 
-    const {
-      schoolName,
-      email,
-      password,
-      phone
-    } = args;
+    const { schoolName, email, password, phone } = args;
+
+    if (!schoolName || !email || !password || !phone) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: "Missing required fields"
+        })
+      };
+    }
+    
     const hash = await bcrypt.hash(password, 8);
+    
     const result = await gqlSdk.InsertAdmin({
       school: schoolName,
       email: email,
       pass: hash,
       phone: phone
     });
+    
+    console.log("Signup successful:", result);
+    
     return {
       statusCode: 200,
-      headers: cors,
-      body: JSON.stringify(result.insert_admins_one)
+      headers: corsHeaders,
+      body: JSON.stringify({
+        success: true,
+        message: "Signup successful",
+        user: {
+          id: result.insert_admins_one?.id,
+          name: schoolName,
+          email: email,
+          role: "admin"
+        },
+        token: "dummy-jwt-token" // TODO: Generate real JWT
+      })
     };
 
   } catch (err: any) {
+    console.error("Signup error:", err);
     return {
       statusCode: 500,
-      headers: cors,
-      body: JSON.stringify({ message: err.message })
+      headers: corsHeaders,
+      body: JSON.stringify({ 
+        success: false,
+        message: err.message || "Internal server error"
+      })
     };
   }
 };

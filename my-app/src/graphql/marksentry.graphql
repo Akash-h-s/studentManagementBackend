@@ -1,0 +1,13 @@
+mutation InsertMarks($objects: [marks_insert_input!]!) {
+  insert_marks(objects: $objects) {
+    affected_rows
+    returning {
+      id
+      student_id
+      marks_obtained
+      max_marks
+      grade
+      remarks
+    }
+  }
+}

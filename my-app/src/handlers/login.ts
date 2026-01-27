@@ -1,75 +1,174 @@
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import bcrypt from "bcryptjs";
 import { gqlSdk } from "../config/graphClient";
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const commonHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Content-Type": "application/json"
-  };
+  
+  if (event.httpMethod === "OPTIONS") {
+    return { statusCode: 200, headers: corsHeaders, body: "" };
+  }
 
   try {
-    const eventbody = JSON.parse(event.body || "{}");
-    const { role, identifier, password, studentName } = eventbody;
+    const body = JSON.parse(event.body || "{}");
+    const { role, identifier, password, studentName } = body.input || body;
 
-    let user_id: string = "";
-    let user_name: string = "";
-    let user_email: string = "";
+    console.log(`Login attempt - Role: ${role}, Identifier: ${identifier}, Has Password: ${!!password}`);
 
-    if (role === "admin") {
-      const res = await gqlSdk.SelectAdminByEmail({ email: identifier });
-      const admin = res.admins?.[0];
-      if (!admin) return { statusCode: 401, headers: commonHeaders, body: JSON.stringify({ message: "Admin not found" }) };
-      
-      const isValid = await bcrypt.compare(password, admin.password_hash);
-      if (!isValid) return { statusCode: 401, headers: commonHeaders, body: JSON.stringify({ message: "Invalid Password" }) };
-      
-      user_id = admin.id.toString();
-      user_name = admin.school_name;
+    let user: any = null;
+    let isValidPassword = true;
+
+    switch (role) {
+      case 'admin': {
+        const adminResult = await gqlSdk.GetAdminByEmail({ email: identifier });
+        console.log('Admin result:', adminResult);
+        
+        if (adminResult.admins && adminResult.admins.length > 0) {
+          user = adminResult.admins[0];
+          if (password && user.password_hash) {
+            isValidPassword = await bcrypt.compare(password, user.password_hash);
+          } else if (!password) {
+            return {
+              statusCode: 400,
+              headers: corsHeaders,
+              body: JSON.stringify({
+                success: false,
+                message: "Password is required for admin login"
+              })
+            };
+          }
+        }
+        break;
+      }
+
+      case 'teacher': {
+        const teacherResult = await gqlSdk.GetTeacherByEmail({ email: identifier });
+        console.log('Teacher result:', teacherResult);
+        
+        if (teacherResult.teachers && teacherResult.teachers.length > 0) {
+          user = teacherResult.teachers[0];
+          if (password && user.password_hash) {
+            isValidPassword = await bcrypt.compare(password, user.password_hash);
+          } else if (!password) {
+            return {
+              statusCode: 400,
+              headers: corsHeaders,
+              body: JSON.stringify({
+                success: false,
+                message: "Password is required for teacher login"
+              })
+            };
+          }
+        }
+        break;
+      }
+
+      case 'parent': {
+        const parentResult = await gqlSdk.GetParentByEmail({ email: identifier });
+        console.log('Parent result:', parentResult);
+        
+        if (parentResult.parents && parentResult.parents.length > 0) {
+          user = parentResult.parents[0];
+          if (password && user.password_hash) {
+            isValidPassword = await bcrypt.compare(password, user.password_hash);
+          } else if (!password) {
+            return {
+              statusCode: 400,
+              headers: corsHeaders,
+              body: JSON.stringify({
+                success: false,
+                message: "Password is required for parent login"
+              })
+            };
+          }
+        }
+        break;
+      }
+
+      case 'student': {
+        const studentResult = await gqlSdk.GetStudentByAdmissionNumber({ 
+          admissionNumber: identifier,
+          name: studentName 
+        });
+        console.log('Student result:', studentResult);
+        
+        if (studentResult.students && studentResult.students.length > 0) {
+          user = studentResult.students[0];
+        }
+        break;
+      }
+
+      default:
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({
+            success: false,
+            message: "Invalid role"
+          })
+        };
     }
 
-    else if (role === "student") {
-      const res = await gqlSdk.SelectStudentByDetails({ admission_no: identifier, name: studentName });
-      if (!res.students?.[0]) return { statusCode: 401, headers: commonHeaders, body: JSON.stringify({ message: "Student not found" }) };
-      
-      user_id = res.students[0].id.toString();
-      user_name = res.students[0].name;
-    }
-    else if (role === "teacher") {
-      const res = await gqlSdk.SelectTeacherByEmail({ email: identifier });
-      if (!res.teachers?.[0]) return { statusCode: 401, headers: commonHeaders, body: JSON.stringify({ message: "Teacher email not found" }) };
-      
-      user_id = res.teachers[0].id.toString();
-      user_name = res.teachers[0].name;
-      user_email = res.teachers[0].email;
+    console.log('Found user:', user);
+    console.log('Password valid:', isValidPassword);
+
+    if (!user) {
+      return {
+        statusCode: 401,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: `${role} not found with provided credentials`
+        })
+      };
     }
 
-    else if (role === "parent") {
-      const res = await gqlSdk.SelectParentByEmail({ email: identifier });
-      if (!res.students?.[0]) return { statusCode: 401, headers: commonHeaders, body: JSON.stringify({ message: "No student linked to this parent email" }) };
-      
-      user_id = res.students[0].id.toString();
-      user_name = `Parent of ${res.students[0].name}`;
-      user_email = res.students[0].parent_email;
+    if (!isValidPassword) {
+      return {
+        statusCode: 401,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: "Invalid password"
+        })
+      };
     }
+
+    // Build response with actual user data
+    const userData = {
+      id: user.id?.toString() || '',
+      name: user.name || user.school_name || '',
+      email: user.email || identifier,
+      role: role
+    };
+
+    console.log('Returning user data:', userData);
 
     return {
       statusCode: 200,
-      headers: commonHeaders,
+      headers: corsHeaders,
       body: JSON.stringify({
+        success: true,
         message: "Login successful",
-        user: { id: user_id, name: user_name, email: user_email, role }
+        user: userData,
+        token: `jwt-${userData.id}-${Date.now()}`
       })
     };
 
   } catch (err: any) {
-    console.error("LOGIN_ERROR:", err);
+    console.error("Login error:", err);
     return {
       statusCode: 500,
-      headers: commonHeaders,
-      body: JSON.stringify({ message: err.message })
+      headers: corsHeaders,
+      body: JSON.stringify({
+        success: false,
+        message: err.message || "Internal server error"
+      })
     };
   }
 };

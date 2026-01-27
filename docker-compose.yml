@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   postgres:
@@ -15,10 +14,9 @@ services:
 
   graphql-engine:
     image: hasura/graphql-engine:v2.43.0
-    ports:
-        - "8085:8080"
-
     restart: always
+    ports:
+      - "8085:8080"
     depends_on:
       - postgres
     environment:

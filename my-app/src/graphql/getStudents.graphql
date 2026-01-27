@@ -1,0 +1,35 @@
+# Get Student by ID with marks
+query GetStudentById($id: Int!) {
+  students_by_pk(id: $id) {
+    id
+    name
+    admission_no
+    parent_id
+    marks {
+      id
+      subject {
+        name
+      }
+      marks_obtained
+      max_marks
+    }
+  }
+}
+
+# Get Students by Parent ID with marks
+query GetStudentsByParentId($parentId: Int!) {
+  students(where: { parent_id: { _eq: $parentId } }) {
+    id
+    name
+    admission_no
+    parent_id
+    marks {
+      id
+      subject {
+        name
+      }
+      marks_obtained
+      max_marks
+    }
+  }
+}
