@@ -18,7 +18,6 @@ export type Scalars = {
   date: { input: any; output: any; }
   numeric: { input: any; output: any; }
   timestamp: { input: any; output: any; }
-  timestamptz: { input: any; output: any; }
 };
 
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
@@ -357,456 +356,6 @@ export type Admins_Var_Samp_Fields = {
 export type Admins_Variance_Fields = {
   __typename?: 'admins_variance_fields';
   id?: Maybe<Scalars['Float']['output']>;
-};
-
-/** columns and relationships of "bulk_uploads" */
-export type Bulk_Uploads = {
-  __typename?: 'bulk_uploads';
-  admin_id: Scalars['Int']['output'];
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  failed_records?: Maybe<Scalars['Int']['output']>;
-  id: Scalars['String']['output'];
-  progress?: Maybe<Scalars['Int']['output']>;
-  status: Scalars['String']['output'];
-  successful_records?: Maybe<Scalars['Int']['output']>;
-  /** An object relationship */
-  teacher: Teachers;
-  total_records: Scalars['Int']['output'];
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
-};
-
-/** aggregated selection of "bulk_uploads" */
-export type Bulk_Uploads_Aggregate = {
-  __typename?: 'bulk_uploads_aggregate';
-  aggregate?: Maybe<Bulk_Uploads_Aggregate_Fields>;
-  nodes: Array<Bulk_Uploads>;
-};
-
-export type Bulk_Uploads_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Bulk_Uploads_Aggregate_Bool_Exp_Count>;
-};
-
-export type Bulk_Uploads_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
-};
-
-/** aggregate fields of "bulk_uploads" */
-export type Bulk_Uploads_Aggregate_Fields = {
-  __typename?: 'bulk_uploads_aggregate_fields';
-  avg?: Maybe<Bulk_Uploads_Avg_Fields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<Bulk_Uploads_Max_Fields>;
-  min?: Maybe<Bulk_Uploads_Min_Fields>;
-  stddev?: Maybe<Bulk_Uploads_Stddev_Fields>;
-  stddev_pop?: Maybe<Bulk_Uploads_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Bulk_Uploads_Stddev_Samp_Fields>;
-  sum?: Maybe<Bulk_Uploads_Sum_Fields>;
-  var_pop?: Maybe<Bulk_Uploads_Var_Pop_Fields>;
-  var_samp?: Maybe<Bulk_Uploads_Var_Samp_Fields>;
-  variance?: Maybe<Bulk_Uploads_Variance_Fields>;
-};
-
-
-/** aggregate fields of "bulk_uploads" */
-export type Bulk_Uploads_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** order by aggregate values of table "bulk_uploads" */
-export type Bulk_Uploads_Aggregate_Order_By = {
-  avg?: InputMaybe<Bulk_Uploads_Avg_Order_By>;
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Bulk_Uploads_Max_Order_By>;
-  min?: InputMaybe<Bulk_Uploads_Min_Order_By>;
-  stddev?: InputMaybe<Bulk_Uploads_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Bulk_Uploads_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Bulk_Uploads_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Bulk_Uploads_Sum_Order_By>;
-  var_pop?: InputMaybe<Bulk_Uploads_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Bulk_Uploads_Var_Samp_Order_By>;
-  variance?: InputMaybe<Bulk_Uploads_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "bulk_uploads" */
-export type Bulk_Uploads_Arr_Rel_Insert_Input = {
-  data: Array<Bulk_Uploads_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Bulk_Uploads_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Bulk_Uploads_Avg_Fields = {
-  __typename?: 'bulk_uploads_avg_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by avg() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Avg_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "bulk_uploads". All fields are combined with a logical 'AND'. */
-export type Bulk_Uploads_Bool_Exp = {
-  _and?: InputMaybe<Array<Bulk_Uploads_Bool_Exp>>;
-  _not?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-  _or?: InputMaybe<Array<Bulk_Uploads_Bool_Exp>>;
-  admin_id?: InputMaybe<Int_Comparison_Exp>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  failed_records?: InputMaybe<Int_Comparison_Exp>;
-  id?: InputMaybe<String_Comparison_Exp>;
-  progress?: InputMaybe<Int_Comparison_Exp>;
-  status?: InputMaybe<String_Comparison_Exp>;
-  successful_records?: InputMaybe<Int_Comparison_Exp>;
-  teacher?: InputMaybe<Teachers_Bool_Exp>;
-  total_records?: InputMaybe<Int_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "bulk_uploads" */
-export type Bulk_Uploads_Constraint =
-  /** unique or primary key constraint on columns "id" */
-  | 'bulk_uploads_pkey';
-
-/** input type for incrementing numeric columns in table "bulk_uploads" */
-export type Bulk_Uploads_Inc_Input = {
-  admin_id?: InputMaybe<Scalars['Int']['input']>;
-  failed_records?: InputMaybe<Scalars['Int']['input']>;
-  progress?: InputMaybe<Scalars['Int']['input']>;
-  successful_records?: InputMaybe<Scalars['Int']['input']>;
-  total_records?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** input type for inserting data into table "bulk_uploads" */
-export type Bulk_Uploads_Insert_Input = {
-  admin_id?: InputMaybe<Scalars['Int']['input']>;
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  failed_records?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  progress?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  successful_records?: InputMaybe<Scalars['Int']['input']>;
-  teacher?: InputMaybe<Teachers_Obj_Rel_Insert_Input>;
-  total_records?: InputMaybe<Scalars['Int']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-};
-
-/** aggregate max on columns */
-export type Bulk_Uploads_Max_Fields = {
-  __typename?: 'bulk_uploads_max_fields';
-  admin_id?: Maybe<Scalars['Int']['output']>;
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  failed_records?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  progress?: Maybe<Scalars['Int']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  successful_records?: Maybe<Scalars['Int']['output']>;
-  total_records?: Maybe<Scalars['Int']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
-};
-
-/** order by max() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Max_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  status?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Bulk_Uploads_Min_Fields = {
-  __typename?: 'bulk_uploads_min_fields';
-  admin_id?: Maybe<Scalars['Int']['output']>;
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  failed_records?: Maybe<Scalars['Int']['output']>;
-  id?: Maybe<Scalars['String']['output']>;
-  progress?: Maybe<Scalars['Int']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-  successful_records?: Maybe<Scalars['Int']['output']>;
-  total_records?: Maybe<Scalars['Int']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
-};
-
-/** order by min() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Min_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  status?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "bulk_uploads" */
-export type Bulk_Uploads_Mutation_Response = {
-  __typename?: 'bulk_uploads_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Bulk_Uploads>;
-};
-
-/** on_conflict condition type for table "bulk_uploads" */
-export type Bulk_Uploads_On_Conflict = {
-  constraint: Bulk_Uploads_Constraint;
-  update_columns?: Array<Bulk_Uploads_Update_Column>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "bulk_uploads". */
-export type Bulk_Uploads_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  created_at?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  status?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  teacher?: InputMaybe<Teachers_Order_By>;
-  total_records?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: bulk_uploads */
-export type Bulk_Uploads_Pk_Columns_Input = {
-  id: Scalars['String']['input'];
-};
-
-/** select columns of table "bulk_uploads" */
-export type Bulk_Uploads_Select_Column =
-  /** column name */
-  | 'admin_id'
-  /** column name */
-  | 'created_at'
-  /** column name */
-  | 'failed_records'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'progress'
-  /** column name */
-  | 'status'
-  /** column name */
-  | 'successful_records'
-  /** column name */
-  | 'total_records'
-  /** column name */
-  | 'updated_at';
-
-/** input type for updating data in table "bulk_uploads" */
-export type Bulk_Uploads_Set_Input = {
-  admin_id?: InputMaybe<Scalars['Int']['input']>;
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  failed_records?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  progress?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  successful_records?: InputMaybe<Scalars['Int']['input']>;
-  total_records?: InputMaybe<Scalars['Int']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-};
-
-/** aggregate stddev on columns */
-export type Bulk_Uploads_Stddev_Fields = {
-  __typename?: 'bulk_uploads_stddev_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Stddev_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Bulk_Uploads_Stddev_Pop_Fields = {
-  __typename?: 'bulk_uploads_stddev_pop_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_pop() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Stddev_Pop_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Bulk_Uploads_Stddev_Samp_Fields = {
-  __typename?: 'bulk_uploads_stddev_samp_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_samp() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Stddev_Samp_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** Streaming cursor of the table "bulk_uploads" */
-export type Bulk_Uploads_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Bulk_Uploads_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Bulk_Uploads_Stream_Cursor_Value_Input = {
-  admin_id?: InputMaybe<Scalars['Int']['input']>;
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  failed_records?: InputMaybe<Scalars['Int']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  progress?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-  successful_records?: InputMaybe<Scalars['Int']['input']>;
-  total_records?: InputMaybe<Scalars['Int']['input']>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-};
-
-/** aggregate sum on columns */
-export type Bulk_Uploads_Sum_Fields = {
-  __typename?: 'bulk_uploads_sum_fields';
-  admin_id?: Maybe<Scalars['Int']['output']>;
-  failed_records?: Maybe<Scalars['Int']['output']>;
-  progress?: Maybe<Scalars['Int']['output']>;
-  successful_records?: Maybe<Scalars['Int']['output']>;
-  total_records?: Maybe<Scalars['Int']['output']>;
-};
-
-/** order by sum() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Sum_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** update columns of table "bulk_uploads" */
-export type Bulk_Uploads_Update_Column =
-  /** column name */
-  | 'admin_id'
-  /** column name */
-  | 'created_at'
-  /** column name */
-  | 'failed_records'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'progress'
-  /** column name */
-  | 'status'
-  /** column name */
-  | 'successful_records'
-  /** column name */
-  | 'total_records'
-  /** column name */
-  | 'updated_at';
-
-export type Bulk_Uploads_Updates = {
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<Bulk_Uploads_Inc_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Bulk_Uploads_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Bulk_Uploads_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Bulk_Uploads_Var_Pop_Fields = {
-  __typename?: 'bulk_uploads_var_pop_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_pop() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Var_Pop_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Bulk_Uploads_Var_Samp_Fields = {
-  __typename?: 'bulk_uploads_var_samp_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_samp() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Var_Samp_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Bulk_Uploads_Variance_Fields = {
-  __typename?: 'bulk_uploads_variance_fields';
-  admin_id?: Maybe<Scalars['Float']['output']>;
-  failed_records?: Maybe<Scalars['Float']['output']>;
-  progress?: Maybe<Scalars['Float']['output']>;
-  successful_records?: Maybe<Scalars['Float']['output']>;
-  total_records?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by variance() on columns of table "bulk_uploads" */
-export type Bulk_Uploads_Variance_Order_By = {
-  admin_id?: InputMaybe<Order_By>;
-  failed_records?: InputMaybe<Order_By>;
-  progress?: InputMaybe<Order_By>;
-  successful_records?: InputMaybe<Order_By>;
-  total_records?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "chat_participants" */
@@ -3576,10 +3125,6 @@ export type Mutation_Root = {
   delete_admins?: Maybe<Admins_Mutation_Response>;
   /** delete single row from the table: "admins" */
   delete_admins_by_pk?: Maybe<Admins>;
-  /** delete data from the table: "bulk_uploads" */
-  delete_bulk_uploads?: Maybe<Bulk_Uploads_Mutation_Response>;
-  /** delete single row from the table: "bulk_uploads" */
-  delete_bulk_uploads_by_pk?: Maybe<Bulk_Uploads>;
   /** delete data from the table: "chat_participants" */
   delete_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
   /** delete single row from the table: "chat_participants" */
@@ -3636,10 +3181,6 @@ export type Mutation_Root = {
   insert_admins?: Maybe<Admins_Mutation_Response>;
   /** insert a single row into the table: "admins" */
   insert_admins_one?: Maybe<Admins>;
-  /** insert data into the table: "bulk_uploads" */
-  insert_bulk_uploads?: Maybe<Bulk_Uploads_Mutation_Response>;
-  /** insert a single row into the table: "bulk_uploads" */
-  insert_bulk_uploads_one?: Maybe<Bulk_Uploads>;
   /** insert data into the table: "chat_participants" */
   insert_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
   /** insert a single row into the table: "chat_participants" */
@@ -3698,12 +3239,6 @@ export type Mutation_Root = {
   update_admins_by_pk?: Maybe<Admins>;
   /** update multiples rows of table: "admins" */
   update_admins_many?: Maybe<Array<Maybe<Admins_Mutation_Response>>>;
-  /** update data of the table: "bulk_uploads" */
-  update_bulk_uploads?: Maybe<Bulk_Uploads_Mutation_Response>;
-  /** update single row of the table: "bulk_uploads" */
-  update_bulk_uploads_by_pk?: Maybe<Bulk_Uploads>;
-  /** update multiples rows of table: "bulk_uploads" */
-  update_bulk_uploads_many?: Maybe<Array<Maybe<Bulk_Uploads_Mutation_Response>>>;
   /** update data of the table: "chat_participants" */
   update_chat_participants?: Maybe<Chat_Participants_Mutation_Response>;
   /** update single row of the table: "chat_participants" */
@@ -3794,18 +3329,6 @@ export type Mutation_RootDelete_AdminsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Admins_By_PkArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Bulk_UploadsArgs = {
-  where: Bulk_Uploads_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Bulk_Uploads_By_PkArgs = {
-  id: Scalars['String']['input'];
 };
 
 
@@ -3976,20 +3499,6 @@ export type Mutation_RootInsert_AdminsArgs = {
 export type Mutation_RootInsert_Admins_OneArgs = {
   object: Admins_Insert_Input;
   on_conflict?: InputMaybe<Admins_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Bulk_UploadsArgs = {
-  objects: Array<Bulk_Uploads_Insert_Input>;
-  on_conflict?: InputMaybe<Bulk_Uploads_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Bulk_Uploads_OneArgs = {
-  object: Bulk_Uploads_Insert_Input;
-  on_conflict?: InputMaybe<Bulk_Uploads_On_Conflict>;
 };
 
 
@@ -4194,28 +3703,6 @@ export type Mutation_RootUpdate_Admins_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Admins_ManyArgs = {
   updates: Array<Admins_Updates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Bulk_UploadsArgs = {
-  _inc?: InputMaybe<Bulk_Uploads_Inc_Input>;
-  _set?: InputMaybe<Bulk_Uploads_Set_Input>;
-  where: Bulk_Uploads_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Bulk_Uploads_By_PkArgs = {
-  _inc?: InputMaybe<Bulk_Uploads_Inc_Input>;
-  _set?: InputMaybe<Bulk_Uploads_Set_Input>;
-  pk_columns: Bulk_Uploads_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Bulk_Uploads_ManyArgs = {
-  updates: Array<Bulk_Uploads_Updates>;
 };
 
 
@@ -5301,12 +4788,6 @@ export type Query_Root = {
   /** fetch data from the table: "admins" using primary key columns */
   admins_by_pk?: Maybe<Admins>;
   /** An array relationship */
-  bulk_uploads: Array<Bulk_Uploads>;
-  /** An aggregate relationship */
-  bulk_uploads_aggregate: Bulk_Uploads_Aggregate;
-  /** fetch data from the table: "bulk_uploads" using primary key columns */
-  bulk_uploads_by_pk?: Maybe<Bulk_Uploads>;
-  /** An array relationship */
   chat_participants: Array<Chat_Participants>;
   /** An aggregate relationship */
   chat_participants_aggregate: Chat_Participants_Aggregate;
@@ -5407,29 +4888,6 @@ export type Query_RootAdmins_AggregateArgs = {
 
 export type Query_RootAdmins_By_PkArgs = {
   id: Scalars['Int']['input'];
-};
-
-
-export type Query_RootBulk_UploadsArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-
-export type Query_RootBulk_Uploads_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-
-export type Query_RootBulk_Uploads_By_PkArgs = {
-  id: Scalars['String']['input'];
 };
 
 
@@ -5759,7 +5217,6 @@ export type Students = {
   progress_cards: Array<Progress_Cards>;
   /** An aggregate relationship */
   progress_cards_aggregate: Progress_Cards_Aggregate;
-  upload_batch_id?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -5938,7 +5395,6 @@ export type Students_Bool_Exp = {
   parent_id?: InputMaybe<Int_Comparison_Exp>;
   progress_cards?: InputMaybe<Progress_Cards_Bool_Exp>;
   progress_cards_aggregate?: InputMaybe<Progress_Cards_Aggregate_Bool_Exp>;
-  upload_batch_id?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "students" */
@@ -5971,7 +5427,6 @@ export type Students_Insert_Input = {
   parent?: InputMaybe<Parents_Obj_Rel_Insert_Input>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
   progress_cards?: InputMaybe<Progress_Cards_Arr_Rel_Insert_Input>;
-  upload_batch_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate max on columns */
@@ -5985,7 +5440,6 @@ export type Students_Max_Fields = {
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['Int']['output']>;
-  upload_batch_id?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by max() on columns of table "students" */
@@ -5998,7 +5452,6 @@ export type Students_Max_Order_By = {
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
-  upload_batch_id?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -6012,7 +5465,6 @@ export type Students_Min_Fields = {
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   parent_id?: Maybe<Scalars['Int']['output']>;
-  upload_batch_id?: Maybe<Scalars['String']['output']>;
 };
 
 /** order by min() on columns of table "students" */
@@ -6025,7 +5477,6 @@ export type Students_Min_Order_By = {
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
-  upload_batch_id?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "students" */
@@ -6067,7 +5518,6 @@ export type Students_Order_By = {
   parent?: InputMaybe<Parents_Order_By>;
   parent_id?: InputMaybe<Order_By>;
   progress_cards_aggregate?: InputMaybe<Progress_Cards_Aggregate_Order_By>;
-  upload_batch_id?: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: students */
@@ -6094,9 +5544,7 @@ export type Students_Select_Column =
   /** column name */
   | 'name'
   /** column name */
-  | 'parent_id'
-  /** column name */
-  | 'upload_batch_id';
+  | 'parent_id';
 
 /** select "students_aggregate_bool_exp_bool_and_arguments_columns" columns of table "students" */
 export type Students_Select_Column_Students_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
@@ -6119,7 +5567,6 @@ export type Students_Set_Input = {
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
-  upload_batch_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate stddev on columns */
@@ -6186,7 +5633,6 @@ export type Students_Stream_Cursor_Value_Input = {
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
-  upload_batch_id?: InputMaybe<Scalars['String']['input']>;
 };
 
 /** aggregate sum on columns */
@@ -6223,9 +5669,7 @@ export type Students_Update_Column =
   /** column name */
   | 'name'
   /** column name */
-  | 'parent_id'
-  /** column name */
-  | 'upload_batch_id';
+  | 'parent_id';
 
 export type Students_Updates = {
   /** increments the numeric columns with given value of the filtered values */
@@ -6656,14 +6100,6 @@ export type Subscription_Root = {
   /** fetch data from the table in a streaming manner: "admins" */
   admins_stream: Array<Admins>;
   /** An array relationship */
-  bulk_uploads: Array<Bulk_Uploads>;
-  /** An aggregate relationship */
-  bulk_uploads_aggregate: Bulk_Uploads_Aggregate;
-  /** fetch data from the table: "bulk_uploads" using primary key columns */
-  bulk_uploads_by_pk?: Maybe<Bulk_Uploads>;
-  /** fetch data from the table in a streaming manner: "bulk_uploads" */
-  bulk_uploads_stream: Array<Bulk_Uploads>;
-  /** An array relationship */
   chat_participants: Array<Chat_Participants>;
   /** An aggregate relationship */
   chat_participants_aggregate: Chat_Participants_Aggregate;
@@ -6797,36 +6233,6 @@ export type Subscription_RootAdmins_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Admins_Stream_Cursor_Input>>;
   where?: InputMaybe<Admins_Bool_Exp>;
-};
-
-
-export type Subscription_RootBulk_UploadsArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-
-export type Subscription_RootBulk_Uploads_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-
-export type Subscription_RootBulk_Uploads_By_PkArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootBulk_Uploads_StreamArgs = {
-  batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Bulk_Uploads_Stream_Cursor_Input>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
 };
 
 
@@ -7223,10 +6629,6 @@ export type Subscription_RootUploads_StreamArgs = {
 export type Teachers = {
   __typename?: 'teachers';
   /** An array relationship */
-  bulk_uploads: Array<Bulk_Uploads>;
-  /** An aggregate relationship */
-  bulk_uploads_aggregate: Bulk_Uploads_Aggregate;
-  /** An array relationship */
   chats: Array<Chats>;
   /** An aggregate relationship */
   chats_aggregate: Chats_Aggregate;
@@ -7246,26 +6648,6 @@ export type Teachers = {
   subjects: Array<Subjects>;
   /** An aggregate relationship */
   subjects_aggregate: Subjects_Aggregate;
-};
-
-
-/** columns and relationships of "teachers" */
-export type TeachersBulk_UploadsArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-};
-
-
-/** columns and relationships of "teachers" */
-export type TeachersBulk_Uploads_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Bulk_Uploads_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Bulk_Uploads_Order_By>>;
-  where?: InputMaybe<Bulk_Uploads_Bool_Exp>;
 };
 
 
@@ -7369,8 +6751,6 @@ export type Teachers_Bool_Exp = {
   _and?: InputMaybe<Array<Teachers_Bool_Exp>>;
   _not?: InputMaybe<Teachers_Bool_Exp>;
   _or?: InputMaybe<Array<Teachers_Bool_Exp>>;
-  bulk_uploads?: InputMaybe<Bulk_Uploads_Bool_Exp>;
-  bulk_uploads_aggregate?: InputMaybe<Bulk_Uploads_Aggregate_Bool_Exp>;
   chats?: InputMaybe<Chats_Bool_Exp>;
   chats_aggregate?: InputMaybe<Chats_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
@@ -7401,7 +6781,6 @@ export type Teachers_Inc_Input = {
 
 /** input type for inserting data into table "teachers" */
 export type Teachers_Insert_Input = {
-  bulk_uploads?: InputMaybe<Bulk_Uploads_Arr_Rel_Insert_Input>;
   chats?: InputMaybe<Chats_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
@@ -7464,7 +6843,6 @@ export type Teachers_On_Conflict = {
 
 /** Ordering options when selecting data from "teachers". */
 export type Teachers_Order_By = {
-  bulk_uploads_aggregate?: InputMaybe<Bulk_Uploads_Aggregate_Order_By>;
   chats_aggregate?: InputMaybe<Chats_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
@@ -7615,19 +6993,6 @@ export type Timestamp_Comparison_Exp = {
   _lte?: InputMaybe<Scalars['timestamp']['input']>;
   _neq?: InputMaybe<Scalars['timestamp']['input']>;
   _nin?: InputMaybe<Array<Scalars['timestamp']['input']>>;
-};
-
-/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
-export type Timestamptz_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _gte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _lt?: InputMaybe<Scalars['timestamptz']['input']>;
-  _lte?: InputMaybe<Scalars['timestamptz']['input']>;
-  _neq?: InputMaybe<Scalars['timestamptz']['input']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']['input']>>;
 };
 
 /** columns and relationships of "uploads" */

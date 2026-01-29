@@ -107,7 +107,6 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       });
 
       if (checkResult.chats.length > 0) {
-        // Chat exists, get participant details
         const existingChat = checkResult.chats[0];
         const participantsList = [];
         
@@ -133,8 +132,6 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           })
         };
       }
-
-      // Create new direct chat
       const createMutation = `
         mutation CreateDirectChat($participants: [chat_participants_insert_input!]!) {
           insert_chats_one(
@@ -205,7 +202,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
 
       // Create group chat
-      // In createChat.ts, update the group creation mutation:
+     // In createChat.ts, update the group creation mutation:
 
 const createGroupMutation = `
   mutation CreateGroup($name: String!, $members: [chat_participants_insert_input!]!) {
@@ -229,15 +226,12 @@ const createGroupMutation = `
   }
 `;
 
-
       const membersData = members.map((m: any) => {
         if (typeof m === 'object') {
           return { user_id: m.user_id, user_type: m.user_type };
         }
-        // Fallback if just numbers are sent
         return { user_id: m, user_type: 'parent' };
       });
-      
       const result: any = await client.request(createGroupMutation, {
   name,
   members: membersData
@@ -246,8 +240,7 @@ const createGroupMutation = `
 
       const chat = result.insert_chats_one;
       
-      // Get full participant details
-      const participantsList = [];
+     const participantsList = [];
       for (const p of chat.chat_participants) {
         const userInfo = await getUserInfo(p.user_id, p.user_type);
         if (userInfo) participantsList.push(userInfo);

@@ -1,0 +1,17 @@
+import { Connection, Client } from '@temporalio/client';
+
+let client: Client | null = null;
+
+export async function getTemporalClient(): Promise<Client> {
+  if (!client) {
+    const connection = await Connection.connect({
+      // Uses SAM/Docker address if available, otherwise defaults to local
+      address: process.env.TEMPORAL_ADDRESS || 'localhost:7233',
+    });
+    
+    client = new Client({ connection });
+    console.log('✅ Connected to Temporal server');
+  }
+  
+  return client;
+}

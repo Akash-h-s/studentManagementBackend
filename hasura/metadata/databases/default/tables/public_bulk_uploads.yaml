@@ -1,0 +1,7 @@
+table:
+  name: bulk_uploads
+  schema: public
+object_relationships:
+  - name: teacher
+    using:
+      foreign_key_constraint_on: admin_id

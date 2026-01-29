@@ -2,6 +2,13 @@ table:
   name: teachers
   schema: public
 array_relationships:
+  - name: bulk_uploads
+    using:
+      foreign_key_constraint_on:
+        column: admin_id
+        table:
+          name: bulk_uploads
+          schema: public
   - name: chats
     using:
       foreign_key_constraint_on:

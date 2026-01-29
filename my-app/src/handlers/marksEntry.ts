@@ -1,10 +1,37 @@
-// src/handlers/marksEntry.ts
-// SIMPLIFIED VERSION - Works without JWT authentication
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { gqlSdk } from '../config/graphClient';
-import { calculateGrade, validateMarksEntry } from '../utils/validators';
 
-// Types for request
+/**
+ * UTILS & VALIDATORS
+ * (Defined here for a single-file solution, though usually imported)
+ */
+const calculateGrade = (obtained: number, max: number): string => {
+  const percentage = (obtained / max) * 100;
+  if (percentage >= 90) return 'A+';
+  if (percentage >= 80) return 'A';
+  if (percentage >= 70) return 'B';
+  if (percentage >= 60) return 'C';
+  if (percentage >= 50) return 'D';
+  return 'F';
+};
+
+const validateMarksEntry = (entry: MarkEntryRequest) => {
+  const errors: string[] = [];
+  if (entry.marks_obtained > entry.max_marks) {
+    errors.push('Marks obtained cannot be greater than maximum marks');
+  }
+  if (entry.marks_obtained < 0) {
+    errors.push('Marks cannot be negative');
+  }
+  return {
+    valid: errors.length === 0,
+    errors
+  };
+};
+
+/**
+ * TYPES
+ */
 interface MarkEntryRequest {
   student_id: number;
   subject_name: string;
@@ -33,296 +60,138 @@ interface ValidationError {
   errors: string[];
 }
 
-// CORS headers constant
 const CORS_HEADERS = {
   'Content-Type': 'application/json',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-// Find or create class section
-const findOrCreateClassSection = async (
-  className: string,
-  sectionName: string
-): Promise<number> => {
+/**
+ * HELPER LOGIC
+ */
+
+// Simple JWT decoder (no verification for local dev)
+const extractTeacherIdFromToken = (event: APIGatewayProxyEvent): number | null => {
   try {
-    const result = await gqlSdk.InsertClassSection({
-      object: { 
-        class_name: className.trim(), 
-        section_name: sectionName.trim() 
-      }
-    });
+    const authHeader = event.headers['Authorization'] || event.headers['authorization'];
+    if (!authHeader) return null;
 
-    if (!result.insert_class_sections_one?.id) {
-      throw new Error('Failed to create/find class section');
-    }
-
-    return result.insert_class_sections_one.id;
+    const token = authHeader.replace('Bearer ', '');
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(Buffer.from(base64, 'base64').toString());
+    
+    return payload.teacher_id || payload.sub || null;
   } catch (error) {
-    console.error('Error in findOrCreateClassSection:', error);
-    throw error;
+    console.error('Token extraction failed:', error);
+    return null;
   }
 };
 
-// Find or create subject
-const findOrCreateSubject = async (
-  subjectName: string,
-  className: string,
-  teacherId: number
-): Promise<number> => {
-  try {
-    // First, try to find existing subject
-    const findResult = await gqlSdk.FindSubject({
-      name: subjectName.trim(),
-      class_name: className.trim(),
-    });
-
-    if (findResult.subjects.length > 0) {
-      return findResult.subjects[0].id;
-    }
-
-    // If not found, create new subject
-    const createResult = await gqlSdk.CreateSubject({
-      name: subjectName.trim(),
-      class_name: className.trim(),
-      teacher_id: teacherId,
-    });
-
-    if (!createResult.insert_subjects_one?.id) {
-      throw new Error('Failed to create subject');
-    }
-
-    return createResult.insert_subjects_one.id;
-  } catch (error) {
-    console.error('Error in findOrCreateSubject:', error);
-    throw error;
-  }
+const findOrCreateClassSection = async (className: string, sectionName: string): Promise<number> => {
+  const result = await gqlSdk.InsertClassSection({
+    object: { class_name: className.trim(), section_name: sectionName.trim() }
+  });
+  if (!result.insert_class_sections_one?.id) throw new Error('ClassSection ID resolution failed');
+  return result.insert_class_sections_one.id;
 };
 
-// Find or create exam
-const findOrCreateExam = async (
-  examName: string,
-  academicYear: string
-): Promise<number> => {
-  try {
-    // First, try to find existing exam
-    const findResult = await gqlSdk.FindExam({
-      name: examName.trim(),
-      academic_year: academicYear.trim(),
-    });
+const findOrCreateSubject = async (name: string, className: string, teacherId: number): Promise<number> => {
+  const findResult = await gqlSdk.FindSubject({ name: name.trim(), class_name: className.trim() });
+  if (findResult.subjects.length > 0) return findResult.subjects[0].id;
 
-    if (findResult.exams.length > 0) {
-      return findResult.exams[0].id;
-    }
-
-    // If not found, create new exam
-    const createResult = await gqlSdk.CreateExam({
-      name: examName.trim(),
-      academic_year: academicYear.trim(),
-    });
-
-    if (!createResult.insert_exams_one?.id) {
-      throw new Error('Failed to create exam');
-    }
-
-    return createResult.insert_exams_one.id;
-  } catch (error) {
-    console.error('Error in findOrCreateExam:', error);
-    throw error;
-  }
+  const createResult = await gqlSdk.CreateSubject({ name: name.trim(), class_name: className.trim(), teacher_id: teacherId });
+  if (!createResult.insert_subjects_one?.id) throw new Error('Subject creation failed');
+  return createResult.insert_subjects_one.id;
 };
 
-// Save/Update marks to database using UPSERT
-const saveMarksToDatabase = async (marksEntries: MarkEntryRequest[]) => {
+const findOrCreateExam = async (name: string, year: string): Promise<number> => {
+  const findResult = await gqlSdk.FindExam({ name: name.trim(), academic_year: year.trim() });
+  if (findResult.exams.length > 0) return findResult.exams[0].id;
+
+  const createResult = await gqlSdk.CreateExam({ name: name.trim(), academic_year: year.trim() });
+  if (!createResult.insert_exams_one?.id) throw new Error('Exam creation failed');
+  return createResult.insert_exams_one.id;
+};
+
+/**
+ * MAIN HANDLER
+ */
+export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
+  }
+
   try {
-    // Get first entry to extract common data
-    const firstEntry = marksEntries[0];
+    const teacherId = extractTeacherIdFromToken(event);
+    if (!teacherId) {
+      return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ message: 'Unauthorized' }) };
+    }
 
-    // Find or create class_section, subject, and exam
-    const classSectionId = await findOrCreateClassSection(
-      firstEntry.class_name,
-      firstEntry.section_name
-    );
+    const body: SaveMarksRequest = JSON.parse(event.body || '{}');
+    const { action = 'validate', data } = body;
+    const marksEntries = data?.marks || [];
 
-    const subjectId = await findOrCreateSubject(
-      firstEntry.subject_name,
-      firstEntry.class_name,
-      firstEntry.teacher_id
-    );
+    if (marksEntries.length === 0) {
+      return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ message: 'No data' }) };
+    }
 
-    const examId = await findOrCreateExam(
-      firstEntry.exam_name,
-      firstEntry.academic_year
-    );
+    // 1. Validation
+    const validationErrors: ValidationError[] = [];
+    const validEntries = marksEntries.map((mark, index) => {
+      mark.teacher_id = teacherId; // Force security
+      const v = validateMarksEntry(mark);
+      if (!v.valid) validationErrors.push({ index, student_id: mark.student_id, errors: v.errors });
+      if (!mark.grade) mark.grade = calculateGrade(mark.marks_obtained, mark.max_marks);
+      return mark;
+    });
 
-    console.log('IDs resolved:', { classSectionId, subjectId, examId });
+    if (action === 'validate' || (validationErrors.length > 0 && action !== 'validate')) {
+      return {
+        statusCode: validationErrors.length > 0 ? 400 : 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ success: validationErrors.length === 0, errors: validationErrors, valid_count: validEntries.length - validationErrors.length })
+      };
+    }
 
-    // Prepare marks objects for insertion/update
-    const marksObjects = marksEntries.map(mark => ({
-      student_id: mark.student_id,
+    // 2. Resolve Relationships (Using first entry for metadata)
+    const first = validEntries[0];
+    const subjectId = await findOrCreateSubject(first.subject_name, first.class_name, teacherId);
+    const examId = await findOrCreateExam(first.exam_name, first.academic_year);
+
+    // 3. Prepare objects for the original mutation (objects only)
+    const marksObjects = validEntries.map(m => ({
+      student_id: m.student_id,
       subject_id: subjectId,
       exam_id: examId,
-      teacher_id: mark.teacher_id,
-      marks_obtained: mark.marks_obtained,
-      max_marks: mark.max_marks,
-      grade: mark.grade || calculateGrade(mark.marks_obtained, mark.max_marks),
-      remarks: mark.remarks || null,
-      is_finalized: mark.is_finalized,
+      teacher_id: teacherId,
+      marks_obtained: m.marks_obtained,
+      max_marks: m.max_marks,
+      grade: m.grade,
+      remarks: m.remarks || null,
+      is_finalized: m.is_finalized
     }));
 
-    // Use UPSERT to insert or update existing marks
-    // This will INSERT new records or UPDATE existing ones
-    const result = await gqlSdk.UpsertMarks({
-      objects: marksObjects,
-      on_conflict: {
-        constraint: 'marks_student_subject_exam_key',
-        update_columns: ['marks_obtained', 'grade', 'remarks', 'max_marks', 'teacher_id', 'is_finalized', 'updated_at']
-      }
-    });
+    // 4. Final Insert
+    const result = await gqlSdk.InsertMarks({ objects: marksObjects });
 
-    return {
-      affected_rows: result.insert_marks?.affected_rows || 0,
-      returning: result.insert_marks?.returning || [],
-    };
-  } catch (error) {
-    console.error('Error in saveMarksToDatabase:', error);
-    throw error;
-  }
-};
-
-// Lambda handler
-export const handler = async (
-  event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-  // Handle CORS preflight request
-  if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: CORS_HEADERS,
-      body: '',
-    };
-  }
-
-  try {
-    const body: SaveMarksRequest = JSON.parse(event.body || '{}');
-    const action = body.action || 'validate';
-    const marksEntries = body.data?.marks || [];
-
-    console.log('Processing marks entry request');
-    console.log('Action:', action);
-    console.log('Number of marks entries:', marksEntries.length);
-
-    if (!marksEntries || marksEntries.length === 0) {
-      return {
-        statusCode: 400,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({
-          success: false,
-          message: 'No marks entries provided',
-        }),
-      };
-    }
-
-    // Log teacher_id for debugging
-    if (marksEntries.length > 0) {
-      console.log('Teacher ID from request:', marksEntries[0].teacher_id);
-    }
-
-    // Validate all entries
-    const validationErrors: ValidationError[] = [];
-    const validEntries: MarkEntryRequest[] = [];
-
-    marksEntries.forEach((mark, index) => {
-      const validation = validateMarksEntry(mark);
-
-      if (!validation.valid) {
-        validationErrors.push({
-          index,
-          student_id: mark.student_id,
-          errors: validation.errors,
-        });
-      } else {
-        // Auto-calculate grade if not provided
-        if (!mark.grade) {
-          mark.grade = calculateGrade(mark.marks_obtained, mark.max_marks);
-        }
-        validEntries.push(mark);
-      }
-    });
-
-    // If validation action
-    if (action === 'validate') {
-      return {
-        statusCode: 200,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({
-          success: validationErrors.length === 0,
-          total_entries: marksEntries.length,
-          valid_entries: validEntries.length,
-          invalid_entries: validationErrors.length,
-          errors: validationErrors,
-          validated_data: validEntries,
-        }),
-      };
-    }
-
-    // If save action
-    if (action === 'save' || action === 'bulk_save') {
-      if (validationErrors.length > 0) {
-        return {
-          statusCode: 400,
-          headers: CORS_HEADERS,
-          body: JSON.stringify({
-            success: false,
-            message: 'Validation failed',
-            errors: validationErrors,
-          }),
-        };
-      }
-
-      // Save/Update to database
-      const result = await saveMarksToDatabase(validEntries);
-
-      return {
-        statusCode: 200,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({
-          success: true,
-          message: `Successfully saved/updated marks for ${result.affected_rows} students`,
-          affected_rows: result.affected_rows,
-          data: result.returning,
-          summary: {
-            total_students: validEntries.length,
-            average_marks:
-              validEntries.reduce((sum, m) => sum + m.marks_obtained, 0) /
-              validEntries.length,
-            highest_marks: Math.max(...validEntries.map(m => m.marks_obtained)),
-            lowest_marks: Math.min(...validEntries.map(m => m.marks_obtained)),
-          },
-        }),
-      };
-    }
-
-    return {
-      statusCode: 400,
-      headers: CORS_HEADERS,
       body: JSON.stringify({
-        success: false,
-        message: `Unknown action: ${action}`,
-      }),
+        success: true,
+        affected_rows: result.insert_marks?.affected_rows,
+        data: result.insert_marks?.returning
+      })
     };
-  } catch (error) {
-    console.error('Error in lambda handler:', error);
+
+  } catch (error: any) {
+    console.error('Handler Error:', error);
     return {
       statusCode: 500,
       headers: CORS_HEADERS,
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined
-      }),
+      body: JSON.stringify({ success: false, message: error.message })
     };
   }
 };

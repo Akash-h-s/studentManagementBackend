@@ -1,0 +1,62 @@
+{
+  "name": "temporal-hello-world",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "worker": "ts-node src/temporal/workers/uploadWorker.ts",
+    "build": "tsc",
+    "start": "node dist/temporal/workers/uploadWorker.js",
+    "dev": "nodemon --exec ts-node src/temporal/workers/uploadWorker.ts",
+    "test-workflow": "ts-node test-workflow.ts",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "ts": "ts-node"
+    },
+    "ext": "ts",
+    "watch": [
+      "src"
+    ]
+  },
+  "dependencies": {
+    "@temporalio/activity": "^1.14.1",
+    "@temporalio/client": "^1.14.1",
+    "@temporalio/envconfig": "^1.13.2",
+    "@temporalio/worker": "^1.14.1",
+    "@temporalio/workflow": "^1.14.1",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "form-data": "^4.0.5",
+    "graphql": "^16.12.0",
+    "graphql-request": "^7.4.0",
+    "mailgun.js": "^12.7.0",
+    "nanoid": "3.x",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@temporalio/testing": "^1.13.2",
+    "@tsconfig/node24": "^24.0.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/mocha": "8.x",
+    "@types/node": "^22.19.7",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-deprecation": "^3.0.0",
+    "mocha": "8.x",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "description": "Temporal workflow project for student management system",
+  "main": "dist/index.js",
+  "keywords": ["temporal", "workflow", "student-management"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

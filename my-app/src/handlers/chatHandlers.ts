@@ -1,4 +1,4 @@
-// src/handlers/chatHandlers.ts
+
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
 
