@@ -1,3 +1,6 @@
 node_modules
 lib
 .eslintrc.js
+env
+.env.test
+.env*.local
