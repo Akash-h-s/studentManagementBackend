@@ -2,8 +2,8 @@
 import Mailgun from "mailgun.js";
 import formData from "form-data";
 
-const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY;
-const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN;
+const MAILGUN_API_KEY = "updated in env";
+const MAILGUN_DOMAIN = "updated in env";
 
 let mg: any = null;
 let domain = '';
