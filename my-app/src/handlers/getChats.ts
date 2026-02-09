@@ -1,6 +1,7 @@
 // src/handlers/getChats.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
+import { getChatsSchema, validateRequest } from '../utils/validationSchemas';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,7 @@ const client = new GraphQLClient(
   process.env.HASURA_ENDPOINT || 'http://host.docker.internal:8085/v1/graphql',
   {
     headers: {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'default_dev_secret',
     },
   }
 );
@@ -29,10 +30,10 @@ const getUserInfo = async (userId: number, userType: string) => {
       }
     }
   `;
-  
+
   const result: any = await client.request(query, { id: userId });
   const user = result[`${table}_by_pk`];
-  
+
   return user ? { ...user, role: userType } : null;
 };
 
@@ -44,16 +45,20 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     const { user_id } = JSON.parse(event.body || '{}');
 
-    if (!user_id) {
+    // Validate request
+    const validation = validateRequest(getChatsSchema, { user_id });
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         body: JSON.stringify({
           success: false,
-          message: 'Missing required field: user_id'
+          message: validation.error
         })
       };
     }
+
+    const validatedUserId = validation.data.user_id;
 
     const query = `
       query GetChats($user_id: Int!) {
@@ -83,18 +88,18 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
     `;
 
-    const result: any = await client.request(query, { user_id });
+    const result: any = await client.request(query, { user_id: validatedUserId });
 
     const chats = await Promise.all(result.chats.map(async (chat: any) => {
       let chatName = chat.name;
-      
+
       // Get participant details
       const participantsList = [];
       for (const p of chat.chat_participants) {
         const userInfo = await getUserInfo(p.user_id, p.user_type);
         if (userInfo) participantsList.push(userInfo);
       }
-      
+
       // For direct chats, use the other person's name
       if (chat.type === 'direct') {
         const otherUser = participantsList.find((u: any) => u.id !== user_id);
@@ -108,7 +113,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           chat.messages[0].sender_id,
           chat.messages[0].sender_type
         );
-        
+
         lastMessage = {
           id: chat.messages[0].id,
           sender_id: chat.messages[0].sender_id,

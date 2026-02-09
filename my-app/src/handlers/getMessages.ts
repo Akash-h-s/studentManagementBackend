@@ -1,6 +1,7 @@
 // src/handlers/getMessages.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
+import { getMessagesSchema, validateRequest } from '../utils/validationSchemas';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,7 @@ const client = new GraphQLClient(
   process.env.HASURA_ENDPOINT || 'http://host.docker.internal:8085/v1/graphql',
   {
     headers: {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'default_dev_secret',
     },
   }
 );
@@ -29,10 +30,10 @@ const getUserInfo = async (userId: number, userType: string) => {
       }
     }
   `;
-  
+
   const result: any = await client.request(query, { id: userId });
   const user = result[`${table}_by_pk`];
-  
+
   return user ? { ...user, role: userType } : null;
 };
 
@@ -44,16 +45,20 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     const { chat_id, user_id } = JSON.parse(event.body || '{}');
 
-    if (!chat_id) {
+    // Validate request
+    const validation = validateRequest(getMessagesSchema, { chat_id, user_id });
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         body: JSON.stringify({
           success: false,
-          message: 'Missing required field: chat_id'
+          message: validation.error
         })
       };
     }
+
+    const { chat_id: validatedChatId } = validation.data;
 
     const query = `
       query GetMessages($chat_id: Int!) {
@@ -70,11 +75,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
     `;
 
-    const result: any = await client.request(query, { chat_id });
+    const result: any = await client.request(query, { chat_id: validatedChatId });
 
     const messages = await Promise.all(result.messages.map(async (msg: any) => {
       const senderInfo = await getUserInfo(msg.sender_id, msg.sender_type);
-      
+
       return {
         id: msg.id,
         sender_id: msg.sender_id,

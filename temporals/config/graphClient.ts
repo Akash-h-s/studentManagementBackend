@@ -2,7 +2,7 @@ import { getSdk } from "../generated/graphql";
 import { GraphQLClient } from "graphql-request";
 
 const endpoint = process.env.HASURA_ENDPOINT || "http://localhost:8080/v1/graphql";
-const secret = process.env.HASURA_SECRET || "myadminsecretkey";
+const secret = process.env.HASURA_ADMIN_SECRET || "default_dev_secret";
 
 console.log(endpoint);
 console.log(secret);

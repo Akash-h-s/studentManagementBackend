@@ -1,0 +1,191 @@
+# Chat Queries and Mutations
+
+# Get all chats for a user
+query GetChats($user_id: Int!) {
+  chats(
+    where: {
+      chat_participants: {
+        user_id: { _eq: $user_id }
+      }
+    }
+    order_by: { updated_at: desc }
+  ) {
+    id
+    type
+    name
+    updated_at
+    chat_participants {
+      user {
+        id
+        name
+        email
+      }
+    }
+    messages(order_by: { created_at: desc }, limit: 1) {
+      id
+      content
+      created_at
+      sender {
+        id
+        name
+      }
+    }
+  }
+}
+
+# Get all messages in a chat
+query GetMessages($chat_id: Int!) {
+  messages(
+    where: { chat_id: { _eq: $chat_id } }
+    order_by: { created_at: asc }
+  ) {
+    id
+    content
+    created_at
+    sender {
+      id
+      name
+    }
+  }
+}
+
+# Get all parents
+query GetAllParents {
+  parents(order_by: { name: asc }) {
+    id
+    name
+    email
+    students {
+      name
+    }
+  }
+}
+
+# Send a message
+mutation SendMessage($chat_id: Int!, $sender_id: Int!, $content: String!) {
+  insert_messages_one(
+    object: {
+      chat_id: $chat_id
+      sender_id: $sender_id
+      content: $content
+    }
+  ) {
+    id
+    content
+    created_at
+    sender {
+      id
+      name
+    }
+  }
+  update_chats_by_pk(
+    pk_columns: { id: $chat_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+}
+
+# Create a direct chat
+mutation CreateDirectChat($user1_id: Int!, $user2_id: Int!) {
+  insert_chats_one(
+    object: {
+      type: "direct"
+      chat_participants: {
+        data: [
+          { user_id: $user1_id }
+          { user_id: $user2_id }
+        ]
+      }
+    }
+  ) {
+    id
+    type
+    chat_participants {
+      user {
+        id
+        name
+        email
+      }
+    }
+  }
+}
+
+# Create a group chat
+mutation CreateGroupChat($name: String!, $participant_ids: [chat_participants_insert_input!]!) {
+  insert_chats_one(
+    object: {
+      type: "group"
+      name: $name
+      chat_participants: {
+        data: $participant_ids
+      }
+    }
+  ) {
+    id
+    type
+    name
+    chat_participants {
+      user {
+        id
+        name
+        email
+      }
+    }
+  }
+}
+
+# Search for existing chat between two users
+query FindDirectChat($user1_id: Int!, $user2_id: Int!) {
+  chats(
+    where: {
+      type: { _eq: "direct" }
+      _and: [
+        { chat_participants: { user_id: { _eq: $user1_id } } }
+        { chat_participants: { user_id: { _eq: $user2_id } } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+    type
+    chat_participants {
+      user {
+        id
+        name
+        email
+      }
+    }
+  }
+}
+
+# Get all teachers
+query GetAllTeachers {
+  teachers(order_by: { name: asc }) {
+    id
+    name
+    email
+  }
+}
+
+# Search parents by name or email
+query SearchParents($search: String!) {
+  parents(
+    where: {
+      _or: [
+        { name: { _ilike: $search } }
+        { email: { _ilike: $search } }
+      ]
+    }
+    order_by: { name: asc }
+    limit: 20
+  ) {
+    id
+    name
+    email
+    students {
+      name
+    }
+  }
+}

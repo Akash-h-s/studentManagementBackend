@@ -1,0 +1,6 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- ALTER TABLE students ADD COLUMN IF NOT EXISTS admin_id INTEGER;
+-- ALTER TABLE students
+-- ADD CONSTRAINT fk_students_admin
+-- FOREIGN KEY (admin_id) REFERENCES admins(id);

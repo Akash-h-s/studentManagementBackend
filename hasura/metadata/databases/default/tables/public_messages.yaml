@@ -5,3 +5,77 @@ object_relationships:
   - name: chat
     using:
       foreign_key_constraint_on: chat_id
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - chat_id
+        - sender_id
+        - sender_type
+        - content
+        - is_read
+        - created_at
+        - updated_at
+      filter: {}
+      allow_aggregations: true
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - chat_id
+        - sender_id
+        - sender_type
+        - content
+        - is_read
+        - created_at
+        - updated_at
+      filter:
+        chat:
+          chat_participants:
+            user_id:
+              _eq: X-Hasura-User-Id
+      allow_aggregations: true
+    comment: ""
+insert_permissions:
+  - role: teacher
+    permission:
+      check: {}
+      columns:
+        - chat_id
+        - sender_id
+        - sender_type
+        - content
+        - is_read
+    comment: ""
+  - role: parent
+    permission:
+      check: {}
+      columns:
+        - chat_id
+        - sender_id
+        - sender_type
+        - content
+        - is_read
+    comment: ""
+update_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - content
+        - is_read
+      filter: {}
+      check: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - is_read
+      filter:
+        chat:
+          chat_participants:
+            user_id:
+              _eq: X-Hasura-User-Id
+      check: {}
+    comment: ""

@@ -23,3 +23,37 @@ array_relationships:
         table:
           name: progress_cards
           schema: public
+insert_permissions:
+  - role: teacher
+    permission:
+      check: {}
+      columns:
+        - name
+        - academic_year
+    comment: ""
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - name
+        - academic_year
+      filter: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - academic_year
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - name
+        - academic_year
+      filter: {}
+      check: {}
+    comment: ""

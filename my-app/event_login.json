@@ -1,0 +1,7 @@
+{
+  "body": "{ \"role\": \"teacher\", \"identifier\": \"test@example.com\", \"password\": \"pass\" }",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json"
+  }
+}

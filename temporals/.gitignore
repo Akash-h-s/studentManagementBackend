@@ -1,3 +1,5 @@
 lib
 node_modules
-.env
+.envenv
+.env.test
+.env*.local

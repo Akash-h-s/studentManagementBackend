@@ -3,7 +3,7 @@ import { GraphQLClient } from 'graphql-request';
 import { getSdk } from '../generated/graphql';
 
 const HASURA_ENDPOINT = process.env.HASURA_ENDPOINT || 'http://localhost:8080/v1/graphql';
-const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey';
+const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET || 'default_dev_secret';
 
 // Create GraphQL client
 const client = new GraphQLClient(HASURA_ENDPOINT, {

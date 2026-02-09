@@ -1,6 +1,10 @@
+
+
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import bcrypt from "bcryptjs";
 import { gqlSdk } from "../config/graphClient";
+import { loginSchema, validateRequest } from "../utils/validationSchemas";
+import { generateToken } from "../utils/jwtUtils";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -16,9 +20,22 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
 
   try {
     const body = JSON.parse(event.body || "{}");
-    const { role, identifier, password, studentName } = body.input || body;
+    const args = body.input || body;
 
-    console.log(`Login attempt - Role: ${role}, Identifier: ${identifier}, Has Password: ${!!password}`);
+    // Validate request
+    const validation = validateRequest(loginSchema, args);
+    if (!validation.valid) {
+      return {
+        statusCode: 400,
+        headers: corsHeaders,
+        body: JSON.stringify({
+          success: false,
+          message: validation.error
+        })
+      };
+    }
+
+    const { role, identifier, password, studentName } = validation.data;
 
     let user: any = null;
     let isValidPassword = true;
@@ -156,7 +173,12 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         success: true,
         message: "Login successful",
         user: userData,
-        token: `jwt-${userData.id}-${Date.now()}`
+        token: generateToken({
+          id: userData.id,
+          email: userData.email,
+          role: role as 'admin' | 'teacher' | 'parent' | 'student',
+          name: userData.name
+        })
       })
     };
 

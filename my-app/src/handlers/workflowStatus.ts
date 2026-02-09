@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Connection, Client } from '@temporalio/client';
+import { workflowStatusSchema, validateRequest } from '../utils/validationSchemas';
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -28,14 +29,22 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     if (!event.body) throw new Error("Empty body");
     const { workflowId } = JSON.parse(event.body);
 
-    if (!workflowId) {
-      throw new Error("workflowId is required");
+    // Validate request
+    const validation = validateRequest(workflowStatusSchema, { workflowId });
+    if (!validation.valid) {
+      return {
+        statusCode: 400,
+        headers: cors,
+        body: JSON.stringify({
+          message: validation.error
+        })
+      };
     }
 
-    console.log(`🔍 Fetching status for workflow: ${workflowId}`);
+    const validatedWorkflowId = validation.data.workflowId;
 
     const client = await getTemporalClient();
-    const handle = client.workflow.getHandle(workflowId);
+    const handle = client.workflow.getHandle(validatedWorkflowId);
     const description = await handle.describe();
 
     let result = null;
@@ -55,7 +64,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     }
 
     const response = {
-      workflowId,
+      workflowId: validatedWorkflowId,
       status: description.status.name.toLowerCase(),
       recordsProcessed: result?.recordsProcessed || 0,
       emailsSent: result?.emailsSent || 0,

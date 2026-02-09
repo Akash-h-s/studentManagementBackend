@@ -12,7 +12,7 @@ const client = new GraphQLClient(
   process.env.HASURA_ENDPOINT || 'http://host.docker.internal:8085/v1/graphql',
   {
     headers: {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'default_dev_secret',
     },
   }
 );
@@ -63,7 +63,7 @@ export const getChatsHandler = async (event: APIGatewayProxyEvent): Promise<APIG
 
     const chats = result.chats.map((chat: any) => {
       let chatName = chat.name;
-      
+
       // For direct chats, use the other person's name
       if (chat.type === 'direct') {
         const otherUser = chat.chat_participants.find((p: any) => p.user.id !== user_id)?.user;

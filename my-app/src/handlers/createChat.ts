@@ -1,6 +1,7 @@
 // src/handlers/createChat.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
+import { createChatSchema, validateRequest } from '../utils/validationSchemas';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,7 @@ const client = new GraphQLClient(
   process.env.HASURA_ENDPOINT || 'http://host.docker.internal:8085/v1/graphql',
   {
     headers: {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'default_dev_secret',
     },
   }
 );
@@ -29,10 +30,10 @@ const getUserInfo = async (userId: number, userType: string) => {
       }
     }
   `;
-  
+
   const result: any = await client.request(query, { id: userId });
   const user = result[`${table}_by_pk`];
-  
+
   return user ? { ...user, role: userType } : null;
 };
 
@@ -44,19 +45,21 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     const body = JSON.parse(event.body || '{}');
     console.log('Received body:', JSON.stringify(body, null, 2)); // Debug log
-    
-    const { type, participants, name, created_by, members } = body;
 
-    if (!type) {
+    // Validate request
+    const validation = validateRequest(createChatSchema, body);
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         body: JSON.stringify({
           success: false,
-          message: 'Missing required field: type'
+          message: validation.error
         })
       };
     }
+
+    const { type, participants, name, created_by, members } = validation.data;
 
     if (type === 'direct') {
       if (!participants || participants.length !== 2) {
@@ -109,12 +112,12 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       if (checkResult.chats.length > 0) {
         const existingChat = checkResult.chats[0];
         const participantsList = [];
-        
+
         for (const p of existingChat.chat_participants) {
           const userInfo = await getUserInfo(p.user_id, p.user_type);
           if (userInfo) participantsList.push(userInfo);
         }
-        
+
         const otherUser = participantsList.find((u: any) => u.id !== user1);
 
         return {
@@ -156,7 +159,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         { user_id: user1, user_type: user1Type },
         { user_id: user2, user_type: user2Type }
       ];
-      
+
       console.log('Creating chat with participants:', participantsData); // Debug log
 
       const createResult: any = await client.request(createMutation, {
@@ -164,14 +167,14 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       });
 
       const chat = createResult.insert_chats_one;
-      
+
       // Get full participant details
       const participantsList = [];
       for (const p of chat.chat_participants) {
         const userInfo = await getUserInfo(p.user_id, p.user_type);
         if (userInfo) participantsList.push(userInfo);
       }
-      
+
       const otherUser = participantsList.find((u: any) => u.id !== user1);
 
       return {
@@ -188,7 +191,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           }
         })
       };
-      
+
     } else if (type === 'group') {
       if (!name || !created_by || !members || members.length < 2) {
         return {
@@ -202,9 +205,9 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
 
       // Create group chat
-     // In createChat.ts, update the group creation mutation:
+      // In createChat.ts, update the group creation mutation:
 
-const createGroupMutation = `
+      const createGroupMutation = `
   mutation CreateGroup($name: String!, $members: [chat_participants_insert_input!]!) {
     insert_chats_one(
       object: {
@@ -233,14 +236,14 @@ const createGroupMutation = `
         return { user_id: m, user_type: 'parent' };
       });
       const result: any = await client.request(createGroupMutation, {
-  name,
-  members: membersData
-});
-      
+        name,
+        members: membersData
+      });
+
 
       const chat = result.insert_chats_one;
-      
-     const participantsList = [];
+
+      const participantsList = [];
       for (const p of chat.chat_participants) {
         const userInfo = await getUserInfo(p.user_id, p.user_type);
         if (userInfo) participantsList.push(userInfo);

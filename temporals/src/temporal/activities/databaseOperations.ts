@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { gqlSdk } from "../../config/graphClient";
+import { gqlSdk } from "../../../config/graphClient";
 
 const generatePassword = () => Math.random().toString(36).slice(-8);
 

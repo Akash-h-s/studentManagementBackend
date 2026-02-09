@@ -14,3 +14,63 @@ object_relationships:
   - name: teacher
     using:
       foreign_key_constraint_on: teacher_id
+insert_permissions:
+  - role: teacher
+    permission:
+      check: {}
+      columns:
+        - student_id
+        - subject_id
+        - exam_id
+        - teacher_id
+        - marks_obtained
+        - max_marks
+        - grade
+        - remarks
+        - entered_at
+    comment: ""
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - student_id
+        - subject_id
+        - exam_id
+        - teacher_id
+        - marks_obtained
+        - max_marks
+        - grade
+        - remarks
+        - entered_at
+      filter: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - marks_obtained
+        - max_marks
+        - grade
+        - remarks
+        - entered_at
+        - subject_id
+        - exam_id
+      filter:
+        student:
+          parent_id:
+            _eq: X-Hasura-User-Id
+update_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - marks_obtained
+        - max_marks
+        - grade
+        - remarks
+        - teacher_id
+        - entered_at
+        - is_finalized
+      filter: {}
+      check: {}
+    comment: ""

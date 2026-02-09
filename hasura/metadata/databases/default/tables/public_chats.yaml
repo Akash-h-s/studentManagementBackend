@@ -20,3 +20,55 @@ array_relationships:
         table:
           name: messages
           schema: public
+insert_permissions:
+  - role: teacher
+    permission:
+      check: {}
+      columns:
+        - type
+        - name
+        - created_by
+    comment: ""
+  - role: parent
+    permission:
+      check: {}
+      columns:
+        - type
+        - name
+        - created_by
+    comment: ""
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - type
+        - name
+        - created_by
+        - created_at
+        - updated_at
+      filter: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - type
+        - name
+        - created_by
+        - created_at
+        - updated_at
+      filter:
+        chat_participants:
+          user_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+update_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - type
+        - name
+      filter: {}
+      check: {}
+    comment: ""

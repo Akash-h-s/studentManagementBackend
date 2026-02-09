@@ -1,6 +1,7 @@
 // src/handlers/getTeacherByEmail.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { gqlSdk } from '../config/graphClient';
+import { getTeacherByEmailSchema, validateRequest } from '../utils/validationSchemas';
 
 const CORS_HEADERS = {
   'Content-Type': 'application/json',
@@ -25,20 +26,24 @@ export const handler = async (
     const body = JSON.parse(event.body || '{}');
     const { email } = body;
 
-    if (!email) {
+    // Validate request
+    const validation = validateRequest(getTeacherByEmailSchema, { email });
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: CORS_HEADERS,
         body: JSON.stringify({
           success: false,
-          message: 'Email is required',
+          message: validation.error,
         }),
       };
     }
 
+    const validatedEmail = validation.data.email;
+
     // Fetch teacher from database
     const result = await gqlSdk.GetTeacherIdByEmail({ 
-      email: email.trim() 
+      email: validatedEmail.trim() 
     });
 
     if (!result.teachers || result.teachers.length === 0) {

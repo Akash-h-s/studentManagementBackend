@@ -1,10 +1,13 @@
 // src/handlers/fetchStudents.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { sdk } from '../lib/graphqlClient';
+import { fetchStudentsSchema, validateRequest } from '../utils/validationSchemas';
 
 interface FetchStudentsRequest {
   class_name: string;
   section_name: string;
+  subject_id?: number;
+  exam_id?: number;
 }
 
 // CORS headers
@@ -32,11 +35,10 @@ export const handler = async (
 
   try {
     const body: FetchStudentsRequest = JSON.parse(event.body || '{}');
-    const { class_name, section_name } = body;
-
-    console.log('Fetching students for:', { class_name, section_name });
-
-    if (!class_name || !section_name) {
+    
+    // Validate request
+    const validation = validateRequest(fetchStudentsSchema, body);
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: {
@@ -45,10 +47,12 @@ export const handler = async (
         },
         body: JSON.stringify({
           success: false,
-          message: 'Class name and section name are required',
+          message: validation.error,
         }),
       };
     }
+
+    const { class_name, section_name, subject_id, exam_id } = validation.data;
 
     // Use generated SDK query
     const result = await sdk.GetStudentsByClassSection({
@@ -58,6 +62,39 @@ export const handler = async (
 
     console.log('Found students:', result.students.length);
 
+    let studentsToReturn = result.students;
+
+    // If subject and exam provided, fetch existing marks and annotate/sort
+    if (subject_id && exam_id && studentsToReturn.length > 0) {
+      try {
+        const studentIds = studentsToReturn.map((s) => s.id);
+        const marksRes = await sdk.GetExistingMarks({
+          student_ids: studentIds,
+          subject_id,
+          exam_id,
+        });
+
+        const markMap = new Map<number, boolean>();
+        (marksRes.marks || []).forEach((m) => {
+          if (m.student_id != null) markMap.set(m.student_id, Boolean(m.is_finalized));
+        });
+
+        // annotate pending (true if no mark or not finalized)
+        studentsToReturn = studentsToReturn.map((s) => ({
+          ...s,
+          pending: !(markMap.get(s.id) === true),
+        }));
+
+        // put pending first
+        studentsToReturn.sort((a, b) => {
+          if (a.pending === b.pending) return 0;
+          return a.pending ? -1 : 1;
+        });
+      } catch (err) {
+        console.error('Error fetching existing marks:', err);
+      }
+    }
+
     return {
       statusCode: 200,
       headers: {
@@ -66,10 +103,10 @@ export const handler = async (
       },
       body: JSON.stringify({
         success: true,
-        count: result.students.length,
+        count: studentsToReturn.length,
         class_name,
         section_name,
-        students: result.students,
+        students: studentsToReturn,
       }),
     };
   } catch (error) {

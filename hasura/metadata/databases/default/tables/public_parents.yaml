@@ -16,3 +16,23 @@ array_relationships:
         table:
           name: students
           schema: public
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - name
+        - email
+        - phone
+        - address
+        - created_at
+      filter: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - email
+      filter: {}
+    comment: ""

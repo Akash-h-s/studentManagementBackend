@@ -1,6 +1,7 @@
 // src/handlers/sendMessage.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
+import { sendMessageSchema, validateRequest } from '../utils/validationSchemas';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,7 @@ const client = new GraphQLClient(
   process.env.HASURA_ENDPOINT || 'http://host.docker.internal:8085/v1/graphql',
   {
     headers: {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'myadminsecretkey',
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET || 'default_dev_secret',
     },
   }
 );
@@ -29,10 +30,10 @@ const getUserInfo = async (userId: number, userType: string) => {
       }
     }
   `;
-  
+
   const result: any = await client.request(query, { id: userId });
   const user = result[`${table}_by_pk`];
-  
+
   return user ? { ...user, role: userType } : null;
 };
 
@@ -44,29 +45,25 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   try {
     const { chat_id, sender_id, sender_type, content } = JSON.parse(event.body || '{}');
 
-    // Validate required fields
-    if (!chat_id || !sender_id || !sender_type || !content) {
+    // Validate request
+    const validation = validateRequest(sendMessageSchema, {
+      chat_id,
+      sender_id,
+      sender_type,
+      content
+    });
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
         body: JSON.stringify({
           success: false,
-          message: 'Missing required fields: chat_id, sender_id, sender_type, content'
+          message: validation.error
         })
       };
     }
 
-    // Validate sender_type
-    if (sender_type !== 'teacher' && sender_type !== 'parent') {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        body: JSON.stringify({
-          success: false,
-          message: 'Invalid sender_type. Must be "teacher" or "parent"'
-        })
-      };
-    }
+    const validatedData = validation.data;
 
     const mutation = `
       mutation SendMessage($chat_id: Int!, $sender_id: Int!, $sender_type: String!, $content: String!) {
@@ -94,10 +91,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     `;
 
     const result: any = await client.request(mutation, {
-      chat_id,
-      sender_id,
-      sender_type,
-      content
+      chat_id: validatedData.chat_id,
+      sender_id: validatedData.sender_id,
+      sender_type: validatedData.sender_type,
+      content: validatedData.content
     });
 
     const message = result.insert_messages_one;

@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- -- Add unique constraint for subjects (if not exists)
+-- ALTER TABLE subjects ADD CONSTRAINT subjects_name_class_name_key UNIQUE (name, class_name);
+--
+-- -- Add unique constraint for exams (if not exists)
+-- ALTER TABLE exams ADD CONSTRAINT exams_name_academic_year_key UNIQUE (name, academic_year);

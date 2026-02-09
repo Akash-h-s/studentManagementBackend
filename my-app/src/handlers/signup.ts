@@ -1,6 +1,8 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import bcrypt from "bcryptjs";
 import { gqlSdk } from "../config/graphClient";
+import { signupSchema, validateRequest } from "../utils/validationSchemas";
+import { generateToken } from "../utils/jwtUtils";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,18 +27,20 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const body = JSON.parse(event.body || "{}");
     const args = body.input || body;
 
-    const { schoolName, email, password, phone } = args;
-
-    if (!schoolName || !email || !password || !phone) {
+    // Validate request
+    const validation = validateRequest(signupSchema, args);
+    if (!validation.valid) {
       return {
         statusCode: 400,
         headers: corsHeaders,
         body: JSON.stringify({
           success: false,
-          message: "Missing required fields"
+          message: validation.error
         })
       };
     }
+
+    const { schoolName, email, password, phone } = validation.data;
     
     const hash = await bcrypt.hash(password, 8);
     
@@ -61,7 +65,12 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           email: email,
           role: "admin"
         },
-        token: "dummy-jwt-token" // TODO: Generate real JWT
+        token: generateToken({
+          id: result.insert_admins_one?.id?.toString() || '',
+          email: email,
+          role: 'admin',
+          name: schoolName
+        })
       })
     };
 

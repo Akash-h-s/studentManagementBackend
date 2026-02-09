@@ -13,3 +13,45 @@ array_relationships:
         table:
           name: marks
           schema: public
+delete_permissions:
+  - role: teacher
+    permission:
+      filter: {}
+    comment: ""
+insert_permissions:
+  - role: teacher
+    permission:
+      check: {}
+      columns:
+        - name
+        - class_name
+        - teacher_id
+    comment: ""
+select_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - name
+        - class_name
+        - teacher_id
+      filter: {}
+    comment: ""
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - class_name
+      filter: {}
+    comment: ""
+update_permissions:
+  - role: teacher
+    permission:
+      columns:
+        - name
+        - class_name
+        - teacher_id
+      filter: {}
+      check: {}
+    comment: ""

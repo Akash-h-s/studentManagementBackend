@@ -1,5 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { gqlSdk } from '../config/graphClient';
+import { marksEntrySchema, validateRequest } from '../utils/validationSchemas';
+import { verifyRequestToken } from '../utils/jwtUtils';
 
 /**
  * UTILS & VALIDATORS
@@ -77,12 +79,10 @@ const extractTeacherIdFromToken = (event: APIGatewayProxyEvent): number | null =
     const authHeader = event.headers['Authorization'] || event.headers['authorization'];
     if (!authHeader) return null;
 
-    const token = authHeader.replace('Bearer ', '');
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const payload = JSON.parse(Buffer.from(base64, 'base64').toString());
+    const tokenPayload = verifyRequestToken(authHeader);
+    if (!tokenPayload) return null;
     
-    return payload.teacher_id || payload.sub || null;
+    return parseInt(tokenPayload.id, 10);
   } catch (error) {
     console.error('Token extraction failed:', error);
     return null;
@@ -98,10 +98,12 @@ const findOrCreateClassSection = async (className: string, sectionName: string):
 };
 
 const findOrCreateSubject = async (name: string, className: string, teacherId: number): Promise<number> => {
-  const findResult = await gqlSdk.FindSubject({ name: name.trim(), class_name: className.trim() });
+  const normalized = name.trim().toLowerCase();
+  const classNorm = className.trim();
+  const findResult = await gqlSdk.FindSubject({ name: normalized, class_name: classNorm });
   if (findResult.subjects.length > 0) return findResult.subjects[0].id;
 
-  const createResult = await gqlSdk.CreateSubject({ name: name.trim(), class_name: className.trim(), teacher_id: teacherId });
+  const createResult = await gqlSdk.CreateSubject({ name: normalized, class_name: classNorm, teacher_id: teacherId });
   if (!createResult.insert_subjects_one?.id) throw new Error('Subject creation failed');
   return createResult.insert_subjects_one.id;
 };
@@ -141,13 +143,21 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const validationErrors: ValidationError[] = [];
     const validEntries = marksEntries.map((mark, index) => {
       mark.teacher_id = teacherId; // Force security
+      // Normalize subject to lowercase for consistent lookup/storage
+      if (mark.subject_name) mark.subject_name = mark.subject_name.trim().toLowerCase();
+      if (mark.class_name) mark.class_name = mark.class_name.trim();
+      if (mark.exam_name) mark.exam_name = mark.exam_name.trim();
+
       const v = validateMarksEntry(mark);
       if (!v.valid) validationErrors.push({ index, student_id: mark.student_id, errors: v.errors });
       if (!mark.grade) mark.grade = calculateGrade(mark.marks_obtained, mark.max_marks);
       return mark;
     });
 
-    if (action === 'validate' || (validationErrors.length > 0 && action !== 'validate')) {
+    // If caller asked only to validate, or there are validation errors,
+    // return validation results. Simplified to avoid TypeScript unintended
+    // comparison warnings between disjoint union members.
+    if (action === 'validate' || validationErrors.length > 0) {
       return {
         statusCode: validationErrors.length > 0 ? 400 : 200,
         headers: CORS_HEADERS,

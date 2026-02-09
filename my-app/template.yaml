@@ -1,0 +1,348 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  HasuraAdminSecret:
+    Type: String
+    Default: myadminsecretkey
+  MailgunApiKey:
+    Type: String
+    Default: 'default_key_for_dev'
+
+
+Globals:
+  Function:
+    Timeout: 60
+    Runtime: nodejs18.x
+    MemorySize: 512
+    Environment:
+      Variables:
+        TEMPORAL_ADDRESS: host.docker.internal:7233
+        MAILGUN_API_KEY: !Ref MailgunApiKey        MAILGUN_DOMAIN: sandboxad476066cc9a46768d9900ac0a95a8e0.mailgun.org
+        HASURA_ENDPOINT: "http://host.docker.internal:8085/v1/graphql"
+        HASURA_ADMIN_SECRET: !Ref HasuraAdminSecret
+
+Resources:
+  # API Gateway with CORS
+  StudentAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Dev
+      Cors:
+        AllowHeaders: "'Content-Type, Authorization'"
+        AllowMethods: "'POST, GET, OPTIONS'"
+        AllowOrigin: "'*'"
+
+  # Signup Function
+  SignupAction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/signup.handler
+      Events:
+        SignupApi:
+          Type: Api
+          Properties:
+            Path: /hasura/signup
+            Method: post
+            RestApiId: !Ref StudentAPI
+      Environment:
+        Variables:
+          HASURA_ADMIN_SECRET: !Ref HasuraAdminSecret
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/signup.ts
+ 
+  # Login Function
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/login.handler 
+      Events:
+        LoginApi:
+          Type: Api
+          Properties:
+            Path: /hasura/login
+            Method: post
+            RestApiId: !Ref StudentAPI
+      Environment:
+        Variables:
+          HASURA_ADMIN_SECRET: !Ref HasuraAdminSecret
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/login.ts
+          
+  # Upload Function
+  UploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/upload.handler
+      Events:
+        UploadApi:
+          Type: Api
+          Properties:
+            Path: /hasura/upload
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/upload.ts
+          
+
+  # Fetch Students Function
+  FetchStudentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/fetchStudents.handler
+      Events:
+        FetchStudentsApi:
+          Type: Api
+          Properties:
+            Path: /hasura/fetch-students
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/fetchStudents.ts
+
+  # Marks Entry Function
+  MarksEntryFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/marksEntry.handler
+      Events:
+        MarksEntryApi:
+          Type: Api
+          Properties:
+            Path: /hasura/marks-entry
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/marksEntry.ts
+
+  # Search Parents Function
+  SearchParentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/searchParents.handler
+      Events:
+        SearchParentsApi:
+          Type: Api
+          Properties:
+            Path: /hasura/search-parents
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/searchParents.ts
+
+  # Create Chat Function
+  CreateChatFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/createChat.handler
+      Events:
+        CreateChatApi:
+          Type: Api
+          Properties:
+            Path: /hasura/create-chat
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/createChat.ts
+
+  # Create Group Function
+  CreateGroupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/createChat.handler
+      Events:
+        CreateGroupApi:
+          Type: Api
+          Properties:
+            Path: /hasura/create-group
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/createChat.ts
+  # Get Student Details Function
+  # Get Student Details Function
+  GetStudentDetailsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/getStudentDetails.handler
+      Events:
+        GetStudentDetailsApi:
+          Type: Api
+          Properties:
+            Path: /hasura/get-student-details
+            Method: post
+            RestApiId: !Ref StudentAPI
+        GetStudentDetailsOptions:
+          Type: Api
+          Properties:
+            Path: /hasura/get-student-details
+            Method: options
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/getStudentDetails.ts
+
+  # Get Chats Function
+  # Get All Parents Function
+  # Get Teacher By Email Function
+  GetTeacherByEmailFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/getTeacherByEmail.handler
+      Events:
+        GetTeacherByEmailApi:
+          Type: Api
+          Properties:
+            Path: /hasura/get-teacher-by-email
+            Method: post
+            RestApiId: !Ref StudentAPI
+        # This handles the browser's CORS preflight check
+        GetTeacherByEmailOptions:
+          Type: Api
+          Properties:
+            Path: /hasura/get-teacher-by-email
+            Method: options
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/getTeacherByEmail.ts
+  GetChatsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/getChats.handler
+      Events:
+        GetChatsApi:
+          Type: Api
+          Properties:
+            Path: /hasura/get-chats
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/getChats.ts
+
+  # Get Messages Function
+  GetMessagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/getMessages.handler
+      Events:
+        GetMessagesApi:
+          Type: Api
+          Properties:
+            Path: /hasura/get-messages
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/getMessages.ts
+
+  # Send Message Function
+  SendMessageFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/sendMessage.handler
+      Events:
+        SendMessageApi:
+          Type: Api
+          Properties:
+            Path: /hasura/send-message
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/sendMessage.ts
+
+  # Get All Parents Function
+  GetAllParentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/getAllParents.handler
+      Events:
+        GetAllParentsApi:
+          Type: Api
+          Properties:
+            Path: /hasura/get-all-parents
+            Method: post
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/getAllParents.ts
+  WorkflowStatusFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/workflowStatus.handler
+      Events:
+        WorkflowStatusApi:
+          Type: Api
+          Properties:
+            Path: /hasura/workflow-status
+            Method: post
+            RestApiId: !Ref StudentAPI
+        WorkflowStatusOptions:
+          Type: Api
+          Properties:
+            Path: /hasura/workflow-status
+            Method: options
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/workflowStatus.ts
+
+Outputs:
+  ApiEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${StudentAPI}.execute-api.${AWS::Region}.amazonaws.com/Dev"  
