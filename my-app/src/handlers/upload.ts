@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { Connection, Client } from '@temporalio/client';
+import { withAuth } from "../utils/authMiddleware";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -19,22 +20,31 @@ async function getTemporalClient(): Promise<Client> {
   return temporalClient;
 }
 
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers: cors, body: "" };
-
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
     if (!event.body) throw new Error("Empty body");
     const { class: className, section, fileBase64, filename, type } = JSON.parse(event.body);
 
-    console.log(`📤 Starting upload workflow for type: ${type}`);
+    // Verify user is admin
+    if (user.role !== 'admin') {
+      return {
+        statusCode: 403,
+        headers: cors,
+        body: JSON.stringify({ message: "Forbidden: Admin access required" }),
+      };
+    }
+
+    const adminId = user.id;
+
+    console.log(`📤 Starting upload workflow for type: ${type} by Admin: ${adminId}`);
 
     // Get Temporal client
     const client = await getTemporalClient();
 
     // Start workflow
     const workflowId = `upload-${type}-${Date.now()}`;
-    
-    const handle = await client.workflow.start('uploadWorkflow', {
+
+    const handle = await client.workflow.start("uploadWorkflow", {
       taskQueue: 'upload-queue',
       workflowId,
       args: [{
@@ -43,6 +53,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         filename,
         className,
         section,
+        adminId: parseInt(adminId), // Ensure it's a number
       }],
     });
 
@@ -53,6 +64,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       statusCode: 200,
       headers: cors,
       body: JSON.stringify({
+        success: true,
         message: "Upload workflow started",
         workflowId: handle.workflowId,
       }),
@@ -61,11 +73,14 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
   } catch (err: any) {
     console.error("❌ Handler Error:", err.message);
     console.error("Stack trace:", err.stack);
-    
+
     return {
       statusCode: 500,
       headers: cors,
-      body: JSON.stringify({ message: err.message }),
+      body: JSON.stringify({
+        success: false,
+        message: err.message
+      }),
     };
   }
-};
+});

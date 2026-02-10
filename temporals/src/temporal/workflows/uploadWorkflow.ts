@@ -25,6 +25,7 @@ export interface UploadWorkflowInput {
   filename: string;
   className?: string;
   section?: string;
+  adminId: number;
 }
 
 export interface UploadWorkflowResult {
@@ -37,7 +38,7 @@ export interface UploadWorkflowResult {
 
 export async function uploadWorkflow(input: UploadWorkflowInput): Promise<UploadWorkflowResult> {
   console.log(`🚀 Starting ${input.type} upload workflow`);
-  
+
   // Step 1: Parse Excel
   const rows = await parseExcelFile({
     fileBase64: input.fileBase64,
@@ -47,19 +48,21 @@ export async function uploadWorkflow(input: UploadWorkflowInput): Promise<Upload
   if (input.type === 'student') {
     // Student workflow
     const validatedData = await validateStudentData(rows);
-    
+
     const classSectionId = await createOrGetClassSection({
       className: input.className!,
       section: input.section!,
+      adminId: input.adminId
     });
-    
+
     const { count, passwords, studentNames } = await insertStudents({
       studentData: validatedData,
       classSectionId,
+      adminId: input.adminId
     });
-    
+
     const emailResults = await sendBulkParentEmails(passwords, studentNames);
-    
+
     return {
       success: true,
       recordsProcessed: count,
@@ -67,15 +70,18 @@ export async function uploadWorkflow(input: UploadWorkflowInput): Promise<Upload
       emailsFailed: emailResults.failed,
       message: `Successfully processed ${count} students`,
     };
-    
+
   } else if (input.type === 'teacher') {
     // Teacher workflow
     const validatedData = await validateTeacherData(rows);
-    
-    const { count, passwords, teacherNames } = await insertTeachers(validatedData);
-    
+
+    const { count, passwords, teacherNames } = await insertTeachers({
+      teacherData: validatedData,
+      adminId: input.adminId
+    });
+
     const emailResults = await sendBulkTeacherEmails(passwords, teacherNames);
-    
+
     return {
       success: true,
       recordsProcessed: count,
@@ -84,6 +90,6 @@ export async function uploadWorkflow(input: UploadWorkflowInput): Promise<Upload
       message: `Successfully processed ${count} teachers`,
     };
   }
-  
+
   throw new Error('Invalid upload type');
 }

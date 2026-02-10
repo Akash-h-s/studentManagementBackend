@@ -76,7 +76,10 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     return {
       statusCode: 200,
       headers: cors,
-      body: JSON.stringify(response),
+      body: JSON.stringify({
+        success: true,
+        ...response
+      }),
     };
 
   } catch (err: any) {
@@ -86,7 +89,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       return {
         statusCode: 404,
         headers: cors,
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           message: "Workflow not found",
         }),
       };

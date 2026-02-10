@@ -55,7 +55,11 @@
   },
   "description": "Temporal workflow project for student management system",
   "main": "dist/index.js",
-  "keywords": ["temporal", "workflow", "student-management"],
+  "keywords": [
+    "temporal",
+    "workflow",
+    "student-management"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs"

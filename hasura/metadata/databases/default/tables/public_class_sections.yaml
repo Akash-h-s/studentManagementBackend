@@ -1,6 +1,10 @@
 table:
   name: class_sections
   schema: public
+object_relationships:
+  - name: creator_admin
+    using:
+      foreign_key_constraint_on: created_by_admin_id
 array_relationships:
   - name: students
     using:
@@ -9,7 +13,28 @@ array_relationships:
         table:
           name: students
           schema: public
+  - name: subjects
+    using:
+      manual_configuration:
+        column_mapping:
+          class_name: class_name
+        insertion_order: null
+        remote_table:
+          name: subjects
+          schema: public
+
 select_permissions:
+  - role: parent
+    permission:
+      columns:
+        - id
+        - class_name
+        - section_name
+        - display_name
+      filter:
+        students:
+          parent_id:
+            _eq: X-Hasura-User-Id
   - role: teacher
     permission:
       columns:
@@ -18,5 +43,13 @@ select_permissions:
         - section_name
         - display_name
         - created_at
-      filter: {}
+      filter:
+        _and:
+          - subjects:
+              teacher_id:
+                _eq: X-Hasura-User-Id
+          - creator_admin:
+              teachers:
+                id:
+                  _eq: X-Hasura-User-Id
     comment: ""
