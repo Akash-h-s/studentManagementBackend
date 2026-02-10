@@ -161,7 +161,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       id: user.id?.toString() || '',
       name: user.name || user.school_name || '',
       email: user.email || identifier,
-      role: role
+      role: role,
+      schoolName: user.school_name || user.creator_admin?.school_name || ''
     };
 
     console.log('Returning user data:', userData);
@@ -175,7 +176,8 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           id: userData.id,
           email: userData.email,
           role: role as 'admin' | 'teacher' | 'parent' | 'student',
-          name: userData.name
+          name: userData.name,
+          schoolName: userData.schoolName
         }),
         user: userData,
         message: "Login successful"

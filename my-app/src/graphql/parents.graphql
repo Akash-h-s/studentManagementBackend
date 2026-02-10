@@ -17,6 +17,9 @@ query GetTeacherByEmail($email: String!) {
     email
     password_hash
     phone
+    creator_admin {
+      school_name
+    }
   }
 }
 
