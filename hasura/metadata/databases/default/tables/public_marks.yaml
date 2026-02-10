@@ -30,21 +30,6 @@ insert_permissions:
         - entered_at
     comment: ""
 select_permissions:
-  - role: teacher
-    permission:
-      columns:
-        - id
-        - student_id
-        - subject_id
-        - exam_id
-        - teacher_id
-        - marks_obtained
-        - max_marks
-        - grade
-        - remarks
-        - entered_at
-      filter: {}
-    comment: ""
   - role: parent
     permission:
       columns:
@@ -60,6 +45,24 @@ select_permissions:
         student:
           parent_id:
             _eq: X-Hasura-User-Id
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - student_id
+        - subject_id
+        - exam_id
+        - teacher_id
+        - marks_obtained
+        - max_marks
+        - grade
+        - remarks
+        - entered_at
+      filter:
+        subject:
+          teacher_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
 update_permissions:
   - role: teacher
     permission:

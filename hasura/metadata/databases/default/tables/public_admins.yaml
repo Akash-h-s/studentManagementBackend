@@ -2,6 +2,55 @@ table:
   name: admins
   schema: public
 array_relationships:
+  - name: class_sections
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: class_sections
+          schema: public
+  - name: exams
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: exams
+          schema: public
+  - name: parents
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: parents
+          schema: public
+  - name: students
+    using:
+      foreign_key_constraint_on:
+        column: admin_id
+        table:
+          name: students
+          schema: public
+  - name: studentsByCreatedByAdminId
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: students
+          schema: public
+  - name: subjects
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: subjects
+          schema: public
+  - name: teachers
+    using:
+      foreign_key_constraint_on:
+        column: created_by_admin_id
+        table:
+          name: teachers
+          schema: public
   - name: uploads
     using:
       foreign_key_constraint_on:

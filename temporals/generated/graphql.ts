@@ -1240,6 +1240,7 @@ export type Class_Sections_Inc_Input = {
 export type Class_Sections_Insert_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   section_name?: InputMaybe<Scalars['String']['input']>;
   students?: InputMaybe<Students_Arr_Rel_Insert_Input>;
@@ -4149,6 +4150,7 @@ export type Parents_Inc_Input = {
 export type Parents_Insert_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -5417,6 +5419,7 @@ export type Students_Insert_Input = {
   class_section?: InputMaybe<Class_Sections_Obj_Rel_Insert_Input>;
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   dob?: InputMaybe<Scalars['date']['input']>;
   emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
   gender?: InputMaybe<Scalars['String']['input']>;
@@ -6783,6 +6786,7 @@ export type Teachers_Inc_Input = {
 export type Teachers_Insert_Input = {
   chats?: InputMaybe<Chats_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7855,7 +7859,7 @@ export const InsertStudentsDocument = gql`
     mutation InsertStudents($list: [students_insert_input!]!) {
   insert_students(
     objects: $list
-    on_conflict: {constraint: students_admission_no_key, update_columns: [name, gender, dob, class_section_id]}
+    on_conflict: {constraint: students_admission_no_key, update_columns: [name, gender, dob, class_section_id, created_by_admin_id]}
   ) {
     affected_rows
     returning {
@@ -7876,7 +7880,7 @@ export const InsertTeachersDocument = gql`
 }
     `;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, _variables) => action();
