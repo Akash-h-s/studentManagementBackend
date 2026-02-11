@@ -20,8 +20,14 @@ array_relationships:
         table:
           name: students
           schema: public
-insert_permissions:
 select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+      filter: {}
+      allow_aggregations: true
+    comment: Allow counts on landing page
   - role: parent
     permission:
       columns:
@@ -53,10 +59,3 @@ select_permissions:
                 id:
                   _eq: X-Hasura-User-Id
     comment: ""
-  - role: anonymous
-    permission:
-      columns:
-        - id
-      filter: {}
-      allow_aggregations: true
-    comment: "Allow counts on landing page"

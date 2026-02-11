@@ -2,9 +2,6 @@ table:
   name: students
   schema: public
 object_relationships:
-  - name: admin
-    using:
-      foreign_key_constraint_on: admin_id
   - name: class_section
     using:
       foreign_key_constraint_on: class_section_id
@@ -36,8 +33,14 @@ array_relationships:
         table:
           name: progress_cards
           schema: public
-insert_permissions:
 select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+      filter: {}
+      allow_aggregations: true
+    comment: Allow counts on landing page
   - role: parent
     permission:
       columns:
@@ -71,10 +74,3 @@ select_permissions:
                 id:
                   _eq: X-Hasura-User-Id
     comment: ""
-  - role: anonymous
-    permission:
-      columns:
-        - id
-      filter: {}
-      allow_aggregations: true
-    comment: "Allow counts on landing page"

@@ -23,13 +23,6 @@ array_relationships:
         table:
           name: parents
           schema: public
-  - name: students
-    using:
-      foreign_key_constraint_on:
-        column: admin_id
-        table:
-          name: students
-          schema: public
   - name: studentsByCreatedByAdminId
     using:
       foreign_key_constraint_on:
@@ -65,4 +58,4 @@ select_permissions:
         - id
       filter: {}
       allow_aggregations: true
-    comment: "Allow counts on landing page"
+    comment: Allow counts on landing page
