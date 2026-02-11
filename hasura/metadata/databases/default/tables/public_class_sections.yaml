@@ -53,3 +53,10 @@ select_permissions:
                 id:
                   _eq: X-Hasura-User-Id
     comment: ""
+  - role: anonymous
+    permission:
+      columns:
+        - id
+      filter: {}
+      allow_aggregations: true
+    comment: "Allow counts on landing page"
