@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 
-const JWT_SECRET: jwt.Secret = process.env.JWT_SECRET || 'default_dev_secret';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 
 export interface TokenPayload {
@@ -8,6 +8,7 @@ export interface TokenPayload {
   email: string;
   role: 'admin' | 'teacher' | 'parent' | 'student';
   name?: string;
+  schoolName?: string;
 }
 
 /**

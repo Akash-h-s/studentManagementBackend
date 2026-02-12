@@ -2,6 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
 import { getChatsSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,28 +38,10 @@ const getUserInfo = async (userId: number, userType: string) => {
   return user ? { ...user, role: userType } : null;
 };
 
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: corsHeaders, body: '' };
-  }
-
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
-    const { user_id } = JSON.parse(event.body || '{}');
-
-    // Validate request
-    const validation = validateRequest(getChatsSchema, { user_id });
-    if (!validation.valid) {
-      return {
-        statusCode: 400,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        body: JSON.stringify({
-          success: false,
-          message: validation.error
-        })
-      };
-    }
-
-    const validatedUserId = validation.data.user_id;
+    // Get user_id from the validated JWT token for security
+    const user_id = parseInt(user.id);
 
     const query = `
       query GetChats($user_id: Int!) {
@@ -88,7 +71,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
     `;
 
-    const result: any = await client.request(query, { user_id: validatedUserId });
+    const result: any = await client.request(query, { user_id });
 
     const chats = await Promise.all(result.chats.map(async (chat: any) => {
       let chatName = chat.name;
@@ -154,4 +137,4 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       })
     };
   }
-};
+});

@@ -1,6 +1,10 @@
 table:
   name: teachers
   schema: public
+object_relationships:
+  - name: creator_admin
+    using:
+      foreign_key_constraint_on: created_by_admin_id
 array_relationships:
   - name: bulk_uploads
     using:
@@ -31,6 +35,26 @@ array_relationships:
           name: subjects
           schema: public
 select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+      filter: {}
+      allow_aggregations: true
+    comment: Allow counts on landing page
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - email
+      filter:
+        subjects:
+          class_sections:
+            students:
+              parent_id:
+                _eq: X-Hasura-User-Id
+    comment: ""
   - role: teacher
     permission:
       columns:
@@ -41,13 +65,7 @@ select_permissions:
         - qualification
         - is_active
         - created_at
-      filter: {}
-    comment: ""
-  - role: parent
-    permission:
-      columns:
-        - id
-        - name
-        - email
-      filter: {}
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
     comment: ""

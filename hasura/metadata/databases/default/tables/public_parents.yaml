@@ -1,6 +1,10 @@
 table:
   name: parents
   schema: public
+object_relationships:
+  - name: creator_admin
+    using:
+      foreign_key_constraint_on: created_by_admin_id
 array_relationships:
   - name: emails
     using:
@@ -17,6 +21,23 @@ array_relationships:
           name: students
           schema: public
 select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - id
+      filter: {}
+      allow_aggregations: true
+    comment: Allow counts on landing page
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+    comment: ""
   - role: teacher
     permission:
       columns:
@@ -26,13 +47,15 @@ select_permissions:
         - phone
         - address
         - created_at
-      filter: {}
-    comment: ""
-  - role: parent
-    permission:
-      columns:
-        - id
-        - name
-        - email
-      filter: {}
+      filter:
+        _and:
+          - students:
+              class_section:
+                subjects:
+                  teacher_id:
+                    _eq: X-Hasura-User-Id
+          - creator_admin:
+              teachers:
+                id:
+                  _eq: X-Hasura-User-Id
     comment: ""

@@ -18,7 +18,7 @@ export const loginSchema = Joi.object({
 export const signupSchema = Joi.object({
   schoolName: Joi.string().min(2).required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().min(8).required(),
   phone: Joi.string().pattern(/^[0-9]{10}$/).required(),
 });
 

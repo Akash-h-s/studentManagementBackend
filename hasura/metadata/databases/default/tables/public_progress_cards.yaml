@@ -8,3 +8,38 @@ object_relationships:
   - name: student
     using:
       foreign_key_constraint_on: student_id
+select_permissions:
+  - role: parent
+    permission:
+      columns:
+        - id
+        - student_id
+        - exam_id
+        - total_marks
+        - percentage
+        - grade
+        - pdf_url
+        - generated_at
+      filter:
+        student:
+          parent_id:
+            _eq: X-Hasura-User-Id
+    comment: ""
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - student_id
+        - exam_id
+        - total_marks
+        - percentage
+        - grade
+        - pdf_url
+        - generated_at
+      filter:
+        student:
+          class_section:
+            subjects:
+              teacher_id:
+                _eq: X-Hasura-User-Id
+    comment: ""
