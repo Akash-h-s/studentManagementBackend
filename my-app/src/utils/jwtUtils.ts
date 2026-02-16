@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 
 const JWT_SECRET: string = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
+const JWT_EXPIRY = process.env.JWT_EXPIRY || '30m';
 
 export interface TokenPayload {
   id: string;
@@ -11,9 +11,7 @@ export interface TokenPayload {
   schoolName?: string;
 }
 
-/**
- * Generate JWT token
- */
+
 export const generateToken = (payload: TokenPayload): string => {
   const hasuraClaims = {
     "x-hasura-allowed-roles": ["admin", "teacher", "parent", "student"],
@@ -29,9 +27,7 @@ export const generateToken = (payload: TokenPayload): string => {
   });
 };
 
-/**
- * Verify and decode JWT token
- */
+
 export const verifyToken = (token: string): TokenPayload | null => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload;
@@ -42,9 +38,7 @@ export const verifyToken = (token: string): TokenPayload | null => {
   }
 };
 
-/**
- * Extract token from Authorization header
- */
+
 export const extractToken = (authHeader?: string): string | null => {
   if (!authHeader) return null;
   const parts = authHeader.split(' ');
@@ -53,10 +47,6 @@ export const extractToken = (authHeader?: string): string | null => {
   }
   return null;
 };
-
-/**
- * Verify request has valid token
- */
 export const verifyRequestToken = (authHeader?: string): TokenPayload | null => {
   const token = extractToken(authHeader);
   if (!token) return null;

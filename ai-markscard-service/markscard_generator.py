@@ -286,45 +286,57 @@ def generate_markscard():
         # Try to fetch actual school name from Hasura if default is sent
         if data.get('school_name') == 'ACADEMIC INSTITUTION' or not data.get('school_name'):
             try:
-                query = """
-                query GetStudentSchool($admission_no: String!) {
+                # Step 1: Get created_by_admin_id from student
+                query_student = """
+                query GetStudentAdminId($admission_no: String!) {
                   students(where: {admission_no: {_eq: $admission_no}}, limit: 1) {
-                    creator_admin {
-                      school_name
-                    }
-                    admin {
-                      school_name
-                    }
+                    created_by_admin_id
                   }
                 }
                 """
-                response = requests.post(
+                
+                resp_student = requests.post(
                     HASURA_URL,
-                    json={'query': query, 'variables': {'admission_no': data['admission_no']}},
+                    json={'query': query_student, 'variables': {'admission_no': data['admission_no']}},
                     headers={'x-hasura-admin-secret': HASURA_ADMIN_SECRET},
                     timeout=5
                 )
-                if response.status_code == 200:
-                    res_data = response.json()
-                    students = res_data.get('data', {}).get('students', [])
-                    if students:
-                        student = students[0]
-                        # Prioritize creator_admin, fallback to admin
-                        school = None
-                        if student.get('creator_admin'):
-                            school = student['creator_admin']['school_name']
-                        elif student.get('admin'):
-                            school = student['admin']['school_name']
+                
+                if resp_student.status_code == 200:
+                    student_data = resp_student.json().get('data', {}).get('students', [])
+                    if student_data:
+                        admin_id = student_data[0].get('created_by_admin_id')
                         
-                        if school:
-                            data['school_name'] = school
-                            print(f"DEBUG: Successfully fetched school name: {data['school_name']}")
+                        if admin_id:
+                            # Step 2: Get school_name from admins table
+                            query_school = """
+                            query GetSchoolName($id: Int!) {
+                              admins_by_pk(id: $id) {
+                                school_name
+                              }
+                            }
+                            """
+                            
+                            resp_school = requests.post(
+                                HASURA_URL,
+                                json={'query': query_school, 'variables': {'id': admin_id}},
+                                headers={'x-hasura-admin-secret': HASURA_ADMIN_SECRET},
+                                timeout=5
+                            )
+                            
+                            if resp_school.status_code == 200:
+                                school_data = resp_school.json().get('data', {}).get('admins_by_pk', {})
+                                if school_data and school_data.get('school_name'):
+                                    data['school_name'] = school_data['school_name']
+                                    print(f"DEBUG: Successfully fetched school name from admin ID {admin_id}: {data['school_name']}")
+                                else:
+                                    print(f"DEBUG: No school name found for admin ID {admin_id}")
                         else:
-                            print(f"DEBUG: No school name found in relationships for admission_no: {data['admission_no']}")
+                            print(f"DEBUG: created_by_admin_id is null for admission_no: {data['admission_no']}")
                     else:
                         print(f"DEBUG: No student found for admission_no: {data['admission_no']}")
                 else:
-                    print(f"DEBUG: Hasura query failed with status {response.status_code}")
+                    print(f"DEBUG: Hasura student query failed with status {resp_student.status_code}")
             except Exception as e:
                 print(f"DEBUG: Error fetching school name from Hasura: {str(e)}")
         

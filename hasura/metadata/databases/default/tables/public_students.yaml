@@ -50,6 +50,7 @@ select_permissions:
         - class_section_id
         - parent_id
         - is_active
+        - created_by_admin_id
       filter:
         parent_id:
           _eq: X-Hasura-User-Id

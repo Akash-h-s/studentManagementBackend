@@ -59,3 +59,18 @@ select_permissions:
       filter: {}
       allow_aggregations: true
     comment: Allow counts on landing page
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - email
+        - school_name
+        - school_address
+        - school_phone
+        - school_logo_url
+      filter:
+        studentsByCreatedByAdminId:
+          parent_id:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: false

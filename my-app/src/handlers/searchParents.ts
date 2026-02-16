@@ -2,6 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
 import { searchParentsSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,7 +19,7 @@ const client = new GraphQLClient(
   }
 );
 
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   // Handle OPTIONS request for CORS
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -95,7 +96,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
           try {
             const res: any = await client.request(chatCheckQuery, { user1: current_user_id, user2: p.id });
             if (res?.chats?.length > 0) p.chat_id = res.chats[0].id;
-          } catch (err) {
+          } catch (err: any) {
             // ignore per-parent chat lookup errors
             console.warn('chat lookup failed for parent', p.id, err?.message);
           }
@@ -170,7 +171,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         try {
           const res: any = await client.request(chatCheckQuery, { user1: current_user_id, user2: p.id });
           if (res?.chats?.length > 0) p.chat_id = res.chats[0].id;
-        } catch (err) {
+        } catch (err: any) {
           console.warn('chat lookup failed for parent', p.id, err?.message);
         }
       }
@@ -196,4 +197,4 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       })
     };
   }
-};
+});

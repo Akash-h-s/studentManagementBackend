@@ -44,15 +44,42 @@ export const handler = withAuth(async (
       };
     }
 
-    const { class_name, section_name, subject_id, exam_id } = validation.data;
+    let { class_name, section_name, subject_id, exam_id } = validation.data;
 
     // Use generated SDK query
-    const result = await sdk.GetStudentsByClassSection({
+    let result = await sdk.GetStudentsByClassSection({
       class_name: class_name.trim(),
       section_name: section_name.trim(),
     });
 
     console.log('Found students:', result.students.length);
+
+    // Fallback logic for combined class-section strings (e.g. "10-A") or when section is empty
+    if (result.students.length === 0 && (!section_name || !section_name.trim()) && class_name.trim().includes('-')) {
+      const parts = class_name.trim().split('-');
+      const potentialSection = parts.pop();
+      const potentialClass = parts.join('-');
+
+      if (potentialClass && potentialSection) {
+        console.log(`Fallback: Querying with class="${potentialClass}" section="${potentialSection}"`);
+        try {
+          const fallbackResult = await sdk.GetStudentsByClassSection({
+            class_name: potentialClass,
+            section_name: potentialSection
+          });
+
+          if (fallbackResult.students.length > 0) {
+            console.log(`Fallback successful: Found ${fallbackResult.students.length} students`);
+            result = fallbackResult;
+            // Update variables so response reflects what was found
+            class_name = potentialClass;
+            section_name = potentialSection;
+          }
+        } catch (err) {
+          console.warn('Fallback query failed:', err);
+        }
+      }
+    }
 
     let studentsToReturn: any[] = result.students;
 
