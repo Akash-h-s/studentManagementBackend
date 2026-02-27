@@ -1,3 +1,7 @@
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: '1', role: 'teacher' }),
+}));
+
 import { handler } from '../handlers/searchParents';
 import { GraphQLClient } from 'graphql-request';
 

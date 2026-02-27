@@ -12,12 +12,10 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-/**
- * Middleware to validate JWT token and inject user payload into handler
- */
+
 export const withAuth = (handler: AuthenticatedHandler) => {
   return async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    // Handle OPTIONS request for CORS
+
     if (event.httpMethod === 'OPTIONS') {
       return {
         statusCode: 200,
@@ -26,7 +24,7 @@ export const withAuth = (handler: AuthenticatedHandler) => {
       };
     }
 
-    const authHeader = event.headers.Authorization || event.headers.authorization;
+    const authHeader = event.headers?.Authorization || event.headers?.authorization;
     const user = verifyRequestToken(authHeader);
 
     if (!user) {

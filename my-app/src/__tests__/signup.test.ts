@@ -34,7 +34,7 @@ describe("Signup Handler", () => {
     expect(result.statusCode).toBe(200);
     expect(body.success).toBe(true);
     expect(body.user.id).toBe("admin-123");
-    
+
     // Verify password was hashed before DB insertion
     expect(gqlSdk.InsertAdmin).toHaveBeenCalledWith(expect.objectContaining({
       pass: "hashed_password_val"
@@ -49,7 +49,9 @@ describe("Signup Handler", () => {
 
     const result = await handler(event);
     expect(result.statusCode).toBe(400);
-    expect(JSON.parse(result.body).message).toBe("Missing required fields");
+    const body = JSON.parse(result.body);
+    expect(body.success).toBe(false);
+    expect(body.message).toContain("is required");
     expect(gqlSdk.InsertAdmin).not.toHaveBeenCalled();
   });
 

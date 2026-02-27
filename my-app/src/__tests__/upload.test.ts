@@ -1,5 +1,8 @@
-import { handler } from "../handlers/upload";
 import { Connection, Client } from "@temporalio/client";
+
+jest.mock("../utils/authMiddleware", () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: "1", role: "admin", email: "admin@test.com" }),
+}));
 
 jest.mock("@temporalio/client", () => ({
   Connection: {
@@ -8,11 +11,10 @@ jest.mock("@temporalio/client", () => ({
   Client: jest.fn(),
 }));
 
+import { handler } from "../handlers/upload";
+
 describe("Temporal Upload Handler", () => {
   beforeEach(() => {
-    // 1. This is the magic line. It clears the 'temporalClient' 
-    // variable inside your handler file by re-importing it.
-    jest.resetModules(); 
     jest.clearAllMocks();
   });
 
@@ -22,6 +24,7 @@ describe("Temporal Upload Handler", () => {
 
     const event = {
       httpMethod: "POST",
+      headers: { Authorization: "Bearer valid-token" },
       body: JSON.stringify({ type: "test", class: "10", section: "A" }),
     } as any;
 
@@ -44,12 +47,13 @@ describe("Temporal Upload Handler", () => {
 
     const event = {
       httpMethod: "POST",
-      body: JSON.stringify({ 
-        type: "student-list", 
-        class: "10", 
+      headers: { Authorization: "Bearer valid-token" },
+      body: JSON.stringify({
+        type: "student-list",
+        class: "10",
         section: "A",
         fileBase64: "SGVsbG8=",
-        filename: "test.csv" 
+        filename: "test.csv"
       }),
     } as any;
 

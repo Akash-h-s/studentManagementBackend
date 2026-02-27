@@ -1,6 +1,7 @@
 """
 AI-Powered Markscard Generator Backend
-This Flask API generates professional PDF markscards using AI for design and layout
+This Flask API generates professional PDF markscards using AI for design and layout.
+Now integrates Google Gemini 2.0 Flash for intelligent marks analysis and summaries.
 """
 
 from flask import Flask, request, jsonify, send_file
@@ -15,19 +16,71 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from datetime import datetime
 import io
 import os
+import json
 import requests
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Hasura Configuration
 HASURA_URL = os.environ.get("HASURA_ENDPOINT", "http://localhost:8085/v1/graphql")
 HASURA_ADMIN_SECRET = os.environ.get("HASURA_ADMIN_SECRET", "myadminsecretkey")
 
-# Optional: Anthropic AI import (not required for basic functionality)
+# Google Gemini AI Configuration — using new google-genai SDK
+from google import genai
+
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+GEMINI_AVAILABLE = False
+gemini_client = None
+
+# List of models to try in order (fallback chain)
+GEMINI_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite']
+
+if GEMINI_API_KEY:
+    gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+    GEMINI_AVAILABLE = True
+    print(f"Google Gemini AI initialized (primary: {GEMINI_MODELS[0]})")
+else:
+    print("GEMINI_API_KEY not found. AI features disabled.")
+
+import time
+
+def call_gemini_with_retry(prompt, max_retries=2):
+    """Call Gemini with automatic retry and model fallback on 429 errors."""
+    last_error = None
+    
+    for model_name in GEMINI_MODELS:
+        for attempt in range(max_retries):
+            try:
+                result = gemini_client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                print(f"AI response from {model_name} (attempt {attempt+1})")
+                return result
+            except Exception as e:
+                error_str = str(e)
+                last_error = e
+                
+                if '429' in error_str:
+                    wait_time = (attempt + 1) * 5  # 5s, 10s
+                    print(f"Rate limited on {model_name} (attempt {attempt+1}). Waiting {wait_time}s...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"Error on {model_name}: {error_str[:100]}")
+                    break
+        
+        print(f"Trying next model...")
+    
+    raise last_error or Exception("All Gemini models failed")
+
+# Legacy: Anthropic AI import (optional)
 try:
     from anthropic import Anthropic
     ANTHROPIC_AVAILABLE = True
 except ImportError:
     ANTHROPIC_AVAILABLE = False
-    print("Note: anthropic module not installed. AI-enhanced features disabled.")
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
@@ -360,7 +413,308 @@ def generate_markscard():
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'service': 'markscard-generator'}), 200
+    return jsonify({'status': 'healthy', 'service': 'markscard-generator', 'ai_enabled': GEMINI_AVAILABLE}), 200
+
+
+# ═══════════════════════════════════════════════════════════════
+# 🤖 AI-POWERED ENDPOINTS (Google Gemini 2.0 Flash)
+# ═══════════════════════════════════════════════════════════════
+
+@app.route('/api/ai/generate-summary', methods=['POST'])
+def generate_ai_summary():
+    """
+    Generate an AI-powered natural language summary of a student's marks card.
+    Expects the same MarkscardData format used for PDF generation.
+    """
+    if not GEMINI_AVAILABLE:
+        return jsonify({'error': 'AI features are not available. GEMINI_API_KEY not configured.'}), 503
+
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+
+        # Build marks detail string for the prompt
+        marks_detail = "\n".join([
+            f"  - {m['subject']}: {m['marks_obtained']}/{m['max_marks']} ({m['percentage']}%) — Grade: {m['grade']}"
+            + (f" — Remarks: {m['remarks']}" if m.get('remarks') else "")
+            for m in data.get('marks', [])
+        ])
+
+        prompt = f"""You are an experienced academic advisor analyzing a student's exam performance. 
+Generate a comprehensive, encouraging, and insightful performance summary.
+
+STUDENT DETAILS:
+- Name: {data.get('student_name', 'Student')}
+- Admission No: {data.get('admission_no', 'N/A')}
+- Exam: {data.get('exam_name', 'Exam')}
+- School: {data.get('school_name', 'School')}
+
+MARKS BREAKDOWN:
+{marks_detail}
+
+OVERALL:
+- Total: {data.get('total_marks', 0)}/{data.get('max_marks', 0)}
+- Overall Percentage: {data.get('overall_percentage', '0')}%
+
+INSTRUCTIONS:
+Respond with ONLY a valid JSON object (no markdown, no code fences, no extra text). Use this exact structure:
+{{
+  "overall_assessment": "A 2-3 sentence overview of the student's performance",
+  "strengths": ["Subject/area where student excelled (with specific marks)", "Another strength"],
+  "areas_for_improvement": ["Subject/area needing work (with specific marks)", "Another area"],
+  "suggestions": ["Specific, actionable study tip", "Another suggestion", "A third suggestion"],
+  "motivational_note": "A personalized, encouraging message for the student",
+  "performance_tier": "Excellent|Good|Average|Needs Improvement",
+  "highlight_stats": {{
+    "best_subject": "Subject name",
+    "best_score": "XX/XX",
+    "subjects_above_90": 0,
+    "subjects_below_50": 0
+  }}
+}}
+
+Be specific with marks and percentages. Be encouraging but honest. Keep suggestions actionable and age-appropriate for school students."""
+
+        result = call_gemini_with_retry(prompt)
+        response_text = result.text.strip()
+        
+        # Clean up response — remove markdown code fences if present
+        if response_text.startswith('```'):
+            response_text = response_text.split('\n', 1)[1] if '\n' in response_text else response_text[3:]
+        if response_text.endswith('```'):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+        
+        # Parse JSON response
+        try:
+            summary_data = json.loads(response_text)
+        except json.JSONDecodeError:
+            # If Gemini returns non-JSON, wrap it
+            summary_data = {
+                "overall_assessment": response_text,
+                "strengths": [],
+                "areas_for_improvement": [],
+                "suggestions": [],
+                "motivational_note": "",
+                "performance_tier": "Good",
+                "highlight_stats": {}
+            }
+
+        return jsonify({'summary': summary_data}), 200
+
+    except Exception as e:
+        print(f"Error generating AI summary: {str(e)}")
+        return jsonify({'error': f'AI summary generation failed: {str(e)}'}), 500
+
+
+@app.route('/api/ai/review-marks', methods=['POST'])
+def review_marks():
+    """
+    AI-powered marks review for teachers — flags anomalies, errors, and suspicious patterns.
+    Expects: { students: [...], marks: {...}, subject: "...", exam: "..." }
+    """
+    if not GEMINI_AVAILABLE:
+        return jsonify({'error': 'AI features are not available. GEMINI_API_KEY not configured.'}), 503
+
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+
+        students = data.get('students', [])
+        marks_map = data.get('marks', {})
+        subject = data.get('subject', 'Unknown')
+        exam = data.get('exam', 'Unknown')
+
+        # Build marks data string
+        marks_detail = []
+        for student in students:
+            sid = str(student.get('id', ''))
+            mark = marks_map.get(sid, {})
+            obtained = mark.get('marks_obtained', 'N/A')
+            max_marks = mark.get('max_marks', 100)
+            grade = mark.get('grade', 'N/A')
+            marks_detail.append(f"  - {student.get('name', 'Unknown')} (ID: {sid}): {obtained}/{max_marks} — Grade: {grade}")
+
+        marks_text = "\n".join(marks_detail) if marks_detail else "No marks data available"
+
+        prompt = f"""You are a quality assurance expert reviewing marks data before submission.
+Analyze the following marks for potential issues.
+
+CONTEXT:
+- Subject: {subject}
+- Exam: {exam}
+- Total Students: {len(students)}
+
+MARKS DATA:
+{marks_text}
+
+INSTRUCTIONS:
+Check for these issues:
+1. Suspiciously identical marks across multiple students
+2. Marks that are drastic outliers compared to the class average
+3. Missing or incomplete entries (marks shown as N/A)
+4. Grade-marks mismatches (e.g., 95 marks but grade is C)
+5. Any marks exceeding maximum marks
+6. Unusual patterns (e.g., all marks ending in 0 or 5)
+
+Respond with ONLY a valid JSON object (no markdown, no code fences):
+{{
+  "overall_status": "clean|warnings|critical",
+  "issues": [
+    {{
+      "severity": "critical|warning|info",
+      "type": "anomaly_type",
+      "message": "Description of the issue",
+      "affected_students": ["Student Name 1", "Student Name 2"]
+    }}
+  ],
+  "statistics": {{
+    "class_average": 0.0,
+    "highest": 0,
+    "lowest": 0,
+    "pass_rate": "XX%",
+    "total_reviewed": 0,
+    "missing_entries": 0
+  }},
+  "recommendation": "A brief overall recommendation for the teacher"
+}}
+
+If everything looks good, return overall_status as "clean" with an empty issues array and a positive recommendation."""
+
+        result = call_gemini_with_retry(prompt)
+        response_text = result.text.strip()
+
+        # Clean markdown fences
+        if response_text.startswith('```'):
+            response_text = response_text.split('\n', 1)[1] if '\n' in response_text else response_text[3:]
+        if response_text.endswith('```'):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+
+        try:
+            review_data = json.loads(response_text)
+        except json.JSONDecodeError:
+            review_data = {
+                "overall_status": "warnings",
+                "issues": [{"severity": "info", "type": "parse_error", "message": response_text, "affected_students": []}],
+                "statistics": {},
+                "recommendation": "Could not parse AI response. Please review manually."
+            }
+
+        return jsonify({'review': review_data}), 200
+
+    except Exception as e:
+        print(f"Error in AI marks review: {str(e)}")
+        return jsonify({'error': f'AI marks review failed: {str(e)}'}), 500
+
+
+@app.route('/api/ai/class-analysis', methods=['POST'])
+def class_analysis():
+    """
+    AI-powered class-wide performance analysis for teachers.
+    Expects: { students: [...], marks: {...}, subject: "...", exam: "...", className: "...", section: "..." }
+    """
+    if not GEMINI_AVAILABLE:
+        return jsonify({'error': 'AI features are not available. GEMINI_API_KEY not configured.'}), 503
+
+    try:
+        data = request.json
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+
+        students = data.get('students', [])
+        marks_map = data.get('marks', {})
+        subject = data.get('subject', 'Unknown')
+        exam = data.get('exam', 'Unknown')
+        class_name = data.get('className', 'Unknown')
+        section = data.get('section', 'Unknown')
+
+        # Build marks data
+        marks_detail = []
+        for student in students:
+            sid = str(student.get('id', ''))
+            mark = marks_map.get(sid, {})
+            obtained = mark.get('marks_obtained', 'N/A')
+            max_marks = mark.get('max_marks', 100)
+            grade = mark.get('grade', 'N/A')
+            marks_detail.append(f"  - {student.get('name', 'Unknown')}: {obtained}/{max_marks} (Grade: {grade})")
+
+        marks_text = "\n".join(marks_detail) if marks_detail else "No marks data available"
+
+        prompt = f"""You are an expert educational analyst. Provide a comprehensive analysis of this class's performance.
+
+CLASS DETAILS:
+- Class: {class_name}-{section}
+- Subject: {subject}
+- Exam: {exam}
+- Total Students: {len(students)}
+
+INDIVIDUAL MARKS:
+{marks_text}
+
+INSTRUCTIONS:
+Respond with ONLY a valid JSON object (no markdown, no code fences):
+{{
+  "class_overview": "2-3 sentence summary of class performance",
+  "grade_distribution": {{
+    "A+": 0, "A": 0, "B+": 0, "B": 0, "C": 0, "D": 0, "F": 0
+  }},
+  "statistics": {{
+    "mean": 0.0,
+    "median": 0.0,
+    "highest": {{ "score": 0, "student": "Name" }},
+    "lowest": {{ "score": 0, "student": "Name" }},
+    "pass_rate": "XX%",
+    "distinction_rate": "XX%"
+  }},
+  "top_performers": ["Name (Score)", "Name (Score)", "Name (Score)"],
+  "students_needing_attention": ["Name (Score) - brief reason", "Name (Score) - brief reason"],
+  "insights": [
+    "Key insight about the class performance",
+    "Another observation",
+    "A trend or pattern noticed"
+  ],
+  "teaching_recommendations": [
+    "Specific suggestion for the teacher",
+    "Another teaching strategy",
+    "A resource or approach suggestion"
+  ],
+  "overall_rating": "Excellent|Good|Average|Below Average"
+}}
+
+Be data-driven, specific with numbers, and provide actionable teaching recommendations."""
+
+        result = call_gemini_with_retry(prompt)
+        response_text = result.text.strip()
+
+        # Clean markdown fences
+        if response_text.startswith('```'):
+            response_text = response_text.split('\n', 1)[1] if '\n' in response_text else response_text[3:]
+        if response_text.endswith('```'):
+            response_text = response_text[:-3]
+        response_text = response_text.strip()
+
+        try:
+            analysis_data = json.loads(response_text)
+        except json.JSONDecodeError:
+            analysis_data = {
+                "class_overview": response_text,
+                "grade_distribution": {},
+                "statistics": {},
+                "top_performers": [],
+                "students_needing_attention": [],
+                "insights": [],
+                "teaching_recommendations": [],
+                "overall_rating": "Good"
+            }
+
+        return jsonify({'analysis': analysis_data}), 200
+
+    except Exception as e:
+        print(f"Error in AI class analysis: {str(e)}")
+        return jsonify({'error': f'AI class analysis failed: {str(e)}'}), 500
 
 
 if __name__ == '__main__':

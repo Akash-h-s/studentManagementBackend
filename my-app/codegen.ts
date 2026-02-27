@@ -17,7 +17,6 @@ const config: CodegenConfig = {
         "typescript-graphql-request"
       ],
       config: {
-        // This ensures the generated SDK is easy to use
         rawRequest: false,
         enumsAsTypes: true
       },

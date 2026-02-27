@@ -1,6 +1,5 @@
 
 
-// src/utils/validators.ts
 
 interface MarkEntry {
   student_id?: number;
