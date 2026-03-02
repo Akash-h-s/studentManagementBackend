@@ -18,7 +18,8 @@ Globals:
     Environment:
       Variables:
         TEMPORAL_ADDRESS: host.docker.internal:7233
-        MAILGUN_API_KEY: !Ref MailgunApiKey        MAILGUN_DOMAIN: sandboxad476066cc9a46768d9900ac0a95a8e0.mailgun.org
+        MAILGUN_API_KEY: !Ref MailgunApiKey
+        MAILGUN_DOMAIN: sandboxad476066cc9a46768d9900ac0a95a8e0.mailgun.org
         HASURA_ENDPOINT: "http://host.docker.internal:8085/v1/graphql"
         HASURA_ADMIN_SECRET: !Ref HasuraAdminSecret
 
