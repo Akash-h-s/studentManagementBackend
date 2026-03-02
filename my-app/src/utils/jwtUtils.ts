@@ -8,6 +8,7 @@ export interface TokenPayload {
   email: string;
   role: 'admin' | 'teacher' | 'parent' | 'student';
   name?: string;
+  schoolName?: string;
 }
 
 /**

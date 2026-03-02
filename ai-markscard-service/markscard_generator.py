@@ -15,6 +15,11 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from datetime import datetime
 import io
 import os
+import requests
+
+# Hasura Configuration
+HASURA_URL = os.environ.get("HASURA_ENDPOINT", "http://localhost:8085/v1/graphql")
+HASURA_ADMIN_SECRET = os.environ.get("HASURA_ADMIN_SECRET", "myadminsecretkey")
 
 # Optional: Anthropic AI import (not required for basic functionality)
 try:
@@ -26,6 +31,7 @@ except ImportError:
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
+print("Markscard Generator Service Updated - Ready to use dynamic school names")
 
 # Initialize Anthropic AI client only if available (optional - for enhanced features)
 if ANTHROPIC_AVAILABLE:
@@ -72,8 +78,9 @@ class MarkscardGenerator:
     def generate_header(self, story, data):
         """Generate professional header section"""
         # School/Institution name
+        school_name = data.get('school_name', 'ACADEMIC INSTITUTION').upper()
         title = Paragraph(
-            "<b>ACADEMIC INSTITUTION</b>",
+            f"<b>{school_name}</b>",
             self.styles['CustomTitle']
         )
         story.append(title)
@@ -266,6 +273,7 @@ def generate_markscard():
     """API endpoint to generate markscard PDF"""
     try:
         data = request.json
+        print(f"DEBUG: Received data: {data}")
         
         # Validate required fields
         required_fields = ['student_name', 'admission_no', 'exam_name', 'marks', 
@@ -274,6 +282,51 @@ def generate_markscard():
         for field in required_fields:
             if field not in data:
                 return jsonify({'error': f'Missing required field: {field}'}), 400
+
+        # Try to fetch actual school name from Hasura if default is sent
+        if data.get('school_name') == 'ACADEMIC INSTITUTION' or not data.get('school_name'):
+            try:
+                query = """
+                query GetStudentSchool($admission_no: String!) {
+                  students(where: {admission_no: {_eq: $admission_no}}, limit: 1) {
+                    creator_admin {
+                      school_name
+                    }
+                    admin {
+                      school_name
+                    }
+                  }
+                }
+                """
+                response = requests.post(
+                    HASURA_URL,
+                    json={'query': query, 'variables': {'admission_no': data['admission_no']}},
+                    headers={'x-hasura-admin-secret': HASURA_ADMIN_SECRET},
+                    timeout=5
+                )
+                if response.status_code == 200:
+                    res_data = response.json()
+                    students = res_data.get('data', {}).get('students', [])
+                    if students:
+                        student = students[0]
+                        # Prioritize creator_admin, fallback to admin
+                        school = None
+                        if student.get('creator_admin'):
+                            school = student['creator_admin']['school_name']
+                        elif student.get('admin'):
+                            school = student['admin']['school_name']
+                        
+                        if school:
+                            data['school_name'] = school
+                            print(f"DEBUG: Successfully fetched school name: {data['school_name']}")
+                        else:
+                            print(f"DEBUG: No school name found in relationships for admission_no: {data['admission_no']}")
+                    else:
+                        print(f"DEBUG: No student found for admission_no: {data['admission_no']}")
+                else:
+                    print(f"DEBUG: Hasura query failed with status {response.status_code}")
+            except Exception as e:
+                print(f"DEBUG: Error fetching school name from Hasura: {str(e)}")
         
         # Generate the markscard
         generator = MarkscardGenerator()

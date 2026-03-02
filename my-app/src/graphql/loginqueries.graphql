@@ -19,6 +19,9 @@ query SelectTeacherByEmail($email: String!) {
     name
     email,
     password_hash
+    creator_admin {
+      school_name
+    }
   }
 }
 
