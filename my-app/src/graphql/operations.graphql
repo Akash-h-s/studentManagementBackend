@@ -170,3 +170,21 @@ mutation DeleteExistingMarks($student_id: Int!, $subject_id: Int!, $exam_id: Int
     affected_rows
   }
 }
+
+mutation UpdateAdminPassword($email: String!, $password_hash: String!) {
+  update_admins(where: {email: {_eq: $email}}, _set: {password_hash: $password_hash}) {
+    affected_rows
+  }
+}
+
+mutation UpdateTeacherPassword($email: String!, $password_hash: String!) {
+  update_teachers(where: {email: {_eq: $email}}, _set: {password_hash: $password_hash}) {
+    affected_rows
+  }
+}
+
+mutation UpdateParentPassword($email: String!, $password_hash: String!) {
+  update_parents(where: {email: {_eq: $email}}, _set: {password_hash: $password_hash}) {
+    affected_rows
+  }
+}

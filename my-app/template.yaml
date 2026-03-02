@@ -343,6 +343,56 @@ Resources:
         EntryPoints:
           - src/handlers/workflowStatus.ts
 
+  # Forgot Password Function
+  ForgotPasswordAction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/forgotPassword.handler
+      Events:
+        ForgotPasswordApi:
+          Type: Api
+          Properties:
+            Path: /hasura/forgot-password
+            Method: post
+            RestApiId: !Ref StudentAPI
+        ForgotPasswordOptions:
+          Type: Api
+          Properties:
+            Path: /hasura/forgot-password
+            Method: options
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/forgotPassword.ts
+
+  # Reset Password Function
+  ResetPasswordAction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/handlers/resetPassword.handler
+      Events:
+        ResetPasswordApi:
+          Type: Api
+          Properties:
+            Path: /hasura/reset-password
+            Method: post
+            RestApiId: !Ref StudentAPI
+        ResetPasswordOptions:
+          Type: Api
+          Properties:
+            Path: /hasura/reset-password
+            Method: options
+            RestApiId: !Ref StudentAPI
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - src/handlers/resetPassword.ts
+
 Outputs:
   ApiEndpoint:
     Description: "API Gateway endpoint URL"
