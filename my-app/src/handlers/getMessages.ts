@@ -2,6 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
 import { getMessagesSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,13 +38,10 @@ const getUserInfo = async (userId: number, userType: string) => {
   return user ? { ...user, role: userType } : null;
 };
 
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: corsHeaders, body: '' };
-  }
-
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
-    const { chat_id, user_id } = JSON.parse(event.body || '{}');
+    const { chat_id } = JSON.parse(event.body || '{}');
+    const user_id = parseInt(user.id);
 
     // Validate request
     const validation = validateRequest(getMessagesSchema, { chat_id, user_id });
@@ -90,25 +88,6 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       };
     }));
 
-    // TODO: Mark messages as read
-    // if (user_id) {
-    //   const markReadMutation = `
-    //     mutation MarkMessagesRead($chat_id: Int!, $user_id: Int!) {
-    //       update_messages(
-    //         where: {
-    //           chat_id: { _eq: $chat_id }
-    //           sender_id: { _neq: $user_id }
-    //           is_read: { _eq: false }
-    //         }
-    //         _set: { is_read: true }
-    //       ) {
-    //         affected_rows
-    //       }
-    //     }
-    //   `;
-    //   await client.request(markReadMutation, { chat_id, user_id });
-    // }
-
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -129,4 +108,4 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       })
     };
   }
-};
+});

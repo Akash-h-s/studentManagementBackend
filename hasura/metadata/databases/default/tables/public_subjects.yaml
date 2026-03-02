@@ -2,10 +2,22 @@ table:
   name: subjects
   schema: public
 object_relationships:
+  - name: creator_admin
+    using:
+      foreign_key_constraint_on: created_by_admin_id
   - name: teacher
     using:
       foreign_key_constraint_on: teacher_id
 array_relationships:
+  - name: class_sections
+    using:
+      manual_configuration:
+        column_mapping:
+          class_name: class_name
+        insertion_order: null
+        remote_table:
+          name: class_sections
+          schema: public
   - name: marks
     using:
       foreign_key_constraint_on:
@@ -13,11 +25,6 @@ array_relationships:
         table:
           name: marks
           schema: public
-delete_permissions:
-  - role: teacher
-    permission:
-      filter: {}
-    comment: ""
 insert_permissions:
   - role: teacher
     permission:
@@ -28,6 +35,18 @@ insert_permissions:
         - teacher_id
     comment: ""
 select_permissions:
+  - role: parent
+    permission:
+      columns:
+        - id
+        - name
+        - class_name
+      filter:
+        class_sections:
+          students:
+            parent_id:
+              _eq: X-Hasura-User-Id
+    comment: ""
   - role: teacher
     permission:
       columns:
@@ -35,15 +54,14 @@ select_permissions:
         - name
         - class_name
         - teacher_id
-      filter: {}
-    comment: ""
-  - role: parent
-    permission:
-      columns:
-        - id
-        - name
-        - class_name
-      filter: {}
+      filter:
+        _and:
+          - teacher_id:
+              _eq: X-Hasura-User-Id
+          - creator_admin:
+              teachers:
+                id:
+                  _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: teacher
@@ -54,4 +72,9 @@ update_permissions:
         - teacher_id
       filter: {}
       check: {}
+    comment: ""
+delete_permissions:
+  - role: teacher
+    permission:
+      filter: {}
     comment: ""

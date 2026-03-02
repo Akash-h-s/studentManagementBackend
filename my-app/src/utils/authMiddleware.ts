@@ -1,62 +1,64 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { verifyRequestToken, TokenPayload } from './jwtUtils';
 
-export interface AuthenticatedEvent extends APIGatewayProxyEvent {
-  user?: TokenPayload;
-}
+export type AuthenticatedHandler = (
+  event: APIGatewayProxyEvent,
+  user: TokenPayload
+) => Promise<APIGatewayProxyResult>;
 
-/**
- * Authentication middleware for protected routes
- * Verifies JWT token and attaches user info to event
- */
-export const authenticateRequest = (
-  authHeader?: string
-): { authenticated: boolean; user?: TokenPayload; error?: string } => {
-  if (!authHeader) {
-    return {
-      authenticated: false,
-      error: 'Missing Authorization header',
-    };
-  }
-
-  const tokenPayload = verifyRequestToken(authHeader);
-  if (!tokenPayload) {
-    return {
-      authenticated: false,
-      error: 'Invalid or expired token',
-    };
-  }
-
-  return {
-    authenticated: true,
-    user: tokenPayload,
-  };
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'OPTIONS, POST, GET, PUT, DELETE',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
 /**
- * Create unauthorized response
+ * Middleware to validate JWT token and inject user payload into handler
  */
-export const unauthorizedResponse = (corsHeaders: any, message: string = 'Unauthorized'): APIGatewayProxyResult => {
-  return {
-    statusCode: 401,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders },
-    body: JSON.stringify({
-      success: false,
-      message,
-    }),
-  };
-};
+export const withAuth = (handler: AuthenticatedHandler) => {
+  return async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+    // Handle OPTIONS request for CORS
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers: corsHeaders,
+        body: JSON.stringify({ message: 'CORS preflight' }),
+      };
+    }
 
-/**
- * Create forbidden response
- */
-export const forbiddenResponse = (corsHeaders: any, message: string = 'Forbidden'): APIGatewayProxyResult => {
-  return {
-    statusCode: 403,
-    headers: { 'Content-Type': 'application/json', ...corsHeaders },
-    body: JSON.stringify({
-      success: false,
-      message,
-    }),
+    const authHeader = event.headers.Authorization || event.headers.authorization;
+    const user = verifyRequestToken(authHeader);
+
+    if (!user) {
+      return {
+        statusCode: 401,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders,
+        },
+        body: JSON.stringify({
+          success: false,
+          message: 'Unauthorized: Invalid or missing token',
+        }),
+      };
+    }
+
+    try {
+      return await handler(event, user);
+    } catch (error) {
+      console.error('Handler error:', error);
+      return {
+        statusCode: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders,
+        },
+        body: JSON.stringify({
+          success: false,
+          message: 'Internal server error',
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
+      };
+    }
   };
 };

@@ -2,6 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { GraphQLClient } from 'graphql-request';
 import { sendMessageSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -37,13 +38,13 @@ const getUserInfo = async (userId: number, userType: string) => {
   return user ? { ...user, role: userType } : null;
 };
 
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: corsHeaders, body: '' };
-  }
-
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
-    const { chat_id, sender_id, sender_type, content } = JSON.parse(event.body || '{}');
+    const { chat_id, content } = JSON.parse(event.body || '{}');
+
+    // We get sender_id and sender_type from the validated JWT token for security
+    const sender_id = parseInt(user.id);
+    const sender_type = user.role;
 
     // Validate request
     const validation = validateRequest(sendMessageSchema, {
@@ -52,6 +53,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       sender_type,
       content
     });
+
     if (!validation.valid) {
       return {
         statusCode: 400,
@@ -127,4 +129,4 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       })
     };
   }
-};
+});

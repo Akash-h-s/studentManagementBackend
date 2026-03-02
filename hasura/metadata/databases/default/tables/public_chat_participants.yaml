@@ -24,14 +24,6 @@ object_relationships:
           name: teachers
           schema: public
 insert_permissions:
-  - role: teacher
-    permission:
-      check: {}
-      columns:
-        - chat_id
-        - user_id
-        - user_type
-    comment: ""
   - role: parent
     permission:
       check: {}
@@ -40,17 +32,15 @@ insert_permissions:
         - user_id
         - user_type
     comment: ""
-select_permissions:
   - role: teacher
     permission:
+      check: {}
       columns:
-        - id
         - chat_id
         - user_id
         - user_type
-        - joined_at
-      filter: {}
     comment: ""
+select_permissions:
   - role: parent
     permission:
       columns:
@@ -62,18 +52,30 @@ select_permissions:
       filter:
         chat:
           chat_participants:
-            user_id:
-              _eq: X-Hasura-User-Id
+            _and:
+              - user_id:
+                  _eq: X-Hasura-User-Id
+              - user_type:
+                  _eq: parent
     comment: ""
-update_permissions:
   - role: teacher
     permission:
       columns:
+        - id
+        - chat_id
         - user_id
         - user_type
-      filter: {}
-      check: {}
+        - joined_at
+      filter:
+        chat:
+          chat_participants:
+            _and:
+              - user_id:
+                  _eq: X-Hasura-User-Id
+              - user_type:
+                  _eq: teacher
     comment: ""
+update_permissions:
   - role: parent
     permission:
       columns:
@@ -82,5 +84,13 @@ update_permissions:
       filter:
         user_id:
           _eq: X-Hasura-User-Id
+      check: {}
+    comment: ""
+  - role: teacher
+    permission:
+      columns:
+        - user_id
+        - user_type
+      filter: {}
       check: {}
     comment: ""

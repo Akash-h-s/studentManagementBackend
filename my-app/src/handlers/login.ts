@@ -13,7 +13,7 @@ const corsHeaders = {
 };
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  
+
   if (event.httpMethod === "OPTIONS") {
     return { statusCode: 200, headers: corsHeaders, body: "" };
   }
@@ -44,7 +44,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       case 'admin': {
         const adminResult = await gqlSdk.GetAdminByEmail({ email: identifier });
         console.log('Admin result:', adminResult);
-        
+
         if (adminResult.admins && adminResult.admins.length > 0) {
           user = adminResult.admins[0];
           if (password && user.password_hash) {
@@ -66,7 +66,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       case 'teacher': {
         const teacherResult = await gqlSdk.GetTeacherByEmail({ email: identifier });
         console.log('Teacher result:', teacherResult);
-        
+
         if (teacherResult.teachers && teacherResult.teachers.length > 0) {
           user = teacherResult.teachers[0];
           if (password && user.password_hash) {
@@ -88,7 +88,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       case 'parent': {
         const parentResult = await gqlSdk.GetParentByEmail({ email: identifier });
         console.log('Parent result:', parentResult);
-        
+
         if (parentResult.parents && parentResult.parents.length > 0) {
           user = parentResult.parents[0];
           if (password && user.password_hash) {
@@ -108,12 +108,12 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       }
 
       case 'student': {
-        const studentResult = await gqlSdk.GetStudentByAdmissionNumber({ 
+        const studentResult = await gqlSdk.GetStudentByAdmissionNumber({
           admissionNumber: identifier,
-          name: studentName 
+          name: studentName
         });
         console.log('Student result:', studentResult);
-        
+
         if (studentResult.students && studentResult.students.length > 0) {
           user = studentResult.students[0];
         }
@@ -171,14 +171,14 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       headers: corsHeaders,
       body: JSON.stringify({
         success: true,
-        message: "Login successful",
-        user: userData,
         token: generateToken({
           id: userData.id,
           email: userData.email,
           role: role as 'admin' | 'teacher' | 'parent' | 'student',
           name: userData.name
-        })
+        }),
+        user: userData,
+        message: "Login successful"
       })
     };
 

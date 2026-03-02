@@ -1,11 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { gqlSdk } from '../config/graphClient';
-import { marksEntrySchema, validateRequest } from '../utils/validationSchemas';
-import { verifyRequestToken } from '../utils/jwtUtils';
+import { withAuth } from '../utils/authMiddleware';
 
 /**
  * UTILS & VALIDATORS
- * (Defined here for a single-file solution, though usually imported)
  */
 const calculateGrade = (obtained: number, max: number): string => {
   const percentage = (obtained / max) * 100;
@@ -73,30 +71,6 @@ const CORS_HEADERS = {
  * HELPER LOGIC
  */
 
-// Simple JWT decoder (no verification for local dev)
-const extractTeacherIdFromToken = (event: APIGatewayProxyEvent): number | null => {
-  try {
-    const authHeader = event.headers['Authorization'] || event.headers['authorization'];
-    if (!authHeader) return null;
-
-    const tokenPayload = verifyRequestToken(authHeader);
-    if (!tokenPayload) return null;
-    
-    return parseInt(tokenPayload.id, 10);
-  } catch (error) {
-    console.error('Token extraction failed:', error);
-    return null;
-  }
-};
-
-const findOrCreateClassSection = async (className: string, sectionName: string): Promise<number> => {
-  const result = await gqlSdk.InsertClassSection({
-    object: { class_name: className.trim(), section_name: sectionName.trim() }
-  });
-  if (!result.insert_class_sections_one?.id) throw new Error('ClassSection ID resolution failed');
-  return result.insert_class_sections_one.id;
-};
-
 const findOrCreateSubject = async (name: string, className: string, teacherId: number): Promise<number> => {
   const normalized = name.trim().toLowerCase();
   const classNorm = className.trim();
@@ -120,15 +94,15 @@ const findOrCreateExam = async (name: string, year: string): Promise<number> => 
 /**
  * MAIN HANDLER
  */
-export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: CORS_HEADERS, body: '' };
-  }
-
+export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
-    const teacherId = extractTeacherIdFromToken(event);
-    if (!teacherId) {
-      return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ message: 'Unauthorized' }) };
+    const teacherId = parseInt(user.id, 10);
+    if (isNaN(teacherId)) {
+      return {
+        statusCode: 401,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ success: false, message: 'Invalid Teacher ID in token' })
+      };
     }
 
     const body: SaveMarksRequest = JSON.parse(event.body || '{}');
@@ -154,14 +128,15 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       return mark;
     });
 
-    // If caller asked only to validate, or there are validation errors,
-    // return validation results. Simplified to avoid TypeScript unintended
-    // comparison warnings between disjoint union members.
     if (action === 'validate' || validationErrors.length > 0) {
       return {
         statusCode: validationErrors.length > 0 ? 400 : 200,
         headers: CORS_HEADERS,
-        body: JSON.stringify({ success: validationErrors.length === 0, errors: validationErrors, valid_count: validEntries.length - validationErrors.length })
+        body: JSON.stringify({
+          success: validationErrors.length === 0,
+          errors: validationErrors,
+          valid_count: validEntries.length - validationErrors.length
+        })
       };
     }
 
@@ -170,7 +145,7 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     const subjectId = await findOrCreateSubject(first.subject_name, first.class_name, teacherId);
     const examId = await findOrCreateExam(first.exam_name, first.academic_year);
 
-    // 3. Prepare objects for the original mutation (objects only)
+    // 3. Prepare objects for mutation
     const marksObjects = validEntries.map(m => ({
       student_id: m.student_id,
       subject_id: subjectId,
@@ -204,4 +179,4 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
       body: JSON.stringify({ success: false, message: error.message })
     };
   }
-};
+});

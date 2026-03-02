@@ -6,6 +6,7 @@ const generatePassword = () => Math.random().toString(36).slice(-8);
 export interface ClassSectionInput {
   className: string;
   section: string;
+  adminId: number;
 }
 
 // ✅ Return number instead of string
@@ -13,7 +14,11 @@ export async function createOrGetClassSection(input: ClassSectionInput): Promise
   console.log(`📚 Creating/Getting class section: ${input.className}-${input.section}`);
 
   const sectionRes = await gqlSdk.InsertClassSection({
-    object: { class_name: input.className, section_name: input.section }
+    object: {
+      class_name: input.className,
+      section_name: input.section,
+      created_by_admin_id: input.adminId
+    }
   });
 
   const classSectionId = sectionRes.insert_class_sections_one?.id;
@@ -28,6 +33,7 @@ export async function createOrGetClassSection(input: ClassSectionInput): Promise
 export interface StudentInsertInput {
   studentData: any[];
   classSectionId: number;
+  adminId: number;
 }
 
 export async function insertStudents(input: StudentInsertInput): Promise<{
@@ -36,6 +42,7 @@ export async function insertStudents(input: StudentInsertInput): Promise<{
   studentNames: Record<string, string>;
 }> {
   console.log(`💾 Inserting ${input.studentData.length} students into database...`);
+  console.log(`🔑 Admin ID received: ${input.adminId}`);
 
   const passwords: Record<string, string> = {};
   const studentNames: Record<string, string> = {};
@@ -56,11 +63,13 @@ export async function insertStudents(input: StudentInsertInput): Promise<{
         gender: student.gender,
         dob: student.dob,
         class_section_id: input.classSectionId,
+        created_by_admin_id: input.adminId, // Track admin
         parent: {
           data: {
             name: student.parentName,
             email: student.parentEmail || null,
             password_hash: hashedPassword,
+            created_by_admin_id: input.adminId // Track admin for parent
           },
         },
       };
@@ -77,18 +86,24 @@ export async function insertStudents(input: StudentInsertInput): Promise<{
   };
 }
 
-export async function insertTeachers(teacherData: any[]): Promise<{
+export interface TeacherInsertInput {
+  teacherData: any[];
+  adminId: number;
+}
+
+export async function insertTeachers(input: TeacherInsertInput): Promise<{
   count: number;
   passwords: Record<string, string>;
   teacherNames: Record<string, string>;
 }> {
-  console.log(`💾 Inserting ${teacherData.length} teachers into database...`);
+  console.log(`💾 Inserting ${input.teacherData.length} teachers into database...`);
+  console.log(`🔑 Admin ID received (Teacher): ${input.adminId}`);
 
   const passwords: Record<string, string> = {};
   const teacherNames: Record<string, string> = {};
 
   const data = await Promise.all(
-    teacherData.map(async (teacher) => {
+    input.teacherData.map(async (teacher) => {
       const rawPassword = generatePassword();
       const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
@@ -103,6 +118,7 @@ export async function insertTeachers(teacherData: any[]): Promise<{
         phone: teacher.phone,
         qualification: teacher.qualification,
         password_hash: hashedPassword,
+        created_by_admin_id: input.adminId // Track admin
       };
     })
   );

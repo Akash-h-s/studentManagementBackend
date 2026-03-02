@@ -21,14 +21,6 @@ array_relationships:
           name: messages
           schema: public
 insert_permissions:
-  - role: teacher
-    permission:
-      check: {}
-      columns:
-        - type
-        - name
-        - created_by
-    comment: ""
   - role: parent
     permission:
       check: {}
@@ -37,18 +29,15 @@ insert_permissions:
         - name
         - created_by
     comment: ""
-select_permissions:
   - role: teacher
     permission:
+      check: {}
       columns:
-        - id
         - type
         - name
         - created_by
-        - created_at
-        - updated_at
-      filter: {}
     comment: ""
+select_permissions:
   - role: parent
     permission:
       columns:
@@ -60,8 +49,28 @@ select_permissions:
         - updated_at
       filter:
         chat_participants:
-          user_id:
-            _eq: X-Hasura-User-Id
+          _and:
+            - user_id:
+                _eq: X-Hasura-User-Id
+            - user_type:
+                _eq: parent
+    comment: ""
+  - role: teacher
+    permission:
+      columns:
+        - id
+        - type
+        - name
+        - created_by
+        - created_at
+        - updated_at
+      filter:
+        chat_participants:
+          _and:
+            - user_id:
+                _eq: X-Hasura-User-Id
+            - user_type:
+                _eq: teacher
     comment: ""
 update_permissions:
   - role: teacher

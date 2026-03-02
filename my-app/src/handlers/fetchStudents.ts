@@ -1,7 +1,7 @@
-// src/handlers/fetchStudents.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { sdk } from '../lib/graphqlClient';
 import { fetchStudentsSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 interface FetchStudentsRequest {
   class_name: string;
@@ -17,25 +17,17 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export const handler = async (
-  event: APIGatewayProxyEvent
+export const handler = withAuth(async (
+  event: APIGatewayProxyEvent,
+  user
 ): Promise<APIGatewayProxyResult> => {
   console.log('Event method:', event.httpMethod);
   console.log('Event path:', event.path);
-  
-  // Handle OPTIONS request for CORS
-  if (event.httpMethod === 'OPTIONS') {
-    console.log('Handling OPTIONS request');
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify({ message: 'CORS preflight' }),
-    };
-  }
+  console.log('User Role:', user.role);
 
   try {
     const body: FetchStudentsRequest = JSON.parse(event.body || '{}');
-    
+
     // Validate request
     const validation = validateRequest(fetchStudentsSchema, body);
     if (!validation.valid) {
@@ -62,7 +54,7 @@ export const handler = async (
 
     console.log('Found students:', result.students.length);
 
-    let studentsToReturn = result.students;
+    let studentsToReturn: any[] = result.students;
 
     // If subject and exam provided, fetch existing marks and annotate/sort
     if (subject_id && exam_id && studentsToReturn.length > 0) {
@@ -124,4 +116,4 @@ export const handler = async (
       }),
     };
   }
-};
+});
