@@ -50,6 +50,7 @@ select_permissions:
         - class_section_id
         - parent_id
         - is_active
+        - created_by_admin_id
       filter:
         parent_id:
           _eq: X-Hasura-User-Id
@@ -64,13 +65,8 @@ select_permissions:
         - is_active
         - created_at
       filter:
-        _and:
-          - class_section:
-              subjects:
-                teacher_id:
-                  _eq: X-Hasura-User-Id
-          - creator_admin:
-              teachers:
-                id:
-                  _eq: X-Hasura-User-Id
+        class_section:
+          subjects:
+            teacher_id:
+              _eq: X-Hasura-User-Id
     comment: ""

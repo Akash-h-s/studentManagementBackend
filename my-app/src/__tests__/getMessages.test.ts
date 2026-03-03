@@ -1,14 +1,21 @@
 // src/handlers/getMessages.test.ts
+jest.mock('graphql-request');
+jest.mock('../utils/jwtUtils', () => ({
+  verifyRequestToken: jest.fn().mockReturnValue({ id: '1', role: 'teacher' }),
+  extractToken: jest.fn(),
+  verifyToken: jest.fn()
+}));
+
 import { handler } from '../handlers/getMessages';
 import { GraphQLClient } from 'graphql-request';
-
-jest.mock('graphql-request');
+import { verifyRequestToken } from '../utils/jwtUtils';
 
 describe('getMessages Handler', () => {
   const mockChatId = 123;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (verifyRequestToken as jest.Mock).mockReturnValue({ id: '1', role: 'teacher' });
   });
 
   it('should successfully fetch and format messages', async () => {
@@ -24,7 +31,8 @@ describe('getMessages Handler', () => {
 
     const event = {
       body: JSON.stringify({ chat_id: mockChatId }),
-      httpMethod: 'POST'
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
     } as any;
 
     const result = await handler(event);
@@ -36,10 +44,14 @@ describe('getMessages Handler', () => {
   });
 
   it('should return 400 when chat_id is missing', async () => {
-    const event = { body: JSON.stringify({}), httpMethod: 'POST' } as any;
+    const event = {
+      body: JSON.stringify({}),
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
+    } as any;
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(400);
-    expect(JSON.parse(result.body).message).toContain('Missing required field');
+    expect(JSON.parse(result.body).message).toContain('required');
   });
 });

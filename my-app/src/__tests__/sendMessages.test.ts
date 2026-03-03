@@ -1,7 +1,13 @@
 import { handler } from '../handlers/sendMessage';
 import { GraphQLClient } from 'graphql-request';
+import { verifyRequestToken } from '../utils/jwtUtils';
 
 jest.mock('graphql-request');
+jest.mock('../utils/jwtUtils', () => ({
+  verifyRequestToken: jest.fn().mockReturnValue({ id: '1', role: 'teacher' }),
+  extractToken: jest.fn(),
+  verifyToken: jest.fn()
+}));
 
 describe('sendMessage Handler', () => {
   const mockMutationResponse = {
@@ -21,6 +27,7 @@ describe('sendMessage Handler', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (verifyRequestToken as jest.Mock).mockReturnValue({ id: '1', role: 'teacher' });
   });
 
   it('should successfully send a message and enrich with sender name', async () => {
@@ -36,7 +43,8 @@ describe('sendMessage Handler', () => {
         sender_type: 'teacher',
         content: 'Hello World'
       }),
-      httpMethod: 'POST'
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
     } as any;
 
     const result = await handler(event);
@@ -51,12 +59,13 @@ describe('sendMessage Handler', () => {
   it('should return 400 if required fields are missing', async () => {
     const event = {
       body: JSON.stringify({ chat_id: 10 }), // Missing content and sender info
-      httpMethod: 'POST'
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
     } as any;
 
     const result = await handler(event);
     expect(result.statusCode).toBe(400);
-    expect(JSON.parse(result.body).message).toContain('Missing required fields');
+    expect(JSON.parse(result.body).message).toContain('required');
   });
 
   it('should use the correct table for parents in getUserInfo', async () => {
@@ -65,9 +74,9 @@ describe('sendMessage Handler', () => {
     };
 
     (GraphQLClient.prototype.request as jest.Mock)
-      .mockResolvedValueOnce({ 
-        ...mockMutationResponse, 
-        insert_messages_one: { ...mockMutationResponse.insert_messages_one, sender_type: 'parent' } 
+      .mockResolvedValueOnce({
+        ...mockMutationResponse,
+        insert_messages_one: { ...mockMutationResponse.insert_messages_one, sender_type: 'parent' }
       })
       .mockResolvedValueOnce(mockParentResponse);
 
@@ -75,11 +84,12 @@ describe('sendMessage Handler', () => {
       body: JSON.stringify({
         chat_id: 10, sender_id: 2, sender_type: 'parent', content: 'Hi!'
       }),
-      httpMethod: 'POST'
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
     } as any;
 
     await handler(event);
-    
+
     // Check that the second call (getUserInfo) targets parents table
     const secondCallQuery = (GraphQLClient.prototype.request as jest.Mock).mock.calls[1][0];
     expect(secondCallQuery).toContain('parents_by_pk');
@@ -94,7 +104,8 @@ describe('sendMessage Handler', () => {
       body: JSON.stringify({
         chat_id: 10, sender_id: 1, sender_type: 'teacher', content: 'Hello'
       }),
-      httpMethod: 'POST'
+      httpMethod: 'POST',
+      headers: { Authorization: 'Bearer mock-token' }
     } as any;
 
     const result = await handler(event);

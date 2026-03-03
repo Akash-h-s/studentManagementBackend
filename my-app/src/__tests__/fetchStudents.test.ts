@@ -1,3 +1,7 @@
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: '1', role: 'admin' }),
+}));
+
 import { handler } from '../handlers/fetchStudents';
 import { sdk } from '../lib/graphqlClient';
 
@@ -18,7 +22,7 @@ describe('fetchStudents Handler', () => {
       { id: 1, name: 'Alice Smith' },
       { id: 2, name: 'Bob Jones' }
     ];
-    
+
     (sdk.GetStudentsByClassSection as jest.Mock).mockResolvedValue({
       students: mockStudents
     });
@@ -64,7 +68,7 @@ describe('fetchStudents Handler', () => {
     } as any;
 
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(400);
     expect(JSON.parse(result.body).success).toBe(false);
     expect(sdk.GetStudentsByClassSection).not.toHaveBeenCalled();
@@ -79,7 +83,7 @@ describe('fetchStudents Handler', () => {
     } as any;
 
     const result = await handler(event);
-    
+
     expect(result.statusCode).toBe(500);
     expect(JSON.parse(result.body).message).toBe('Internal server error');
   });

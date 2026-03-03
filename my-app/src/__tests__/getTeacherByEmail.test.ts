@@ -1,4 +1,7 @@
-// src/handlers/getTeacherByEmail.test.ts
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: '1', role: 'teacher' }),
+}));
+
 import { handler } from '../handlers/getTeacherByEmail';
 import { gqlSdk } from '../config/graphClient';
 
@@ -16,8 +19,8 @@ describe('getTeacherByEmail Handler', () => {
 
   it('should return teacher details and trim the email input', async () => {
     const mockTeacher = { id: 1, email: 'test@school.com', name: 'John Doe' };
-    (gqlSdk.GetTeacherIdByEmail as jest.Mock).mockResolvedValue({ 
-      teachers: [mockTeacher] 
+    (gqlSdk.GetTeacherIdByEmail as jest.Mock).mockResolvedValue({
+      teachers: [mockTeacher]
     });
 
     const event = {

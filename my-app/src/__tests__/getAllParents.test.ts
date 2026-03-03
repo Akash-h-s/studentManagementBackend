@@ -1,3 +1,7 @@
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: 'admin-1', role: 'admin' }),
+}));
+
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { handler as getAllParentsHandler } from '../handlers/getAllParents';
 
@@ -18,8 +22,8 @@ const mockRequest = (GraphQLClient as any).prototype.request || (require('graphq
 describe('Get All Parents Handler Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    jest.spyOn(console, 'error').mockImplementation(() => { });
+
     process.env.HASURA_ENDPOINT = 'http://test-endpoint/v1/graphql';
     process.env.HASURA_ADMIN_SECRET = 'test-secret';
   });

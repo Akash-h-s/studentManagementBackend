@@ -16,10 +16,10 @@ export const loginSchema = Joi.object({
  * Signup validation schema
  */
 export const signupSchema = Joi.object({
-  schoolName: Joi.string().min(2).required(),
-  email: Joi.string().email().required(),
+  schoolName: Joi.string().trim().min(2).required(),
+  email: Joi.string().trim().email().required(),
   password: Joi.string().min(8).required(),
-  phone: Joi.string().pattern(/^[0-9]{10}$/).required(),
+  phone: Joi.string().trim().pattern(/^[0-9]{10}$/).required(),
 });
 
 /**
@@ -60,7 +60,7 @@ export const getMessagesSchema = Joi.object({
  * Get teacher by email validation schema
  */
 export const getTeacherByEmailSchema = Joi.object({
-  email: Joi.string().email().required(),
+  email: Joi.string().trim().email().required(),
 });
 
 /**
@@ -121,9 +121,7 @@ export const marksEntrySchema = Joi.object({
   is_finalized: Joi.boolean().required(),
 });
 
-/**
- * Upload file validation schema
- */
+
 export const uploadFileSchema = Joi.object({
   type: Joi.string().valid('marks', 'attendance').required(),
   class: Joi.string().required(),
@@ -132,16 +130,28 @@ export const uploadFileSchema = Joi.object({
   fileBase64: Joi.string().required(),
 });
 
-/**
- * Workflow status validation schema
- */
+
 export const workflowStatusSchema = Joi.object({
   workflowId: Joi.string().required(),
 });
 
 /**
- * Validate request body
+ * Forgot password validation schema
  */
+export const forgotPasswordSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  role: Joi.string().valid('admin', 'teacher', 'parent').required(),
+});
+
+/**
+ * Reset password validation schema
+ */
+export const resetPasswordSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  role: Joi.string().valid('admin', 'teacher', 'parent').required(),
+  newPassword: Joi.string().min(8).required(),
+});
+
 export const validateRequest = (schema: Joi.Schema, data: any) => {
   const { error, value } = schema.validate(data, {
     abortEarly: false,

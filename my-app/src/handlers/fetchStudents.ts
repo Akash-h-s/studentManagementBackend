@@ -1,7 +1,9 @@
+// src/handlers/fetchStudents.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { sdk } from '../lib/graphqlClient';
 import { fetchStudentsSchema, validateRequest } from '../utils/validationSchemas';
 import { withAuth } from '../utils/authMiddleware';
+import { successResponse, errorResponse, optionsResponse } from '../utils/apiResponse';
 
 interface FetchStudentsRequest {
   class_name: string;
@@ -10,20 +12,13 @@ interface FetchStudentsRequest {
   exam_id?: number;
 }
 
-// CORS headers
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
-
 export const handler = withAuth(async (
   event: APIGatewayProxyEvent,
   user
 ): Promise<APIGatewayProxyResult> => {
-  console.log('Event method:', event.httpMethod);
-  console.log('Event path:', event.path);
-  console.log('User Role:', user.role);
+  if (event.httpMethod === 'OPTIONS') {
+    return optionsResponse();
+  }
 
   try {
     const body: FetchStudentsRequest = JSON.parse(event.body || '{}');
@@ -31,28 +26,40 @@ export const handler = withAuth(async (
     // Validate request
     const validation = validateRequest(fetchStudentsSchema, body);
     if (!validation.valid) {
-      return {
-        statusCode: 400,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders,
-        },
-        body: JSON.stringify({
-          success: false,
-          message: validation.error,
-        }),
-      };
+      return errorResponse(validation.error || 'Invalid request', 400);
     }
 
-    const { class_name, section_name, subject_id, exam_id } = validation.data;
+    let { class_name, section_name, subject_id, exam_id } = validation.data;
 
     // Use generated SDK query
-    const result = await sdk.GetStudentsByClassSection({
+    let result = await sdk.GetStudentsByClassSection({
       class_name: class_name.trim(),
       section_name: section_name.trim(),
     });
 
-    console.log('Found students:', result.students.length);
+    // Fallback logic for combined class-section strings (e.g. "10-A") or when section is empty
+    if (result.students.length === 0 && (!section_name || !section_name.trim()) && class_name.trim().includes('-')) {
+      const parts = class_name.trim().split('-');
+      const potentialSection = parts.pop();
+      const potentialClass = parts.join('-');
+
+      if (potentialClass && potentialSection) {
+        try {
+          const fallbackResult = await sdk.GetStudentsByClassSection({
+            class_name: potentialClass,
+            section_name: potentialSection
+          });
+
+          if (fallbackResult.students.length > 0) {
+            result = fallbackResult;
+            class_name = potentialClass;
+            section_name = potentialSection;
+          }
+        } catch (err) {
+          console.warn('Fallback query failed:', err);
+        }
+      }
+    }
 
     let studentsToReturn: any[] = result.students;
 
@@ -87,33 +94,14 @@ export const handler = withAuth(async (
       }
     }
 
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
-      body: JSON.stringify({
-        success: true,
-        count: studentsToReturn.length,
-        class_name,
-        section_name,
-        students: studentsToReturn,
-      }),
-    };
-  } catch (error) {
+    return successResponse({
+      count: studentsToReturn.length,
+      class_name,
+      section_name,
+      students: studentsToReturn,
+    });
+  } catch (error: any) {
     console.error('Error fetching students:', error);
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders,
-      },
-      body: JSON.stringify({
-        success: false,
-        message: 'Internal server error',
-        error: error instanceof Error ? error.message : 'Unknown error',
-      }),
-    };
+    return errorResponse('Internal server error', 500, error);
   }
 });

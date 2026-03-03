@@ -1,7 +1,8 @@
 import path from "path";
 import type { CodegenConfig } from '@graphql-codegen/cli';
+import dotenv from 'dotenv';
 
-const project_root_dir = path.join(import.meta.dirname, "../.env");
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const config: CodegenConfig = {
   overwrite: true,
@@ -17,7 +18,6 @@ const config: CodegenConfig = {
         "typescript-graphql-request"
       ],
       config: {
-        // This ensures the generated SDK is easy to use
         rawRequest: false,
         enumsAsTypes: true
       },
