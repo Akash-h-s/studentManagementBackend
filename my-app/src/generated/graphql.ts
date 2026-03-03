@@ -83,16 +83,160 @@ export type String_Comparison_Exp = {
 /** columns and relationships of "admins" */
 export type Admins = {
   __typename?: 'admins';
+  /** An array relationship */
+  class_sections: Array<Class_Sections>;
+  /** An aggregate relationship */
+  class_sections_aggregate: Class_Sections_Aggregate;
   created_at?: Maybe<Scalars['timestamp']['output']>;
   email: Scalars['String']['output'];
+  /** An array relationship */
+  exams: Array<Exams>;
+  /** An aggregate relationship */
+  exams_aggregate: Exams_Aggregate;
   id: Scalars['Int']['output'];
+  /** An array relationship */
+  parents: Array<Parents>;
+  /** An aggregate relationship */
+  parents_aggregate: Parents_Aggregate;
   password_hash: Scalars['String']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   school_name: Scalars['String']['output'];
   /** An array relationship */
+  studentsByCreatedByAdminId: Array<Students>;
+  /** An aggregate relationship */
+  studentsByCreatedByAdminId_aggregate: Students_Aggregate;
+  /** An array relationship */
+  subjects: Array<Subjects>;
+  /** An aggregate relationship */
+  subjects_aggregate: Subjects_Aggregate;
+  /** An array relationship */
+  teachers: Array<Teachers>;
+  /** An aggregate relationship */
+  teachers_aggregate: Teachers_Aggregate;
+  /** An array relationship */
   uploads: Array<Uploads>;
   /** An aggregate relationship */
   uploads_aggregate: Uploads_Aggregate;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsClass_SectionsArgs = {
+  distinct_on?: InputMaybe<Array<Class_Sections_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Class_Sections_Order_By>>;
+  where?: InputMaybe<Class_Sections_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsClass_Sections_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Class_Sections_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Class_Sections_Order_By>>;
+  where?: InputMaybe<Class_Sections_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsExamsArgs = {
+  distinct_on?: InputMaybe<Array<Exams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Exams_Order_By>>;
+  where?: InputMaybe<Exams_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsExams_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Exams_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Exams_Order_By>>;
+  where?: InputMaybe<Exams_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsParentsArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsParents_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Parents_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Parents_Order_By>>;
+  where?: InputMaybe<Parents_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsStudentsByCreatedByAdminIdArgs = {
+  distinct_on?: InputMaybe<Array<Students_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Students_Order_By>>;
+  where?: InputMaybe<Students_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsStudentsByCreatedByAdminId_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Students_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Students_Order_By>>;
+  where?: InputMaybe<Students_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsSubjectsArgs = {
+  distinct_on?: InputMaybe<Array<Subjects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Subjects_Order_By>>;
+  where?: InputMaybe<Subjects_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsSubjects_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Subjects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Subjects_Order_By>>;
+  where?: InputMaybe<Subjects_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsTeachersArgs = {
+  distinct_on?: InputMaybe<Array<Teachers_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Teachers_Order_By>>;
+  where?: InputMaybe<Teachers_Bool_Exp>;
+};
+
+
+/** columns and relationships of "admins" */
+export type AdminsTeachers_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Teachers_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Teachers_Order_By>>;
+  where?: InputMaybe<Teachers_Bool_Exp>;
 };
 
 
@@ -156,12 +300,24 @@ export type Admins_Bool_Exp = {
   _and?: InputMaybe<Array<Admins_Bool_Exp>>;
   _not?: InputMaybe<Admins_Bool_Exp>;
   _or?: InputMaybe<Array<Admins_Bool_Exp>>;
+  class_sections?: InputMaybe<Class_Sections_Bool_Exp>;
+  class_sections_aggregate?: InputMaybe<Class_Sections_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
+  exams?: InputMaybe<Exams_Bool_Exp>;
+  exams_aggregate?: InputMaybe<Exams_Aggregate_Bool_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  parents?: InputMaybe<Parents_Bool_Exp>;
+  parents_aggregate?: InputMaybe<Parents_Aggregate_Bool_Exp>;
   password_hash?: InputMaybe<String_Comparison_Exp>;
   phone?: InputMaybe<String_Comparison_Exp>;
   school_name?: InputMaybe<String_Comparison_Exp>;
+  studentsByCreatedByAdminId?: InputMaybe<Students_Bool_Exp>;
+  studentsByCreatedByAdminId_aggregate?: InputMaybe<Students_Aggregate_Bool_Exp>;
+  subjects?: InputMaybe<Subjects_Bool_Exp>;
+  subjects_aggregate?: InputMaybe<Subjects_Aggregate_Bool_Exp>;
+  teachers?: InputMaybe<Teachers_Bool_Exp>;
+  teachers_aggregate?: InputMaybe<Teachers_Aggregate_Bool_Exp>;
   uploads?: InputMaybe<Uploads_Bool_Exp>;
   uploads_aggregate?: InputMaybe<Uploads_Aggregate_Bool_Exp>;
 };
@@ -180,12 +336,18 @@ export type Admins_Inc_Input = {
 
 /** input type for inserting data into table "admins" */
 export type Admins_Insert_Input = {
+  class_sections?: InputMaybe<Class_Sections_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  exams?: InputMaybe<Exams_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['Int']['input']>;
+  parents?: InputMaybe<Parents_Arr_Rel_Insert_Input>;
   password_hash?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
   school_name?: InputMaybe<Scalars['String']['input']>;
+  studentsByCreatedByAdminId?: InputMaybe<Students_Arr_Rel_Insert_Input>;
+  subjects?: InputMaybe<Subjects_Arr_Rel_Insert_Input>;
+  teachers?: InputMaybe<Teachers_Arr_Rel_Insert_Input>;
   uploads?: InputMaybe<Uploads_Arr_Rel_Insert_Input>;
 };
 
@@ -236,12 +398,18 @@ export type Admins_On_Conflict = {
 
 /** Ordering options when selecting data from "admins". */
 export type Admins_Order_By = {
+  class_sections_aggregate?: InputMaybe<Class_Sections_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
   email?: InputMaybe<Order_By>;
+  exams_aggregate?: InputMaybe<Exams_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
+  parents_aggregate?: InputMaybe<Parents_Aggregate_Order_By>;
   password_hash?: InputMaybe<Order_By>;
   phone?: InputMaybe<Order_By>;
   school_name?: InputMaybe<Order_By>;
+  studentsByCreatedByAdminId_aggregate?: InputMaybe<Students_Aggregate_Order_By>;
+  subjects_aggregate?: InputMaybe<Subjects_Aggregate_Order_By>;
+  teachers_aggregate?: InputMaybe<Teachers_Aggregate_Order_By>;
   uploads_aggregate?: InputMaybe<Uploads_Aggregate_Order_By>;
 };
 
@@ -817,6 +985,10 @@ export type Chat_Participants = {
   chat_id: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   joined_at?: Maybe<Scalars['timestamp']['output']>;
+  /** An object relationship */
+  parent?: Maybe<Parents>;
+  /** An object relationship */
+  teacher?: Maybe<Teachers>;
   user_id: Scalars['Int']['output'];
   user_type: Scalars['String']['output'];
 };
@@ -908,14 +1080,16 @@ export type Chat_Participants_Bool_Exp = {
   chat_id?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   joined_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  parent?: InputMaybe<Parents_Bool_Exp>;
+  teacher?: InputMaybe<Teachers_Bool_Exp>;
   user_id?: InputMaybe<Int_Comparison_Exp>;
   user_type?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "chat_participants" */
 export type Chat_Participants_Constraint =
-  /** unique or primary key constraint on columns "user_id", "chat_id" */
-  | 'chat_participants_chat_id_user_id_key'
+  /** unique or primary key constraint on columns "user_id", "user_type", "chat_id" */
+  | 'chat_participants_chat_id_user_id_user_type_key'
   /** unique or primary key constraint on columns "id" */
   | 'chat_participants_pkey';
 
@@ -932,6 +1106,8 @@ export type Chat_Participants_Insert_Input = {
   chat_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   joined_at?: InputMaybe<Scalars['timestamp']['input']>;
+  parent?: InputMaybe<Parents_Obj_Rel_Insert_Input>;
+  teacher?: InputMaybe<Teachers_Obj_Rel_Insert_Input>;
   user_id?: InputMaybe<Scalars['Int']['input']>;
   user_type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -996,6 +1172,8 @@ export type Chat_Participants_Order_By = {
   chat_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   joined_at?: InputMaybe<Order_By>;
+  parent?: InputMaybe<Parents_Order_By>;
+  teacher?: InputMaybe<Teachers_Order_By>;
   user_id?: InputMaybe<Order_By>;
   user_type?: InputMaybe<Order_By>;
 };
@@ -1596,6 +1774,9 @@ export type Class_Sections = {
   __typename?: 'class_sections';
   class_name: Scalars['String']['output'];
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   display_name?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   section_name: Scalars['String']['output'];
@@ -1603,6 +1784,10 @@ export type Class_Sections = {
   students: Array<Students>;
   /** An aggregate relationship */
   students_aggregate: Students_Aggregate;
+  /** An array relationship */
+  subjects: Array<Subjects>;
+  /** An aggregate relationship */
+  subjects_aggregate: Subjects_Aggregate;
 };
 
 
@@ -1625,11 +1810,42 @@ export type Class_SectionsStudents_AggregateArgs = {
   where?: InputMaybe<Students_Bool_Exp>;
 };
 
+
+/** columns and relationships of "class_sections" */
+export type Class_SectionsSubjectsArgs = {
+  distinct_on?: InputMaybe<Array<Subjects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Subjects_Order_By>>;
+  where?: InputMaybe<Subjects_Bool_Exp>;
+};
+
+
+/** columns and relationships of "class_sections" */
+export type Class_SectionsSubjects_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Subjects_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Subjects_Order_By>>;
+  where?: InputMaybe<Subjects_Bool_Exp>;
+};
+
 /** aggregated selection of "class_sections" */
 export type Class_Sections_Aggregate = {
   __typename?: 'class_sections_aggregate';
   aggregate?: Maybe<Class_Sections_Aggregate_Fields>;
   nodes: Array<Class_Sections>;
+};
+
+export type Class_Sections_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Class_Sections_Aggregate_Bool_Exp_Count>;
+};
+
+export type Class_Sections_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Class_Sections_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Class_Sections_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
 };
 
 /** aggregate fields of "class_sections" */
@@ -1655,10 +1871,39 @@ export type Class_Sections_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "class_sections" */
+export type Class_Sections_Aggregate_Order_By = {
+  avg?: InputMaybe<Class_Sections_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Class_Sections_Max_Order_By>;
+  min?: InputMaybe<Class_Sections_Min_Order_By>;
+  stddev?: InputMaybe<Class_Sections_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Class_Sections_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Class_Sections_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Class_Sections_Sum_Order_By>;
+  var_pop?: InputMaybe<Class_Sections_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Class_Sections_Var_Samp_Order_By>;
+  variance?: InputMaybe<Class_Sections_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "class_sections" */
+export type Class_Sections_Arr_Rel_Insert_Input = {
+  data: Array<Class_Sections_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Class_Sections_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Class_Sections_Avg_Fields = {
   __typename?: 'class_sections_avg_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "class_sections" */
+export type Class_Sections_Avg_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "class_sections". All fields are combined with a logical 'AND'. */
@@ -1668,11 +1913,15 @@ export type Class_Sections_Bool_Exp = {
   _or?: InputMaybe<Array<Class_Sections_Bool_Exp>>;
   class_name?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   display_name?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   section_name?: InputMaybe<String_Comparison_Exp>;
   students?: InputMaybe<Students_Bool_Exp>;
   students_aggregate?: InputMaybe<Students_Aggregate_Bool_Exp>;
+  subjects?: InputMaybe<Subjects_Bool_Exp>;
+  subjects_aggregate?: InputMaybe<Subjects_Aggregate_Bool_Exp>;
 };
 
 /** unique or primary key constraints on table "class_sections" */
@@ -1684,6 +1933,7 @@ export type Class_Sections_Constraint =
 
 /** input type for incrementing numeric columns in table "class_sections" */
 export type Class_Sections_Inc_Input = {
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -1691,9 +1941,12 @@ export type Class_Sections_Inc_Input = {
 export type Class_Sections_Insert_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['Int']['input']>;
   section_name?: InputMaybe<Scalars['String']['input']>;
   students?: InputMaybe<Students_Arr_Rel_Insert_Input>;
+  subjects?: InputMaybe<Subjects_Arr_Rel_Insert_Input>;
 };
 
 /** aggregate max on columns */
@@ -1701,9 +1954,20 @@ export type Class_Sections_Max_Fields = {
   __typename?: 'class_sections_max_fields';
   class_name?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   display_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   section_name?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by max() on columns of table "class_sections" */
+export type Class_Sections_Max_Order_By = {
+  class_name?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  display_name?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  section_name?: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -1711,9 +1975,20 @@ export type Class_Sections_Min_Fields = {
   __typename?: 'class_sections_min_fields';
   class_name?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   display_name?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   section_name?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "class_sections" */
+export type Class_Sections_Min_Order_By = {
+  class_name?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  display_name?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  section_name?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "class_sections" */
@@ -1743,10 +2018,13 @@ export type Class_Sections_On_Conflict = {
 export type Class_Sections_Order_By = {
   class_name?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   display_name?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   section_name?: InputMaybe<Order_By>;
   students_aggregate?: InputMaybe<Students_Aggregate_Order_By>;
+  subjects_aggregate?: InputMaybe<Subjects_Aggregate_Order_By>;
 };
 
 /** primary key columns input for table: class_sections */
@@ -1761,6 +2039,8 @@ export type Class_Sections_Select_Column =
   /** column name */
   | 'created_at'
   /** column name */
+  | 'created_by_admin_id'
+  /** column name */
   | 'display_name'
   /** column name */
   | 'id'
@@ -1771,6 +2051,7 @@ export type Class_Sections_Select_Column =
 export type Class_Sections_Set_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   section_name?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1778,19 +2059,40 @@ export type Class_Sections_Set_Input = {
 /** aggregate stddev on columns */
 export type Class_Sections_Stddev_Fields = {
   __typename?: 'class_sections_stddev_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "class_sections" */
+export type Class_Sections_Stddev_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Class_Sections_Stddev_Pop_Fields = {
   __typename?: 'class_sections_stddev_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "class_sections" */
+export type Class_Sections_Stddev_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Class_Sections_Stddev_Samp_Fields = {
   __typename?: 'class_sections_stddev_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "class_sections" */
+export type Class_Sections_Stddev_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "class_sections" */
@@ -1805,6 +2107,7 @@ export type Class_Sections_Stream_Cursor_Input = {
 export type Class_Sections_Stream_Cursor_Value_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   display_name?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   section_name?: InputMaybe<Scalars['String']['input']>;
@@ -1813,7 +2116,14 @@ export type Class_Sections_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Class_Sections_Sum_Fields = {
   __typename?: 'class_sections_sum_fields';
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "class_sections" */
+export type Class_Sections_Sum_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "class_sections" */
@@ -1822,6 +2132,8 @@ export type Class_Sections_Update_Column =
   | 'class_name'
   /** column name */
   | 'created_at'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'id'
   /** column name */
@@ -1839,19 +2151,40 @@ export type Class_Sections_Updates = {
 /** aggregate var_pop on columns */
 export type Class_Sections_Var_Pop_Fields = {
   __typename?: 'class_sections_var_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "class_sections" */
+export type Class_Sections_Var_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Class_Sections_Var_Samp_Fields = {
   __typename?: 'class_sections_var_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "class_sections" */
+export type Class_Sections_Var_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Class_Sections_Variance_Fields = {
   __typename?: 'class_sections_variance_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "class_sections" */
+export type Class_Sections_Variance_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** ordering argument of a cursor */
@@ -2279,6 +2612,9 @@ export type Emails_Variance_Order_By = {
 export type Exams = {
   __typename?: 'exams';
   academic_year: Scalars['String']['output'];
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   /** An array relationship */
   emails: Array<Emails>;
   /** An aggregate relationship */
@@ -2364,6 +2700,17 @@ export type Exams_Aggregate = {
   nodes: Array<Exams>;
 };
 
+export type Exams_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Exams_Aggregate_Bool_Exp_Count>;
+};
+
+export type Exams_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Exams_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Exams_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "exams" */
 export type Exams_Aggregate_Fields = {
   __typename?: 'exams_aggregate_fields';
@@ -2387,10 +2734,39 @@ export type Exams_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "exams" */
+export type Exams_Aggregate_Order_By = {
+  avg?: InputMaybe<Exams_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Exams_Max_Order_By>;
+  min?: InputMaybe<Exams_Min_Order_By>;
+  stddev?: InputMaybe<Exams_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Exams_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Exams_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Exams_Sum_Order_By>;
+  var_pop?: InputMaybe<Exams_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Exams_Var_Samp_Order_By>;
+  variance?: InputMaybe<Exams_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "exams" */
+export type Exams_Arr_Rel_Insert_Input = {
+  data: Array<Exams_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Exams_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Exams_Avg_Fields = {
   __typename?: 'exams_avg_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "exams" */
+export type Exams_Avg_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "exams". All fields are combined with a logical 'AND'. */
@@ -2399,6 +2775,8 @@ export type Exams_Bool_Exp = {
   _not?: InputMaybe<Exams_Bool_Exp>;
   _or?: InputMaybe<Array<Exams_Bool_Exp>>;
   academic_year?: InputMaybe<String_Comparison_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   emails?: InputMaybe<Emails_Bool_Exp>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Bool_Exp>;
   end_date?: InputMaybe<Date_Comparison_Exp>;
@@ -2413,17 +2791,22 @@ export type Exams_Bool_Exp = {
 
 /** unique or primary key constraints on table "exams" */
 export type Exams_Constraint =
+  /** unique or primary key constraint on columns "academic_year", "name" */
+  | 'exams_name_academic_year_key'
   /** unique or primary key constraint on columns "id" */
   | 'exams_pkey';
 
 /** input type for incrementing numeric columns in table "exams" */
 export type Exams_Inc_Input = {
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
 /** input type for inserting data into table "exams" */
 export type Exams_Insert_Input = {
   academic_year?: InputMaybe<Scalars['String']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
   end_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -2437,20 +2820,42 @@ export type Exams_Insert_Input = {
 export type Exams_Max_Fields = {
   __typename?: 'exams_max_fields';
   academic_year?: Maybe<Scalars['String']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   end_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   start_date?: Maybe<Scalars['date']['output']>;
 };
 
+/** order by max() on columns of table "exams" */
+export type Exams_Max_Order_By = {
+  academic_year?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  end_date?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  start_date?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Exams_Min_Fields = {
   __typename?: 'exams_min_fields';
   academic_year?: Maybe<Scalars['String']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   end_date?: Maybe<Scalars['date']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   start_date?: Maybe<Scalars['date']['output']>;
+};
+
+/** order by min() on columns of table "exams" */
+export type Exams_Min_Order_By = {
+  academic_year?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  end_date?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  start_date?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "exams" */
@@ -2479,6 +2884,8 @@ export type Exams_On_Conflict = {
 /** Ordering options when selecting data from "exams". */
 export type Exams_Order_By = {
   academic_year?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Order_By>;
   end_date?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -2498,6 +2905,8 @@ export type Exams_Select_Column =
   /** column name */
   | 'academic_year'
   /** column name */
+  | 'created_by_admin_id'
+  /** column name */
   | 'end_date'
   /** column name */
   | 'id'
@@ -2509,6 +2918,7 @@ export type Exams_Select_Column =
 /** input type for updating data in table "exams" */
 export type Exams_Set_Input = {
   academic_year?: InputMaybe<Scalars['String']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   end_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2518,19 +2928,40 @@ export type Exams_Set_Input = {
 /** aggregate stddev on columns */
 export type Exams_Stddev_Fields = {
   __typename?: 'exams_stddev_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "exams" */
+export type Exams_Stddev_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Exams_Stddev_Pop_Fields = {
   __typename?: 'exams_stddev_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "exams" */
+export type Exams_Stddev_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Exams_Stddev_Samp_Fields = {
   __typename?: 'exams_stddev_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "exams" */
+export type Exams_Stddev_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "exams" */
@@ -2544,6 +2975,7 @@ export type Exams_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Exams_Stream_Cursor_Value_Input = {
   academic_year?: InputMaybe<Scalars['String']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   end_date?: InputMaybe<Scalars['date']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2553,13 +2985,22 @@ export type Exams_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Exams_Sum_Fields = {
   __typename?: 'exams_sum_fields';
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "exams" */
+export type Exams_Sum_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "exams" */
 export type Exams_Update_Column =
   /** column name */
   | 'academic_year'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'end_date'
   /** column name */
@@ -2581,19 +3022,40 @@ export type Exams_Updates = {
 /** aggregate var_pop on columns */
 export type Exams_Var_Pop_Fields = {
   __typename?: 'exams_var_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "exams" */
+export type Exams_Var_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Exams_Var_Samp_Fields = {
   __typename?: 'exams_var_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "exams" */
+export type Exams_Var_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Exams_Variance_Fields = {
   __typename?: 'exams_variance_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "exams" */
+export type Exams_Variance_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "marks" */
@@ -2747,7 +3209,9 @@ export type Marks_Bool_Exp = {
 /** unique or primary key constraints on table "marks" */
 export type Marks_Constraint =
   /** unique or primary key constraint on columns "id" */
-  | 'marks_pkey';
+  | 'marks_pkey'
+  /** unique or primary key constraint on columns "student_id", "subject_id", "exam_id" */
+  | 'marks_student_subject_exam_key';
 
 /** input type for incrementing numeric columns in table "marks" */
 export type Marks_Inc_Input = {
@@ -3156,6 +3620,7 @@ export type Messages = {
   id: Scalars['Int']['output'];
   is_read?: Maybe<Scalars['Boolean']['output']>;
   sender_id: Scalars['Int']['output'];
+  sender_name?: Maybe<Scalars['String']['output']>;
   sender_type: Scalars['String']['output'];
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
@@ -3266,6 +3731,7 @@ export type Messages_Bool_Exp = {
   id?: InputMaybe<Int_Comparison_Exp>;
   is_read?: InputMaybe<Boolean_Comparison_Exp>;
   sender_id?: InputMaybe<Int_Comparison_Exp>;
+  sender_name?: InputMaybe<String_Comparison_Exp>;
   sender_type?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamp_Comparison_Exp>;
 };
@@ -3291,6 +3757,7 @@ export type Messages_Insert_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_read?: InputMaybe<Scalars['Boolean']['input']>;
   sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_name?: InputMaybe<Scalars['String']['input']>;
   sender_type?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -3303,6 +3770,7 @@ export type Messages_Max_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   sender_id?: Maybe<Scalars['Int']['output']>;
+  sender_name?: Maybe<Scalars['String']['output']>;
   sender_type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
@@ -3314,6 +3782,7 @@ export type Messages_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   sender_id?: InputMaybe<Order_By>;
+  sender_name?: InputMaybe<Order_By>;
   sender_type?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -3326,6 +3795,7 @@ export type Messages_Min_Fields = {
   created_at?: Maybe<Scalars['timestamp']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   sender_id?: Maybe<Scalars['Int']['output']>;
+  sender_name?: Maybe<Scalars['String']['output']>;
   sender_type?: Maybe<Scalars['String']['output']>;
   updated_at?: Maybe<Scalars['timestamp']['output']>;
 };
@@ -3337,6 +3807,7 @@ export type Messages_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   sender_id?: InputMaybe<Order_By>;
+  sender_name?: InputMaybe<Order_By>;
   sender_type?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -3366,6 +3837,7 @@ export type Messages_Order_By = {
   id?: InputMaybe<Order_By>;
   is_read?: InputMaybe<Order_By>;
   sender_id?: InputMaybe<Order_By>;
+  sender_name?: InputMaybe<Order_By>;
   sender_type?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
 };
@@ -3390,6 +3862,8 @@ export type Messages_Select_Column =
   /** column name */
   | 'sender_id'
   /** column name */
+  | 'sender_name'
+  /** column name */
   | 'sender_type'
   /** column name */
   | 'updated_at';
@@ -3412,6 +3886,7 @@ export type Messages_Set_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_read?: InputMaybe<Scalars['Boolean']['input']>;
   sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_name?: InputMaybe<Scalars['String']['input']>;
   sender_type?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -3477,6 +3952,7 @@ export type Messages_Stream_Cursor_Value_Input = {
   id?: InputMaybe<Scalars['Int']['input']>;
   is_read?: InputMaybe<Scalars['Boolean']['input']>;
   sender_id?: InputMaybe<Scalars['Int']['input']>;
+  sender_name?: InputMaybe<Scalars['String']['input']>;
   sender_type?: InputMaybe<Scalars['String']['input']>;
   updated_at?: InputMaybe<Scalars['timestamp']['input']>;
 };
@@ -3510,6 +3986,8 @@ export type Messages_Update_Column =
   | 'is_read'
   /** column name */
   | 'sender_id'
+  /** column name */
+  | 'sender_name'
   /** column name */
   | 'sender_type'
   /** column name */
@@ -4537,6 +5015,9 @@ export type Parents = {
   __typename?: 'parents';
   address?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   email: Scalars['String']['output'];
   /** An array relationship */
   emails: Array<Emails>;
@@ -4599,6 +5080,17 @@ export type Parents_Aggregate = {
   nodes: Array<Parents>;
 };
 
+export type Parents_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Parents_Aggregate_Bool_Exp_Count>;
+};
+
+export type Parents_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Parents_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Parents_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "parents" */
 export type Parents_Aggregate_Fields = {
   __typename?: 'parents_aggregate_fields';
@@ -4622,10 +5114,39 @@ export type Parents_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "parents" */
+export type Parents_Aggregate_Order_By = {
+  avg?: InputMaybe<Parents_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Parents_Max_Order_By>;
+  min?: InputMaybe<Parents_Min_Order_By>;
+  stddev?: InputMaybe<Parents_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Parents_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Parents_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Parents_Sum_Order_By>;
+  var_pop?: InputMaybe<Parents_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Parents_Var_Samp_Order_By>;
+  variance?: InputMaybe<Parents_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "parents" */
+export type Parents_Arr_Rel_Insert_Input = {
+  data: Array<Parents_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Parents_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Parents_Avg_Fields = {
   __typename?: 'parents_avg_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "parents" */
+export type Parents_Avg_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "parents". All fields are combined with a logical 'AND'. */
@@ -4635,6 +5156,8 @@ export type Parents_Bool_Exp = {
   _or?: InputMaybe<Array<Parents_Bool_Exp>>;
   address?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   emails?: InputMaybe<Emails_Bool_Exp>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Bool_Exp>;
@@ -4655,6 +5178,7 @@ export type Parents_Constraint =
 
 /** input type for incrementing numeric columns in table "parents" */
 export type Parents_Inc_Input = {
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -4662,6 +5186,8 @@ export type Parents_Inc_Input = {
 export type Parents_Insert_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']['input']>;
   emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -4676,6 +5202,7 @@ export type Parents_Max_Fields = {
   __typename?: 'parents_max_fields';
   address?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -4683,16 +5210,41 @@ export type Parents_Max_Fields = {
   phone?: Maybe<Scalars['String']['output']>;
 };
 
+/** order by max() on columns of table "parents" */
+export type Parents_Max_Order_By = {
+  address?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Parents_Min_Fields = {
   __typename?: 'parents_min_fields';
   address?: Maybe<Scalars['String']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   password_hash?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "parents" */
+export type Parents_Min_Order_By = {
+  address?: InputMaybe<Order_By>;
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "parents" */
@@ -4722,6 +5274,8 @@ export type Parents_On_Conflict = {
 export type Parents_Order_By = {
   address?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   email?: InputMaybe<Order_By>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Order_By>;
   id?: InputMaybe<Order_By>;
@@ -4743,6 +5297,8 @@ export type Parents_Select_Column =
   /** column name */
   | 'created_at'
   /** column name */
+  | 'created_by_admin_id'
+  /** column name */
   | 'email'
   /** column name */
   | 'id'
@@ -4757,6 +5313,7 @@ export type Parents_Select_Column =
 export type Parents_Set_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -4767,19 +5324,40 @@ export type Parents_Set_Input = {
 /** aggregate stddev on columns */
 export type Parents_Stddev_Fields = {
   __typename?: 'parents_stddev_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "parents" */
+export type Parents_Stddev_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Parents_Stddev_Pop_Fields = {
   __typename?: 'parents_stddev_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "parents" */
+export type Parents_Stddev_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Parents_Stddev_Samp_Fields = {
   __typename?: 'parents_stddev_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "parents" */
+export type Parents_Stddev_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "parents" */
@@ -4794,6 +5372,7 @@ export type Parents_Stream_Cursor_Input = {
 export type Parents_Stream_Cursor_Value_Input = {
   address?: InputMaybe<Scalars['String']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -4804,7 +5383,14 @@ export type Parents_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Parents_Sum_Fields = {
   __typename?: 'parents_sum_fields';
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "parents" */
+export type Parents_Sum_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "parents" */
@@ -4813,6 +5399,8 @@ export type Parents_Update_Column =
   | 'address'
   /** column name */
   | 'created_at'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'email'
   /** column name */
@@ -4836,19 +5424,40 @@ export type Parents_Updates = {
 /** aggregate var_pop on columns */
 export type Parents_Var_Pop_Fields = {
   __typename?: 'parents_var_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "parents" */
+export type Parents_Var_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Parents_Var_Samp_Fields = {
   __typename?: 'parents_var_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "parents" */
+export type Parents_Var_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Parents_Variance_Fields = {
   __typename?: 'parents_variance_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "parents" */
+export type Parents_Variance_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "progress_cards" */
@@ -5318,9 +5927,9 @@ export type Query_Root = {
   chats_aggregate: Chats_Aggregate;
   /** fetch data from the table: "chats" using primary key columns */
   chats_by_pk?: Maybe<Chats>;
-  /** fetch data from the table: "class_sections" */
+  /** An array relationship */
   class_sections: Array<Class_Sections>;
-  /** fetch aggregated fields from the table: "class_sections" */
+  /** An aggregate relationship */
   class_sections_aggregate: Class_Sections_Aggregate;
   /** fetch data from the table: "class_sections" using primary key columns */
   class_sections_by_pk?: Maybe<Class_Sections>;
@@ -5330,9 +5939,9 @@ export type Query_Root = {
   emails_aggregate: Emails_Aggregate;
   /** fetch data from the table: "emails" using primary key columns */
   emails_by_pk?: Maybe<Emails>;
-  /** fetch data from the table: "exams" */
+  /** An array relationship */
   exams: Array<Exams>;
-  /** fetch aggregated fields from the table: "exams" */
+  /** An aggregate relationship */
   exams_aggregate: Exams_Aggregate;
   /** fetch data from the table: "exams" using primary key columns */
   exams_by_pk?: Maybe<Exams>;
@@ -5348,9 +5957,9 @@ export type Query_Root = {
   messages_aggregate: Messages_Aggregate;
   /** fetch data from the table: "messages" using primary key columns */
   messages_by_pk?: Maybe<Messages>;
-  /** fetch data from the table: "parents" */
+  /** An array relationship */
   parents: Array<Parents>;
-  /** fetch aggregated fields from the table: "parents" */
+  /** An aggregate relationship */
   parents_aggregate: Parents_Aggregate;
   /** fetch data from the table: "parents" using primary key columns */
   parents_by_pk?: Maybe<Parents>;
@@ -5372,9 +5981,9 @@ export type Query_Root = {
   subjects_aggregate: Subjects_Aggregate;
   /** fetch data from the table: "subjects" using primary key columns */
   subjects_by_pk?: Maybe<Subjects>;
-  /** fetch data from the table: "teachers" */
+  /** An array relationship */
   teachers: Array<Teachers>;
-  /** fetch aggregated fields from the table: "teachers" */
+  /** An aggregate relationship */
   teachers_aggregate: Teachers_Aggregate;
   /** fetch data from the table: "teachers" using primary key columns */
   teachers_by_pk?: Maybe<Teachers>;
@@ -5739,6 +6348,9 @@ export type Students = {
   class_section?: Maybe<Class_Sections>;
   class_section_id?: Maybe<Scalars['Int']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   dob?: Maybe<Scalars['date']['output']>;
   /** An array relationship */
   emails: Array<Emails>;
@@ -5905,6 +6517,7 @@ export type Students_Arr_Rel_Insert_Input = {
 export type Students_Avg_Fields = {
   __typename?: 'students_avg_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -5912,6 +6525,7 @@ export type Students_Avg_Fields = {
 /** order by avg() on columns of table "students" */
 export type Students_Avg_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -5925,6 +6539,8 @@ export type Students_Bool_Exp = {
   class_section?: InputMaybe<Class_Sections_Bool_Exp>;
   class_section_id?: InputMaybe<Int_Comparison_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   dob?: InputMaybe<Date_Comparison_Exp>;
   emails?: InputMaybe<Emails_Bool_Exp>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Bool_Exp>;
@@ -5951,6 +6567,7 @@ export type Students_Constraint =
 /** input type for incrementing numeric columns in table "students" */
 export type Students_Inc_Input = {
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   parent_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -5961,6 +6578,8 @@ export type Students_Insert_Input = {
   class_section?: InputMaybe<Class_Sections_Obj_Rel_Insert_Input>;
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   dob?: InputMaybe<Scalars['date']['input']>;
   emails?: InputMaybe<Emails_Arr_Rel_Insert_Input>;
   gender?: InputMaybe<Scalars['String']['input']>;
@@ -5980,6 +6599,7 @@ export type Students_Max_Fields = {
   admission_no?: Maybe<Scalars['String']['output']>;
   class_section_id?: Maybe<Scalars['Int']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   dob?: Maybe<Scalars['date']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
@@ -5993,6 +6613,7 @@ export type Students_Max_Order_By = {
   admission_no?: InputMaybe<Order_By>;
   class_section_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   dob?: InputMaybe<Order_By>;
   gender?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -6007,6 +6628,7 @@ export type Students_Min_Fields = {
   admission_no?: Maybe<Scalars['String']['output']>;
   class_section_id?: Maybe<Scalars['Int']['output']>;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   dob?: Maybe<Scalars['date']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
@@ -6020,6 +6642,7 @@ export type Students_Min_Order_By = {
   admission_no?: InputMaybe<Order_By>;
   class_section_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   dob?: InputMaybe<Order_By>;
   gender?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -6057,6 +6680,8 @@ export type Students_Order_By = {
   class_section?: InputMaybe<Class_Sections_Order_By>;
   class_section_id?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   dob?: InputMaybe<Order_By>;
   emails_aggregate?: InputMaybe<Emails_Aggregate_Order_By>;
   gender?: InputMaybe<Order_By>;
@@ -6083,6 +6708,8 @@ export type Students_Select_Column =
   | 'class_section_id'
   /** column name */
   | 'created_at'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'dob'
   /** column name */
@@ -6113,6 +6740,7 @@ export type Students_Set_Input = {
   admission_no?: InputMaybe<Scalars['String']['input']>;
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   dob?: InputMaybe<Scalars['date']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -6126,6 +6754,7 @@ export type Students_Set_Input = {
 export type Students_Stddev_Fields = {
   __typename?: 'students_stddev_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6133,6 +6762,7 @@ export type Students_Stddev_Fields = {
 /** order by stddev() on columns of table "students" */
 export type Students_Stddev_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6141,6 +6771,7 @@ export type Students_Stddev_Order_By = {
 export type Students_Stddev_Pop_Fields = {
   __typename?: 'students_stddev_pop_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6148,6 +6779,7 @@ export type Students_Stddev_Pop_Fields = {
 /** order by stddev_pop() on columns of table "students" */
 export type Students_Stddev_Pop_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6156,6 +6788,7 @@ export type Students_Stddev_Pop_Order_By = {
 export type Students_Stddev_Samp_Fields = {
   __typename?: 'students_stddev_samp_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6163,6 +6796,7 @@ export type Students_Stddev_Samp_Fields = {
 /** order by stddev_samp() on columns of table "students" */
 export type Students_Stddev_Samp_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6180,6 +6814,7 @@ export type Students_Stream_Cursor_Value_Input = {
   admission_no?: InputMaybe<Scalars['String']['input']>;
   class_section_id?: InputMaybe<Scalars['Int']['input']>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   dob?: InputMaybe<Scalars['date']['input']>;
   gender?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
@@ -6193,6 +6828,7 @@ export type Students_Stream_Cursor_Value_Input = {
 export type Students_Sum_Fields = {
   __typename?: 'students_sum_fields';
   class_section_id?: Maybe<Scalars['Int']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   parent_id?: Maybe<Scalars['Int']['output']>;
 };
@@ -6200,6 +6836,7 @@ export type Students_Sum_Fields = {
 /** order by sum() on columns of table "students" */
 export type Students_Sum_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6212,6 +6849,8 @@ export type Students_Update_Column =
   | 'class_section_id'
   /** column name */
   | 'created_at'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'dob'
   /** column name */
@@ -6240,6 +6879,7 @@ export type Students_Updates = {
 export type Students_Var_Pop_Fields = {
   __typename?: 'students_var_pop_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6247,6 +6887,7 @@ export type Students_Var_Pop_Fields = {
 /** order by var_pop() on columns of table "students" */
 export type Students_Var_Pop_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6255,6 +6896,7 @@ export type Students_Var_Pop_Order_By = {
 export type Students_Var_Samp_Fields = {
   __typename?: 'students_var_samp_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6262,6 +6904,7 @@ export type Students_Var_Samp_Fields = {
 /** order by var_samp() on columns of table "students" */
 export type Students_Var_Samp_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6270,6 +6913,7 @@ export type Students_Var_Samp_Order_By = {
 export type Students_Variance_Fields = {
   __typename?: 'students_variance_fields';
   class_section_id?: Maybe<Scalars['Float']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   parent_id?: Maybe<Scalars['Float']['output']>;
 };
@@ -6277,6 +6921,7 @@ export type Students_Variance_Fields = {
 /** order by variance() on columns of table "students" */
 export type Students_Variance_Order_By = {
   class_section_id?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   parent_id?: InputMaybe<Order_By>;
 };
@@ -6285,6 +6930,13 @@ export type Students_Variance_Order_By = {
 export type Subjects = {
   __typename?: 'subjects';
   class_name: Scalars['String']['output'];
+  /** An array relationship */
+  class_sections: Array<Class_Sections>;
+  /** An aggregate relationship */
+  class_sections_aggregate: Class_Sections_Aggregate;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   id: Scalars['Int']['output'];
   /** An array relationship */
   marks: Array<Marks>;
@@ -6294,6 +6946,26 @@ export type Subjects = {
   /** An object relationship */
   teacher?: Maybe<Teachers>;
   teacher_id?: Maybe<Scalars['Int']['output']>;
+};
+
+
+/** columns and relationships of "subjects" */
+export type SubjectsClass_SectionsArgs = {
+  distinct_on?: InputMaybe<Array<Class_Sections_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Class_Sections_Order_By>>;
+  where?: InputMaybe<Class_Sections_Bool_Exp>;
+};
+
+
+/** columns and relationships of "subjects" */
+export type SubjectsClass_Sections_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Class_Sections_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Class_Sections_Order_By>>;
+  where?: InputMaybe<Class_Sections_Bool_Exp>;
 };
 
 
@@ -6382,12 +7054,14 @@ export type Subjects_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Subjects_Avg_Fields = {
   __typename?: 'subjects_avg_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by avg() on columns of table "subjects" */
 export type Subjects_Avg_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6398,6 +7072,10 @@ export type Subjects_Bool_Exp = {
   _not?: InputMaybe<Subjects_Bool_Exp>;
   _or?: InputMaybe<Array<Subjects_Bool_Exp>>;
   class_name?: InputMaybe<String_Comparison_Exp>;
+  class_sections?: InputMaybe<Class_Sections_Bool_Exp>;
+  class_sections_aggregate?: InputMaybe<Class_Sections_Aggregate_Bool_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   marks?: InputMaybe<Marks_Bool_Exp>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Bool_Exp>;
@@ -6408,11 +7086,14 @@ export type Subjects_Bool_Exp = {
 
 /** unique or primary key constraints on table "subjects" */
 export type Subjects_Constraint =
+  /** unique or primary key constraint on columns "name", "class_name" */
+  | 'subjects_name_class_name_key'
   /** unique or primary key constraint on columns "id" */
   | 'subjects_pkey';
 
 /** input type for incrementing numeric columns in table "subjects" */
 export type Subjects_Inc_Input = {
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   teacher_id?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -6420,6 +7101,9 @@ export type Subjects_Inc_Input = {
 /** input type for inserting data into table "subjects" */
 export type Subjects_Insert_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
+  class_sections?: InputMaybe<Class_Sections_Arr_Rel_Insert_Input>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   id?: InputMaybe<Scalars['Int']['input']>;
   marks?: InputMaybe<Marks_Arr_Rel_Insert_Input>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -6431,6 +7115,7 @@ export type Subjects_Insert_Input = {
 export type Subjects_Max_Fields = {
   __typename?: 'subjects_max_fields';
   class_name?: Maybe<Scalars['String']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   teacher_id?: Maybe<Scalars['Int']['output']>;
@@ -6439,6 +7124,7 @@ export type Subjects_Max_Fields = {
 /** order by max() on columns of table "subjects" */
 export type Subjects_Max_Order_By = {
   class_name?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
@@ -6448,6 +7134,7 @@ export type Subjects_Max_Order_By = {
 export type Subjects_Min_Fields = {
   __typename?: 'subjects_min_fields';
   class_name?: Maybe<Scalars['String']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   teacher_id?: Maybe<Scalars['Int']['output']>;
@@ -6456,6 +7143,7 @@ export type Subjects_Min_Fields = {
 /** order by min() on columns of table "subjects" */
 export type Subjects_Min_Order_By = {
   class_name?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
@@ -6487,6 +7175,9 @@ export type Subjects_On_Conflict = {
 /** Ordering options when selecting data from "subjects". */
 export type Subjects_Order_By = {
   class_name?: InputMaybe<Order_By>;
+  class_sections_aggregate?: InputMaybe<Class_Sections_Aggregate_Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   id?: InputMaybe<Order_By>;
   marks_aggregate?: InputMaybe<Marks_Aggregate_Order_By>;
   name?: InputMaybe<Order_By>;
@@ -6504,6 +7195,8 @@ export type Subjects_Select_Column =
   /** column name */
   | 'class_name'
   /** column name */
+  | 'created_by_admin_id'
+  /** column name */
   | 'id'
   /** column name */
   | 'name'
@@ -6513,6 +7206,7 @@ export type Subjects_Select_Column =
 /** input type for updating data in table "subjects" */
 export type Subjects_Set_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teacher_id?: InputMaybe<Scalars['Int']['input']>;
@@ -6521,12 +7215,14 @@ export type Subjects_Set_Input = {
 /** aggregate stddev on columns */
 export type Subjects_Stddev_Fields = {
   __typename?: 'subjects_stddev_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev() on columns of table "subjects" */
 export type Subjects_Stddev_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6534,12 +7230,14 @@ export type Subjects_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Subjects_Stddev_Pop_Fields = {
   __typename?: 'subjects_stddev_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_pop() on columns of table "subjects" */
 export type Subjects_Stddev_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6547,12 +7245,14 @@ export type Subjects_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Subjects_Stddev_Samp_Fields = {
   __typename?: 'subjects_stddev_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by stddev_samp() on columns of table "subjects" */
 export type Subjects_Stddev_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6568,6 +7268,7 @@ export type Subjects_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Subjects_Stream_Cursor_Value_Input = {
   class_name?: InputMaybe<Scalars['String']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   teacher_id?: InputMaybe<Scalars['Int']['input']>;
@@ -6576,12 +7277,14 @@ export type Subjects_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Subjects_Sum_Fields = {
   __typename?: 'subjects_sum_fields';
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   teacher_id?: Maybe<Scalars['Int']['output']>;
 };
 
 /** order by sum() on columns of table "subjects" */
 export type Subjects_Sum_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6590,6 +7293,8 @@ export type Subjects_Sum_Order_By = {
 export type Subjects_Update_Column =
   /** column name */
   | 'class_name'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'id'
   /** column name */
@@ -6609,12 +7314,14 @@ export type Subjects_Updates = {
 /** aggregate var_pop on columns */
 export type Subjects_Var_Pop_Fields = {
   __typename?: 'subjects_var_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_pop() on columns of table "subjects" */
 export type Subjects_Var_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6622,12 +7329,14 @@ export type Subjects_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Subjects_Var_Samp_Fields = {
   __typename?: 'subjects_var_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by var_samp() on columns of table "subjects" */
 export type Subjects_Var_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6635,12 +7344,14 @@ export type Subjects_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Subjects_Variance_Fields = {
   __typename?: 'subjects_variance_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
   teacher_id?: Maybe<Scalars['Float']['output']>;
 };
 
 /** order by variance() on columns of table "subjects" */
 export type Subjects_Variance_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   teacher_id?: InputMaybe<Order_By>;
 };
@@ -6679,9 +7390,9 @@ export type Subscription_Root = {
   chats_by_pk?: Maybe<Chats>;
   /** fetch data from the table in a streaming manner: "chats" */
   chats_stream: Array<Chats>;
-  /** fetch data from the table: "class_sections" */
+  /** An array relationship */
   class_sections: Array<Class_Sections>;
-  /** fetch aggregated fields from the table: "class_sections" */
+  /** An aggregate relationship */
   class_sections_aggregate: Class_Sections_Aggregate;
   /** fetch data from the table: "class_sections" using primary key columns */
   class_sections_by_pk?: Maybe<Class_Sections>;
@@ -6695,9 +7406,9 @@ export type Subscription_Root = {
   emails_by_pk?: Maybe<Emails>;
   /** fetch data from the table in a streaming manner: "emails" */
   emails_stream: Array<Emails>;
-  /** fetch data from the table: "exams" */
+  /** An array relationship */
   exams: Array<Exams>;
-  /** fetch aggregated fields from the table: "exams" */
+  /** An aggregate relationship */
   exams_aggregate: Exams_Aggregate;
   /** fetch data from the table: "exams" using primary key columns */
   exams_by_pk?: Maybe<Exams>;
@@ -6719,9 +7430,9 @@ export type Subscription_Root = {
   messages_by_pk?: Maybe<Messages>;
   /** fetch data from the table in a streaming manner: "messages" */
   messages_stream: Array<Messages>;
-  /** fetch data from the table: "parents" */
+  /** An array relationship */
   parents: Array<Parents>;
-  /** fetch aggregated fields from the table: "parents" */
+  /** An aggregate relationship */
   parents_aggregate: Parents_Aggregate;
   /** fetch data from the table: "parents" using primary key columns */
   parents_by_pk?: Maybe<Parents>;
@@ -6751,9 +7462,9 @@ export type Subscription_Root = {
   subjects_by_pk?: Maybe<Subjects>;
   /** fetch data from the table in a streaming manner: "subjects" */
   subjects_stream: Array<Subjects>;
-  /** fetch data from the table: "teachers" */
+  /** An array relationship */
   teachers: Array<Teachers>;
-  /** fetch aggregated fields from the table: "teachers" */
+  /** An aggregate relationship */
   teachers_aggregate: Teachers_Aggregate;
   /** fetch data from the table: "teachers" using primary key columns */
   teachers_by_pk?: Maybe<Teachers>;
@@ -7231,6 +7942,9 @@ export type Teachers = {
   /** An aggregate relationship */
   chats_aggregate: Chats_Aggregate;
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
+  /** An object relationship */
+  creator_admin?: Maybe<Admins>;
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   is_active?: Maybe<Scalars['Boolean']['output']>;
@@ -7335,6 +8049,33 @@ export type Teachers_Aggregate = {
   nodes: Array<Teachers>;
 };
 
+export type Teachers_Aggregate_Bool_Exp = {
+  bool_and?: InputMaybe<Teachers_Aggregate_Bool_Exp_Bool_And>;
+  bool_or?: InputMaybe<Teachers_Aggregate_Bool_Exp_Bool_Or>;
+  count?: InputMaybe<Teachers_Aggregate_Bool_Exp_Count>;
+};
+
+export type Teachers_Aggregate_Bool_Exp_Bool_And = {
+  arguments: Teachers_Select_Column_Teachers_Aggregate_Bool_Exp_Bool_And_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Teachers_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Teachers_Aggregate_Bool_Exp_Bool_Or = {
+  arguments: Teachers_Select_Column_Teachers_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Teachers_Bool_Exp>;
+  predicate: Boolean_Comparison_Exp;
+};
+
+export type Teachers_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Teachers_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Teachers_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
 /** aggregate fields of "teachers" */
 export type Teachers_Aggregate_Fields = {
   __typename?: 'teachers_aggregate_fields';
@@ -7358,10 +8099,39 @@ export type Teachers_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** order by aggregate values of table "teachers" */
+export type Teachers_Aggregate_Order_By = {
+  avg?: InputMaybe<Teachers_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Teachers_Max_Order_By>;
+  min?: InputMaybe<Teachers_Min_Order_By>;
+  stddev?: InputMaybe<Teachers_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<Teachers_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<Teachers_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<Teachers_Sum_Order_By>;
+  var_pop?: InputMaybe<Teachers_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<Teachers_Var_Samp_Order_By>;
+  variance?: InputMaybe<Teachers_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "teachers" */
+export type Teachers_Arr_Rel_Insert_Input = {
+  data: Array<Teachers_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Teachers_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Teachers_Avg_Fields = {
   __typename?: 'teachers_avg_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "teachers" */
+export type Teachers_Avg_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "teachers". All fields are combined with a logical 'AND'. */
@@ -7374,6 +8144,8 @@ export type Teachers_Bool_Exp = {
   chats?: InputMaybe<Chats_Bool_Exp>;
   chats_aggregate?: InputMaybe<Chats_Aggregate_Bool_Exp>;
   created_at?: InputMaybe<Timestamp_Comparison_Exp>;
+  created_by_admin_id?: InputMaybe<Int_Comparison_Exp>;
+  creator_admin?: InputMaybe<Admins_Bool_Exp>;
   email?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   is_active?: InputMaybe<Boolean_Comparison_Exp>;
@@ -7396,6 +8168,7 @@ export type Teachers_Constraint =
 
 /** input type for incrementing numeric columns in table "teachers" */
 export type Teachers_Inc_Input = {
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
 };
 
@@ -7404,6 +8177,8 @@ export type Teachers_Insert_Input = {
   bulk_uploads?: InputMaybe<Bulk_Uploads_Arr_Rel_Insert_Input>;
   chats?: InputMaybe<Chats_Arr_Rel_Insert_Input>;
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
+  creator_admin?: InputMaybe<Admins_Obj_Rel_Insert_Input>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7419,6 +8194,7 @@ export type Teachers_Insert_Input = {
 export type Teachers_Max_Fields = {
   __typename?: 'teachers_max_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -7427,16 +8203,41 @@ export type Teachers_Max_Fields = {
   qualification?: Maybe<Scalars['String']['output']>;
 };
 
+/** order by max() on columns of table "teachers" */
+export type Teachers_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+  qualification?: InputMaybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Teachers_Min_Fields = {
   __typename?: 'teachers_min_fields';
   created_at?: Maybe<Scalars['timestamp']['output']>;
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   password_hash?: Maybe<Scalars['String']['output']>;
   phone?: Maybe<Scalars['String']['output']>;
   qualification?: Maybe<Scalars['String']['output']>;
+};
+
+/** order by min() on columns of table "teachers" */
+export type Teachers_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  email?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  password_hash?: InputMaybe<Order_By>;
+  phone?: InputMaybe<Order_By>;
+  qualification?: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "teachers" */
@@ -7467,6 +8268,8 @@ export type Teachers_Order_By = {
   bulk_uploads_aggregate?: InputMaybe<Bulk_Uploads_Aggregate_Order_By>;
   chats_aggregate?: InputMaybe<Chats_Aggregate_Order_By>;
   created_at?: InputMaybe<Order_By>;
+  created_by_admin_id?: InputMaybe<Order_By>;
+  creator_admin?: InputMaybe<Admins_Order_By>;
   email?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   is_active?: InputMaybe<Order_By>;
@@ -7488,6 +8291,8 @@ export type Teachers_Select_Column =
   /** column name */
   | 'created_at'
   /** column name */
+  | 'created_by_admin_id'
+  /** column name */
   | 'email'
   /** column name */
   | 'id'
@@ -7502,9 +8307,20 @@ export type Teachers_Select_Column =
   /** column name */
   | 'qualification';
 
+/** select "teachers_aggregate_bool_exp_bool_and_arguments_columns" columns of table "teachers" */
+export type Teachers_Select_Column_Teachers_Aggregate_Bool_Exp_Bool_And_Arguments_Columns =
+  /** column name */
+  | 'is_active';
+
+/** select "teachers_aggregate_bool_exp_bool_or_arguments_columns" columns of table "teachers" */
+export type Teachers_Select_Column_Teachers_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns =
+  /** column name */
+  | 'is_active';
+
 /** input type for updating data in table "teachers" */
 export type Teachers_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7517,19 +8333,40 @@ export type Teachers_Set_Input = {
 /** aggregate stddev on columns */
 export type Teachers_Stddev_Fields = {
   __typename?: 'teachers_stddev_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "teachers" */
+export type Teachers_Stddev_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Teachers_Stddev_Pop_Fields = {
   __typename?: 'teachers_stddev_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "teachers" */
+export type Teachers_Stddev_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Teachers_Stddev_Samp_Fields = {
   __typename?: 'teachers_stddev_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "teachers" */
+export type Teachers_Stddev_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Streaming cursor of the table "teachers" */
@@ -7543,6 +8380,7 @@ export type Teachers_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Teachers_Stream_Cursor_Value_Input = {
   created_at?: InputMaybe<Scalars['timestamp']['input']>;
+  created_by_admin_id?: InputMaybe<Scalars['Int']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['Int']['input']>;
   is_active?: InputMaybe<Scalars['Boolean']['input']>;
@@ -7555,13 +8393,22 @@ export type Teachers_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Teachers_Sum_Fields = {
   __typename?: 'teachers_sum_fields';
+  created_by_admin_id?: Maybe<Scalars['Int']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "teachers" */
+export type Teachers_Sum_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** update columns of table "teachers" */
 export type Teachers_Update_Column =
   /** column name */
   | 'created_at'
+  /** column name */
+  | 'created_by_admin_id'
   /** column name */
   | 'email'
   /** column name */
@@ -7589,19 +8436,40 @@ export type Teachers_Updates = {
 /** aggregate var_pop on columns */
 export type Teachers_Var_Pop_Fields = {
   __typename?: 'teachers_var_pop_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "teachers" */
+export type Teachers_Var_Pop_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Teachers_Var_Samp_Fields = {
   __typename?: 'teachers_var_samp_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "teachers" */
+export type Teachers_Var_Samp_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Teachers_Variance_Fields = {
   __typename?: 'teachers_variance_fields';
+  created_by_admin_id?: Maybe<Scalars['Float']['output']>;
   id?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "teachers" */
+export type Teachers_Variance_Order_By = {
+  created_by_admin_id?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -8062,7 +8930,7 @@ export type SelectTeacherByEmailQueryVariables = Exact<{
 }>;
 
 
-export type SelectTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null }> };
+export type SelectTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null, creator_admin?: { __typename?: 'admins', school_name: string } | null }> };
 
 export type SelectParentByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -8162,6 +9030,30 @@ export type DeleteExistingMarksMutationVariables = Exact<{
 
 export type DeleteExistingMarksMutation = { __typename?: 'mutation_root', delete_marks?: { __typename?: 'marks_mutation_response', affected_rows: number } | null };
 
+export type UpdateAdminPasswordMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password_hash: Scalars['String']['input'];
+}>;
+
+
+export type UpdateAdminPasswordMutation = { __typename?: 'mutation_root', update_admins?: { __typename?: 'admins_mutation_response', affected_rows: number } | null };
+
+export type UpdateTeacherPasswordMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password_hash: Scalars['String']['input'];
+}>;
+
+
+export type UpdateTeacherPasswordMutation = { __typename?: 'mutation_root', update_teachers?: { __typename?: 'teachers_mutation_response', affected_rows: number } | null };
+
+export type UpdateParentPasswordMutationVariables = Exact<{
+  email: Scalars['String']['input'];
+  password_hash: Scalars['String']['input'];
+}>;
+
+
+export type UpdateParentPasswordMutation = { __typename?: 'mutation_root', update_parents?: { __typename?: 'parents_mutation_response', affected_rows: number } | null };
+
 export type GetAdminByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
@@ -8174,7 +9066,7 @@ export type GetTeacherByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null, phone?: string | null }> };
+export type GetTeacherByEmailQuery = { __typename?: 'query_root', teachers: Array<{ __typename?: 'teachers', id: number, name: string, email: string, password_hash?: string | null, phone?: string | null, creator_admin?: { __typename?: 'admins', school_name: string } | null }> };
 
 export type GetParentByEmailQueryVariables = Exact<{
   email: Scalars['String']['input'];
@@ -8294,6 +9186,9 @@ export const SelectTeacherByEmailDocument = gql`
     name
     email
     password_hash
+    creator_admin {
+      school_name
+    }
   }
 }
     `;
@@ -8441,6 +9336,36 @@ export const DeleteExistingMarksDocument = gql`
   }
 }
     `;
+export const UpdateAdminPasswordDocument = gql`
+    mutation UpdateAdminPassword($email: String!, $password_hash: String!) {
+  update_admins(
+    where: {email: {_eq: $email}}
+    _set: {password_hash: $password_hash}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const UpdateTeacherPasswordDocument = gql`
+    mutation UpdateTeacherPassword($email: String!, $password_hash: String!) {
+  update_teachers(
+    where: {email: {_eq: $email}}
+    _set: {password_hash: $password_hash}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const UpdateParentPasswordDocument = gql`
+    mutation UpdateParentPassword($email: String!, $password_hash: String!) {
+  update_parents(
+    where: {email: {_eq: $email}}
+    _set: {password_hash: $password_hash}
+  ) {
+    affected_rows
+  }
+}
+    `;
 export const GetAdminByEmailDocument = gql`
     query GetAdminByEmail($email: String!) {
   admins(where: {email: {_eq: $email}}, limit: 1) {
@@ -8460,6 +9385,9 @@ export const GetTeacherByEmailDocument = gql`
     email
     password_hash
     phone
+    creator_admin {
+      school_name
+    }
   }
 }
     `;
@@ -8577,6 +9505,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteExistingMarks(variables: DeleteExistingMarksMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteExistingMarksMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteExistingMarksMutation>({ document: DeleteExistingMarksDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteExistingMarks', 'mutation', variables);
+    },
+    UpdateAdminPassword(variables: UpdateAdminPasswordMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateAdminPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateAdminPasswordMutation>({ document: UpdateAdminPasswordDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpdateAdminPassword', 'mutation', variables);
+    },
+    UpdateTeacherPassword(variables: UpdateTeacherPasswordMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateTeacherPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateTeacherPasswordMutation>({ document: UpdateTeacherPasswordDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpdateTeacherPassword', 'mutation', variables);
+    },
+    UpdateParentPassword(variables: UpdateParentPasswordMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateParentPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateParentPasswordMutation>({ document: UpdateParentPasswordDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpdateParentPassword', 'mutation', variables);
     },
     GetAdminByEmail(variables: GetAdminByEmailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAdminByEmailQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAdminByEmailQuery>({ document: GetAdminByEmailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetAdminByEmail', 'query', variables);

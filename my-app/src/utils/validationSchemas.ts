@@ -135,6 +135,23 @@ export const workflowStatusSchema = Joi.object({
   workflowId: Joi.string().required(),
 });
 
+/**
+ * Forgot password validation schema
+ */
+export const forgotPasswordSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  role: Joi.string().valid('admin', 'teacher', 'parent').required(),
+});
+
+/**
+ * Reset password validation schema
+ */
+export const resetPasswordSchema = Joi.object({
+  email: Joi.string().trim().email().required(),
+  role: Joi.string().valid('admin', 'teacher', 'parent').required(),
+  newPassword: Joi.string().min(8).required(),
+});
+
 export const validateRequest = (schema: Joi.Schema, data: any) => {
   const { error, value } = schema.validate(data, {
     abortEarly: false,
