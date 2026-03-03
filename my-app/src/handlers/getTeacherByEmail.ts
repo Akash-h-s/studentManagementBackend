@@ -2,6 +2,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { gqlSdk } from '../config/graphClient';
 import { getTeacherByEmailSchema, validateRequest } from '../utils/validationSchemas';
+import { withAuth } from '../utils/authMiddleware';
 
 const CORS_HEADERS = {
   'Content-Type': 'application/json',
@@ -10,8 +11,9 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export const handler = async (
-  event: APIGatewayProxyEvent
+export const handler = withAuth(async (
+  event: APIGatewayProxyEvent,
+  user
 ): Promise<APIGatewayProxyResult> => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
@@ -42,8 +44,8 @@ export const handler = async (
     const validatedEmail = validation.data.email;
 
     // Fetch teacher from database
-    const result = await gqlSdk.GetTeacherIdByEmail({ 
-      email: validatedEmail.trim() 
+    const result = await gqlSdk.GetTeacherIdByEmail({
+      email: validatedEmail.trim()
     });
 
     if (!result.teachers || result.teachers.length === 0) {
@@ -83,4 +85,4 @@ export const handler = async (
       }),
     };
   }
-};
+});

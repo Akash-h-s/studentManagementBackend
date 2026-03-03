@@ -1,5 +1,6 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { sdk } from '../lib/graphqlClient';
+import { withAuth } from '../utils/authMiddleware';
 
 // CORS headers
 const corsHeaders = {
@@ -8,13 +9,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-export const handler = async (
-  event: APIGatewayProxyEvent
+export const handler = withAuth(async (
+  event: APIGatewayProxyEvent,
+  user
 ): Promise<APIGatewayProxyResult> => {
   console.log('=== GET STUDENT DETAILS ===');
   console.log('Method:', event.httpMethod);
   console.log('Body:', event.body);
-  
+
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -74,4 +76,4 @@ export const handler = async (
       }),
     };
   }
-};
+});
