@@ -50,12 +50,7 @@ select_permissions:
         - display_name
         - created_at
       filter:
-        _and:
-          - subjects:
-              teacher_id:
-                _eq: X-Hasura-User-Id
-          - creator_admin:
-              teachers:
-                id:
-                  _eq: X-Hasura-User-Id
+        subjects:
+          teacher_id:
+            _eq: X-Hasura-User-Id
     comment: ""

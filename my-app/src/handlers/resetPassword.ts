@@ -1,19 +1,13 @@
-
+// src/handlers/resetPassword.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import bcrypt from "bcryptjs";
 import { gqlSdk } from "../config/graphClient";
 import { resetPasswordSchema, validateRequest } from "../utils/validationSchemas";
-
-const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+import { successResponse, errorResponse, optionsResponse } from "../utils/apiResponse";
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-
     if (event.httpMethod === "OPTIONS") {
-        return { statusCode: 200, headers: corsHeaders, body: "" };
+        return optionsResponse();
     }
 
     try {
@@ -23,20 +17,11 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         // Validate request
         const validation = validateRequest(resetPasswordSchema, args);
         if (!validation.valid) {
-            return {
-                statusCode: 400,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    message: validation.error
-                })
-            };
+            return errorResponse(validation.error || 'Invalid request', 400);
         }
 
         const { email, role, newPassword } = validation.data;
-
         const hash = await bcrypt.hash(newPassword, 8);
-
         let affectedRows = 0;
 
         switch (role) {
@@ -58,34 +43,14 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         }
 
         if (affectedRows > 0) {
-            return {
-                statusCode: 200,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: true,
-                    message: "Password updated successfully"
-                })
-            };
+            return successResponse({ message: "Password updated successfully" });
         } else {
-            return {
-                statusCode: 404,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    message: "Could not update password. User not found."
-                })
-            };
+            return errorResponse("Could not update password. User not found.", 404);
         }
 
     } catch (err: any) {
         console.error("Reset password error:", err);
-        return {
-            statusCode: 500,
-            headers: corsHeaders,
-            body: JSON.stringify({
-                success: false,
-                message: err.message || "Internal server error"
-            })
-        };
+        return errorResponse(err.message || "Internal server error", 500, err);
     }
 };
+
