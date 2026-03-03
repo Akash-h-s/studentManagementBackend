@@ -63,12 +63,8 @@ select_permissions:
     permission:
       columns:
         - id
-        - name
         - email
         - school_name
-        - school_address
-        - school_phone
-        - school_logo_url
       filter:
         studentsByCreatedByAdminId:
           parent_id:

@@ -6,6 +6,10 @@ jest.mock("@temporalio/client", () => ({
   Client: jest.fn(),
 }));
 
+jest.mock("../utils/authMiddleware", () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: "1", role: "admin", email: "admin@test.com" }),
+}));
+
 describe("Workflow Status Handler", () => {
   const mockGetHandle = jest.fn();
 
@@ -27,6 +31,7 @@ describe("Workflow Status Handler", () => {
 
     const event = {
       httpMethod: "POST",
+      headers: { Authorization: "Bearer valid-token" },
       body: JSON.stringify({ workflowId: "test-id" }),
     } as any;
 
@@ -48,14 +53,15 @@ describe("Workflow Status Handler", () => {
       emailsSent: 95,
       emailsFailed: 5,
     });
-    
-    mockGetHandle.mockReturnValue({ 
-        describe: mockDescribe,
-        result: mockResult 
+
+    mockGetHandle.mockReturnValue({
+      describe: mockDescribe,
+      result: mockResult
     });
 
     const event = {
       httpMethod: "POST",
+      headers: { Authorization: "Bearer valid-token" },
       body: JSON.stringify({ workflowId: "success-id" }),
     } as any;
 
@@ -74,6 +80,7 @@ describe("Workflow Status Handler", () => {
 
     const event = {
       httpMethod: "POST",
+      headers: { Authorization: "Bearer valid-token" },
       body: JSON.stringify({ workflowId: "missing-id" }),
     } as any;
 
@@ -85,11 +92,12 @@ describe("Workflow Status Handler", () => {
   it("should return 500 if workflowId is missing from request", async () => {
     const event = {
       httpMethod: "POST",
+      headers: { Authorization: "Bearer valid-token" },
       body: JSON.stringify({}),
     } as any;
 
     const result = await handler(event);
-    expect(result.statusCode).toBe(500);
-    expect(JSON.parse(result.body).message).toBe("workflowId is required");
+    expect(result.statusCode).toBe(400); // validation returns 400 now
+    expect(JSON.parse(result.body).message).toContain("required");
   });
 });

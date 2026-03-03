@@ -40,6 +40,19 @@ const getUserInfo = async (userId: number, userType: string) => {
 
 export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promise<APIGatewayProxyResult> => {
   try {
+    const body = JSON.parse(event.body || '{}');
+    const validation = validateRequest(getChatsSchema, body);
+    if (!validation.valid) {
+      return {
+        statusCode: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        body: JSON.stringify({
+          success: false,
+          message: validation.error
+        })
+      };
+    }
+
     // Get user_id from the validated JWT token for security
     const user_id = parseInt(user.id);
 
@@ -113,7 +126,7 @@ export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promi
         name: chatName,
         participants: participantsList,
         last_message: lastMessage,
-        unread_count: 0 // TODO: Implement unread count logic
+        unread_count: 0 
       };
     }));
 

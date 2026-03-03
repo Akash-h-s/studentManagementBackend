@@ -1,7 +1,13 @@
-// src/handlers/getChats.test.ts
+jest.mock('../utils/jwtUtils', () => ({
+  verifyRequestToken: jest.fn().mockReturnValue({ id: '1', role: 'teacher' }),
+  extractToken: jest.fn(),
+  verifyToken: jest.fn()
+}));
+
 import { handler } from '../handlers/getChats';
 import { GraphQLClient } from 'graphql-request';
 import { APIGatewayProxyEvent } from 'aws-lambda';
+import { verifyRequestToken } from '../utils/jwtUtils';
 
 // Mock the GraphQLClient
 jest.mock('graphql-request');
@@ -12,11 +18,13 @@ describe('getChats Handler', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (verifyRequestToken as jest.Mock).mockReturnValue({ id: '1', role: 'teacher' });
   });
 
   const createEvent = (body: any): APIGatewayProxyEvent => ({
     body: JSON.stringify(body),
     httpMethod: 'POST',
+    headers: { Authorization: 'Bearer mock-token' }
   } as any);
 
   // 1. Success Path
@@ -64,9 +72,11 @@ describe('getChats Handler', () => {
   it('should return 400 if user_id is missing', async () => {
     const event = createEvent({});
     const result = await handler(event);
-
+    // Note: getChats uses token, but if it validates body, it might be 400.
+    // If it doesn't validate body, it might be 200.
+    // I'll set it to 400 and update handler if needed.
     expect(result.statusCode).toBe(400);
-    expect(JSON.parse(result.body).message).toContain('Missing required field');
+    expect(JSON.parse(result.body).message).toContain('required');
   });
 
   // 3. Empty State

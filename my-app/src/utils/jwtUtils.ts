@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
+import type { SignOptions } from 'jsonwebtoken';
 
-const JWT_SECRET: string = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-const JWT_EXPIRY = process.env.JWT_EXPIRY || '30m';
+const JWT_SECRET: string = process.env.JWT_SECRET || 'smart-student-management-system-educloud';
+const JWT_EXPIRY = (process.env.JWT_EXPIRY || '30m') as SignOptions['expiresIn']; 
 
 export interface TokenPayload {
   id: string;
@@ -11,7 +12,6 @@ export interface TokenPayload {
   schoolName?: string;
 }
 
-
 export const generateToken = (payload: TokenPayload): string => {
   const hasuraClaims = {
     "x-hasura-allowed-roles": ["admin", "teacher", "parent", "student"],
@@ -19,14 +19,17 @@ export const generateToken = (payload: TokenPayload): string => {
     "x-hasura-user-id": payload.id,
   };
 
-  return jwt.sign({
-    ...payload,
-    "https://hasura.io/jwt/claims": hasuraClaims
-  }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRY,
-  });
+  return jwt.sign(
+    {
+      ...payload,
+      "https://hasura.io/jwt/claims": hasuraClaims,
+    },
+    JWT_SECRET,
+    {
+      expiresIn: JWT_EXPIRY,
+    }
+  );
 };
-
 
 export const verifyToken = (token: string): TokenPayload | null => {
   try {
@@ -38,7 +41,6 @@ export const verifyToken = (token: string): TokenPayload | null => {
   }
 };
 
-
 export const extractToken = (authHeader?: string): string | null => {
   if (!authHeader) return null;
   const parts = authHeader.split(' ');
@@ -47,6 +49,7 @@ export const extractToken = (authHeader?: string): string | null => {
   }
   return null;
 };
+
 export const verifyRequestToken = (authHeader?: string): TokenPayload | null => {
   const token = extractToken(authHeader);
   if (!token) return null;

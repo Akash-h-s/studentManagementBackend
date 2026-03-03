@@ -46,8 +46,6 @@ export const handler = withAuth(async (event: APIGatewayProxyEvent, user): Promi
   try {
     const body = JSON.parse(event.body || '{}');
     console.log('Received body:', JSON.stringify(body, null, 2)); // Debug log
-
-    // Validate request
     const validation = validateRequest(createChatSchema, body);
     if (!validation.valid) {
       return {

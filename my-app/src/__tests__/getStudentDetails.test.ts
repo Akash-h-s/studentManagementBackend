@@ -1,4 +1,7 @@
-// src/handlers/getStudentDetails.test.ts
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: '1', role: 'parent' }),
+}));
+
 import { handler } from '../handlers/getStudentDetails';
 import { sdk } from '../lib/graphqlClient';
 
@@ -17,8 +20,8 @@ describe('getStudentDetails Handler', () => {
 
   it('should return a specific student when studentId is provided', async () => {
     const mockStudent = { id: 101, name: 'Alice' };
-    (sdk.GetStudentById as jest.Mock).mockResolvedValue({ 
-      students_by_pk: mockStudent 
+    (sdk.GetStudentById as jest.Mock).mockResolvedValue({
+      students_by_pk: mockStudent
     });
 
     const event = {
@@ -36,8 +39,8 @@ describe('getStudentDetails Handler', () => {
 
   it('should return all students for a parent when parentId is provided', async () => {
     const mockStudents = [{ id: 101, name: 'Alice' }, { id: 102, name: 'Bob' }];
-    (sdk.GetStudentsByParentId as jest.Mock).mockResolvedValue({ 
-      students: mockStudents 
+    (sdk.GetStudentsByParentId as jest.Mock).mockResolvedValue({
+      students: mockStudents
     });
 
     const event = {

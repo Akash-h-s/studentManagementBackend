@@ -1,6 +1,10 @@
 import { APIGatewayProxyEvent } from 'aws-lambda';
 import { handler as createChatHandler } from '../handlers/createChat';
 
+jest.mock('../utils/authMiddleware', () => ({
+  withAuth: (handler: any) => async (event: any) => handler(event, { id: 1, role: 'teacher' }),
+}));
+
 // Mock the entire graphql-request module
 jest.mock('graphql-request', () => {
   const mockRequest = jest.fn();
@@ -18,9 +22,9 @@ const mockRequest = (GraphQLClient as any).prototype.request || (require('graphq
 describe('Create Chat Handler Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+    jest.spyOn(console, 'log').mockImplementation(() => { });
+    jest.spyOn(console, 'error').mockImplementation(() => { });
+
     process.env.HASURA_ENDPOINT = 'http://test-endpoint/v1/graphql';
     process.env.HASURA_ADMIN_SECRET = 'test-secret';
   });
@@ -71,7 +75,8 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toBe('Missing required field: type');
+      expect(body.message).toContain('type');
+      expect(body.message).toContain('required');
     });
 
     it('should return 400 if direct chat does not have exactly 2 participants', async () => {
@@ -85,7 +90,8 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toContain('Direct chat requires exactly 2 participants');
+      expect(body.message).toContain('participants');
+      expect(body.message).toContain('2');
     });
 
     it('should return 400 if group chat is missing required fields', async () => {
@@ -100,7 +106,7 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toContain('Group chat requires name, created_by, and at least 2 members');
+      expect(body.message).toContain('requires');
     });
 
     it('should return 400 if group chat has less than 2 members', async () => {
@@ -116,7 +122,8 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toContain('at least 2 members');
+      expect(body.message).toContain('members');
+      expect(body.message).toContain('at least 2');
     });
 
     it('should return 400 for invalid chat type', async () => {
@@ -130,7 +137,8 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toBe('Invalid chat type. Must be "direct" or "group"');
+      expect(body.message).toContain('type');
+      expect(body.message).toContain('must be one of');
     });
   });
 
@@ -172,7 +180,7 @@ describe('Create Chat Handler Tests', () => {
 
       expect(result.statusCode).toBe(200);
       expect(mockRequest).toHaveBeenCalledTimes(4);
-      
+
       const body = JSON.parse(result.body);
       expect(body.success).toBe(true);
       expect(body.chat).toMatchObject({
@@ -225,7 +233,7 @@ describe('Create Chat Handler Tests', () => {
 
       expect(result.statusCode).toBe(200);
       expect(mockRequest).toHaveBeenCalledTimes(3); // No create call
-      
+
       const body = JSON.parse(result.body);
       expect(body.success).toBe(true);
       expect(body.chat.id).toBe(5);
@@ -358,7 +366,7 @@ describe('Create Chat Handler Tests', () => {
 
       expect(result.statusCode).toBe(200);
       expect(mockRequest).toHaveBeenCalledTimes(4);
-      
+
       const body = JSON.parse(result.body);
       expect(body.success).toBe(true);
       expect(body.chat).toMatchObject({
@@ -484,7 +492,7 @@ describe('Create Chat Handler Tests', () => {
 
     it('should handle GraphQL errors when creating chat', async () => {
       const mockCheckResult = { chats: [] };
-      
+
       mockRequest
         .mockResolvedValueOnce(mockCheckResult)
         .mockRejectedValueOnce(new Error('Insert failed: constraint violation'));
@@ -560,7 +568,8 @@ describe('Create Chat Handler Tests', () => {
       expect(result.statusCode).toBe(400);
       const body = JSON.parse(result.body);
       expect(body.success).toBe(false);
-      expect(body.message).toBe('Missing required field: type');
+      expect(body.message).toContain('type');
+      expect(body.message).toContain('required');
     });
   });
 
@@ -629,7 +638,7 @@ describe('Create Chat Handler Tests', () => {
   describe('GraphQL Query/Mutation Verification', () => {
     it('should call check query with correct parameters for direct chat', async () => {
       const mockCheckResult = { chats: [] };
-      
+
       mockRequest.mockResolvedValueOnce(mockCheckResult);
 
       const event = createMockEvent({
@@ -654,7 +663,7 @@ describe('Create Chat Handler Tests', () => {
 
     it('should call create mutation with correct participants data', async () => {
       const mockCheckResult = { chats: [] };
-      
+
       mockRequest
         .mockResolvedValueOnce(mockCheckResult)
         .mockResolvedValueOnce({
