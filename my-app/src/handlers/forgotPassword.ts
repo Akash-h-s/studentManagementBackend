@@ -1,18 +1,12 @@
-
+// src/handlers/forgotPassword.ts
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { gqlSdk } from "../config/graphClient";
 import { forgotPasswordSchema, validateRequest } from "../utils/validationSchemas";
-
-const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+import { successResponse, errorResponse, optionsResponse } from "../utils/apiResponse";
 
 export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-
     if (event.httpMethod === "OPTIONS") {
-        return { statusCode: 200, headers: corsHeaders, body: "" };
+        return optionsResponse();
     }
 
     try {
@@ -22,73 +16,39 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
         // Validate request
         const validation = validateRequest(forgotPasswordSchema, args);
         if (!validation.valid) {
-            return {
-                statusCode: 400,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    message: validation.error
-                })
-            };
+            return errorResponse(validation.error || 'Invalid request', 400);
         }
 
         const { email, role } = validation.data;
-
         let userExists = false;
 
         switch (role) {
             case 'admin': {
                 const result = await gqlSdk.SelectAdminByEmail({ email });
-                if (result.admins && result.admins.length > 0) {
-                    userExists = true;
-                }
+                userExists = (result.admins?.length || 0) > 0;
                 break;
             }
             case 'teacher': {
                 const result = await gqlSdk.SelectTeacherByEmail({ email });
-                if (result.teachers && result.teachers.length > 0) {
-                    userExists = true;
-                }
+                userExists = (result.teachers?.length || 0) > 0;
                 break;
             }
             case 'parent': {
                 const result = await gqlSdk.SelectParentByEmail({ email });
-                if (result.parents && result.parents.length > 0) {
-                    userExists = true;
-                }
+                userExists = (result.parents?.length || 0) > 0;
                 break;
             }
         }
 
         if (userExists) {
-            return {
-                statusCode: 200,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: true,
-                    message: "Email verified successfully"
-                })
-            };
+            return successResponse({ message: "Email verified successfully" });
         } else {
-            return {
-                statusCode: 404,
-                headers: corsHeaders,
-                body: JSON.stringify({
-                    success: false,
-                    message: "Email not found in our records"
-                })
-            };
+            return errorResponse("Email not found in our records", 404);
         }
 
     } catch (err: any) {
         console.error("Forgot password error:", err);
-        return {
-            statusCode: 500,
-            headers: corsHeaders,
-            body: JSON.stringify({
-                success: false,
-                message: err.message || "Internal server error"
-            })
-        };
+        return errorResponse(err.message || "Internal server error", 500, err);
     }
 };
+

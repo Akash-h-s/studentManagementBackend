@@ -65,13 +65,8 @@ select_permissions:
         - is_active
         - created_at
       filter:
-        _and:
-          - class_section:
-              subjects:
-                teacher_id:
-                  _eq: X-Hasura-User-Id
-          - creator_admin:
-              teachers:
-                id:
-                  _eq: X-Hasura-User-Id
+        class_section:
+          subjects:
+            teacher_id:
+              _eq: X-Hasura-User-Id
     comment: ""

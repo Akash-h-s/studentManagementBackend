@@ -55,13 +55,8 @@ select_permissions:
         - class_name
         - teacher_id
       filter:
-        _and:
-          - teacher_id:
-              _eq: X-Hasura-User-Id
-          - creator_admin:
-              teachers:
-                id:
-                  _eq: X-Hasura-User-Id
+        teacher_id:
+          _eq: X-Hasura-User-Id
     comment: ""
 update_permissions:
   - role: teacher
